@@ -13,9 +13,7 @@ Its native format supports videos up to **720p at 24 FPS**, although typical wor
 
 ## Resources and Associated Files on CivitAI
 
-WAN 2.2 models are officially hosted on Hugging Face and mirrored by several community platforms such as [CivitAI](https://civitai.com/). However, most ComfyUI users do not need to download these files manually.
-
-Through the tab *Browse Templates*, ComfyUI can automatically load WAN 2.2 workflows and download any missing model components, including:
+WAN 2.2 models are officially hosted on Hugging Face and mirrored by several community platforms such as [CivitAI](https://civitai.com/). However, most ComfyUI users do not need to download these files manually. Through the tab *Browse Templates*, ComfyUI can automatically load WAN 2.2 workflows and download any missing model components, including:
 
 - WAN 2.2 High Noise model
 - WAN 2.2 Low Noise model
