@@ -2,7 +2,7 @@
 
 ## How diffusion models work
 
-A diffusion model is a type of generative AI that creates images or videos through an iterative denoising process. During training, the model learns how to recover visual information from data that has been progressively corrupted with random noise. During generation, it performs the reverse operation, starting from noise and gradually refining it over many steps into coherent visual content guided by conditioning inputs such as text prompts, images, or other control signals. This approach enables diffusion models to produce highly detailed and visually consistent results.
+A **diffusion model** is a type of generative AI that creates images or videos through an iterative denoising process. During training, the model learns how to recover visual information from data that has been progressively corrupted with random noise. During generation, it performs the reverse operation, starting from noise and gradually refining it over many steps into coherent visual content guided by conditioning inputs such as text prompts, images, or other control signals. This approach enables diffusion models to produce highly detailed and visually consistent results.
 
 ## Technical Description of WAN 2.2
 
@@ -13,7 +13,24 @@ A diffusion model is a type of generative AI that creates images or videos throu
 
 For I2V, the model turns a still image into a video while trying to preserve the identity, layout, and style of the source image.
 
-### Required files
+## Basic Workflow Diagram
+
+Although WAN 2.2 internally uses separate high-noise and low-noise stages, most ComfyUI workflows expose these stages as distinct nodes and checkpoints. The image and prompt are first converted into conditioning information, then the generation process is split into two phases. The outputs of these stages are combined to produce the final video. In Lightning workflows, specialized LoRAs are often applied to both stages, allowing the model to generate high-quality results with very few sampling steps.
+
+```mermaid
+flowchart LR
+    A[Load Image] --> B[Prompt]
+    B --> C[WAN 2.2 I2V Model]
+    C --> D[Apply High Noise LoRA]
+    C --> E[Apply Low Noise LoRA]
+    D --> F[High Sampling]
+    E --> G[Low Sampling]
+    F --> H[Merge Frames]
+    G --> H
+    H --> I[Final Video]
+```
+
+## Required files
 
 For a standard ComfyUI setup, you usually need the following files:
 
@@ -34,14 +51,9 @@ For a standard ComfyUI setup, you usually need the following files:
 
 > A latent representation is a compressed version of an image or video that preserves its most important visual information. WAN 2.2 performs diffusion in this compressed space for efficiency, and the VAE later converts it back into normal pixels.
 
-### Low noise vs. high noise
+## Low noise vs. high noise
 
-A useful way to think about the two stages is:
-
-- **High noise = “What is happening?”**
-- **Low noise = “How does it look?”**
-
-#### High-noise stage
+### High-noise stage
 This stage comes first and is the most important for:
 
 - initial motion
@@ -50,7 +62,7 @@ This stage comes first and is the most important for:
 - large shape placement
 - overall energy of the clip
 
-#### Low-noise stage
+### Low-noise stage
 This stage comes after the structure is already defined and is responsible for:
 
 - sharper details
@@ -59,26 +71,21 @@ This stage comes after the structure is already defined and is responsible for:
 - less visual instability
 - more polished final frames
 
-### Why many Lightning workflows use 2 steps for each stage
+## Why many Lightning workflows use 2 steps for each stage
 
 In the **Lightning** style workflow, it is common to see something like:
 
 - **2 high-noise steps**
 - **2 low-noise steps**
 
-This is not arbitrary.  
-It works because Lightning LoRAs are designed to make the model usable with **very few denoising steps**.
+This is not arbitrary. It works because Lightning LoRAs are designed to make the model usable with **very few denoising steps**. The practical logic is:
 
-The practical logic is:
-
-- the **first 2 steps** give enough room to establish motion and composition
-- the **next 2 steps** refine the output without wasting time on unnecessary denoising passes
+- The **first 2 steps** give enough room to establish motion and composition.
+- The **next 2 steps** refine the output without wasting time on unnecessary denoising passes.
 
 So the model does not need many steps because the LoRA is already pushing it toward a fast, compressed generation path.
 
 In a **full, non-Lightning workflow**, the same idea still applies, but the total step count is usually higher.
-
----
 
 ## Resources and Associated Files on CivitAI
 
@@ -119,8 +126,6 @@ For LoRAs:
 ```text
 ComfyUI/models/loras/
 ```
-
----
 
 ## Using LoRA
 
@@ -261,8 +266,6 @@ High = 0.6
 Low  = 1.0
 ```
 
----
-
 ## ModelSamplingSD3 (Shift)
 
 `ModelSamplingSD3` is a ComfyUI node used to adjust how the model behaves during sampling.
@@ -309,8 +312,6 @@ Many WAN 2.2 workflows use values around:
 - Use the default or near-default value first.
 - Increase the shift only if you understand how it changes the output.
 - Too much shift can make results feel less stable or less faithful to the prompt/image.
-
----
 
 ## KSampler (Advanced)
 
@@ -502,25 +503,6 @@ A very strong LoRA can create:
 ### 7. Treating the 5B model like the 14B model
 
 The 5B version is lighter and more practical for limited hardware, but it is not the same quality target as the 14B workflow.
-
----
-
-## Basic Workflow Diagram
-
-```mermaid
-flowchart LR
-    A[Load Image] --> B[Prompt]
-    B --> C[WAN 2.2 I2V Model]
-    C --> D[Apply High Noise LoRA]
-    C --> E[Apply Low Noise LoRA]
-    D --> F[High Sampling]
-    E --> G[Low Sampling]
-    F --> H[Merge Frames]
-    G --> H
-    H --> I[Final Video]
-```
-
----
 
 ## Summary
 
