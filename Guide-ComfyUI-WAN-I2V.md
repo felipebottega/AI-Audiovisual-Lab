@@ -1,24 +1,28 @@
-# Executive Summary
-This report details how to use the **Wan 2.2 checkpoint** to generate videos from an image in **ComfyUI**, including LoRA integration. We cover the **origin and purpose** of the Wan 2.2 model (image-to-video), available resources and links on CivitAI/Hugging Face, practical examples of prompts and image-to-video workflows, and a step-by-step guide for loading LoRAs (ComfyUI nodes, application order, and scale adjustment). We also present the most relevant **parameters** (sampler, steps, CFG, denoising, seed, resolution, FPS, motion strength, keyframes), recommended value ranges, and practical rules of thumb. Finally, we discuss common pitfalls and known limitations (e.g., using T2V LoRAs with I2V models), compatibility issues, and recommendations on what to avoid.
+# Guide to using ComfyUI with WAN 2.2 - Image to Video (I2V)
+This guide details how to use the **Wan 2.2 checkpoint** to generate videos from an image in **ComfyUI**, including LoRA integration. We cover practical examples of prompts and image-to-video workflows, and a step-by-step guide for loading LoRAs (ComfyUI nodes, application order, and scale adjustment). We also present the most relevant **parameters** (sampler, steps, CFG, denoising, seed, resolution, FPS, motion strength, keyframes), recommended value ranges, and practical rules of thumb. Finally, we discuss common pitfalls and known limitations (e.g., using T2V LoRAs with I2V models), compatibility issues, and recommendations on what to avoid.
 
-## Technical Description of Wan 2.2 (Image-to-Video)
+## Technical Description of Wan 2.2
 
 **Wan 2.2** is a multimodal video generation model (developed by Wan AI/Alibaba) released as open source under the Apache 2.0 license. It uses a large **Mixture-of-Experts (MoE)** architecture: two sub-models ("experts") are activated at different noise stages during synthesis, improving video quality without proportionally increasing computational cost.
 
-During generation, approximately 14 billion parameters (out of roughly 27B total) are activated. The model automatically transitions from a high-noise stage (initial composition) to a low-noise stage (detail refinement). According to the official documentation, Wan2.2-I2V-A14B converts static images into dynamic videos while maintaining content consistency and smooth transitions.
+During generation, approximately 14 billion parameters (out of roughly 27B total) are activated. The model automatically transitions from a high-noise stage (initial composition) to a low-noise stage (detail refinement). According to the official documentation, **Wan2.2-I2V-A14B** converts static images into dynamic videos while maintaining content consistency and smooth transitions.
 
 Its native format supports videos up to **720p at 24 FPS**, although typical workflows often use lower resolutions (such as 832×480) to reduce memory consumption and speed up rendering. Compared to Wan 2.1, Wan 2.2 provides a significant improvement in cinematic aesthetics, complex motion generation, and understanding of sophisticated scenes.
 
-A compact 5B version (Wan2.2-TI2V-5B) is also available, capable of running image-to-video and text-to-video workflows at 720p on GPUs with approximately 8 GB of VRAM.
+> A compact 5B version (**Wan2.2-TI2V-5B**) is also available, capable of running image-to-video and text-to-video workflows at 720p on GPUs with approximately 8 GB of VRAM.
 
 ## Resources and Associated Files on CivitAI
 
-Several Wan 2.2 models are available through **CivitAI** and official repositories. Examples include:
+WAN 2.2 models are officially hosted on Hugging Face and mirrored by several community platforms such as [CivitAI](https://civitai.com/). However, most ComfyUI users do not need to download these files manually.
 
-- **Rapid WAN 2.2 All-In-One** (ID 1824594), combining I2V and T2V in a single checkpoint.
-- **Rapid WAN 2.2 I2V (GGUF)** (ID 1855105), focused on image-to-video generation.
+Through the tab *Browse Templates*, ComfyUI can automatically load WAN 2.2 workflows and download any missing model components, including:
 
-Official LoRAs are also available. The LightX2V team provides **Wan2.2 Lightning** LoRAs designed to reduce the number of required sampling steps.
+- WAN 2.2 High Noise model
+- WAN 2.2 Low Noise model
+- UMT5 text encoder
+- VAE files
+
+Manual downloads are mainly useful for offline installations, custom workflows, or users who want specific community checkpoints and LoRAs.
 
 For installation, checkpoint files should be placed inside:
 
