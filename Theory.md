@@ -89,8 +89,20 @@ In simple terms: the checkpoint is the saved brain, and the U-Net is the part of
 
 ## References
 
+[1]: https://arxiv.org/abs/2006.11239 "Denoising Diffusion Probabilistic Models — Jonathan Ho, Ajay Jain, Pieter Abbeel (2020)"
+
+[2]: https://arxiv.org/abs/2112.10752 "High-Resolution Image Synthesis with Latent Diffusion Models — Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, Björn Ommer (2022)"
+
+[3]: https://arxiv.org/abs/2106.09685 "LoRA: Low-Rank Adaptation of Large Language Models — Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, et al. (2021)"
+
+[4]: https://arxiv.org/abs/2311.15127 "Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets — Andreas Blattmann, et al. (2023)"
+
+[5]: https://arxiv.org/abs/1505.04597 "U-Net: Convolutional Networks for Biomedical Image Segmentation — Olaf Ronneberger, Philipp Fischer, Thomas Brox (2015)"
+
+[6]: https://arxiv.org/abs/2206.00364 "Elucidating the Design Space of Diffusion-Based Generative Models — Tero Karras, Miika Aittala, Timo Aila, Samuli Laine, et al. (2022)"
+
 1. Ho, J., Jain, A., Abbeel, P. (2020). **Denoising Diffusion Probabilistic Models**.
-   https://arxiv.org/abs/2006.11239
+   https://arxiv.org/abs/2006.11239 
 
 2. Rombach, R., Blattmann, A., Lorenz, D., Esser, P., Ommer, B. (2022).
    **High-Resolution Image Synthesis with Latent Diffusion Models**.
