@@ -274,13 +274,7 @@ The **shift** value changes the diffusion behavior in a way that can affect:
 It should usually come **after** the model modifications and **before** the sampler:
 
 ```text
-UNetLoader
-   ↓
-LoRA
-   ↓
-ModelSamplingSD3
-   ↓
-KSampler
+UNetLoader  → LoRA → ModelSamplingSD3 → KSampler
 ```
 
 ### Practical advice
