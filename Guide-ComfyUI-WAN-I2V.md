@@ -24,54 +24,6 @@ flowchart LR
     A5 --> E
 ```
 
-1. **WAN 2.2 I2V High Noise Model**  
-   The model used during the first stage of generation. It operates in the high-noise region of the diffusion process, where the main goal is to establish motion, composition, scene structure, and overall dynamics.
-
-2. **Apply High Noise LoRAs**  
-   Applies LoRAs to the high-noise model. These LoRAs modify the model's behavior without changing the base checkpoint and are often used to improve motion, realism, style, or accelerate generation in Lightning workflows.
-
-3. **Model SamplingSD3**  
-   Configures the model for the sampling process. In practice, it prepares the checkpoint so that the sampler can perform the denoising steps correctly.
-
-4. **KSampler (High Noise Stage)**  
-   Executes the denoising steps for the high-noise stage. This phase establishes the overall structure of the video, including movement, camera direction, and large-scale visual features.
-
-5. **WAN 2.2 I2V Low Noise Model**  
-   The model used during the second stage of generation. It focuses on refining information that was established during the high-noise stage rather than creating new structure.
-
-6. **Apply Low Noise LoRAs**  
-   Applies LoRAs to the low-noise model. These LoRAs typically enhance refinement, detail quality, texture consistency, and overall visual polish.
-
-7. **Model SamplingSD3**  
-   Performs the same role as in the high-noise branch, preparing the low-noise model for the denoising process.
-
-8. **KSampler (Low Noise Stage)**  
-   Executes the denoising steps for the low-noise stage. This phase refines details, improves temporal consistency, and produces a cleaner final result.
-
-9. **Load Image**  
-   Loads the source image that serves as the starting point for Image-to-Video generation. The model uses this image as a reference for appearance, composition, and subject identity.
-
-10. **WanImageToVideo**  
-    The central node that prepares the Image-to-Video conditioning. It combines information from the source image, text prompt, CLIP encoder, and VAE to create the inputs required by the diffusion process.
-
-11. **Load CLIP**  
-    Loads the text encoder used to interpret prompts. The encoded text is converted into conditioning information that guides the video generation process.
-
-12. **Prompt**  
-    The text description that guides the generation. Prompts can influence content, actions, camera movement, style, atmosphere, and other visual characteristics.
-
-13. **Load VAE**  
-    Loads the Variational Autoencoder (VAE), which is responsible for converting between pixel space and latent space. Diffusion takes place in latent space because it is significantly more efficient.
-
-14. **VAE Decode**  
-    Converts the final latent representation into visible video frames. This is the stage where the compressed internal representation becomes actual images.
-
-15. **Create Video**  
-    Combines the decoded frames into a continuous video sequence using the selected frame rate and encoding settings.
-
-16. **Save Video**  
-    Exports the completed video file to disk, making the generated result available for viewing or further processing.
-
 ## Required files
 
 For a standard ComfyUI setup, you usually need the following files:
