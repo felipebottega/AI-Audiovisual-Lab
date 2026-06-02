@@ -24,13 +24,13 @@ After understanding diffusion models and LoRAs, we need the component that actua
 
 A sampler is responsible for turning random noise into an image by repeatedly applying the diffusion model over a sequence of steps. While the model defines *what* should be denoised, the sampler defines *how* that denoising process is executed over time. In practice, it is the part that makes generation actually happen, transforming theoretical denoising into a controlled iterative process that produces a final image.
 
-## How it works
+### How it works
 
 Generation starts from pure noise in latent space. At each step, the model predicts how the current noisy latent should be updated, and the sampler applies this update using a numerical method. Repeating this process gradually transforms noise into a structured image.
 
 Different samplers, such as **Euler**, **Heun**, or **DPM++**, define different ways of approximating this update process, affecting sharpness, stability, and convergence speed.
 
-## Automatic1111 vs ComfyUI
+### Automatic1111 vs ComfyUI
 
 In **AUTOMATIC1111**, this appears mainly as **Sampling method** in the interface, where you directly choose the sampling algorithm.
 
@@ -38,14 +38,14 @@ In **ComfyUI**, the same idea is exposed through the **KSampler** node. It perfo
 
 So the core concept is the same: both are selecting how the diffusion process is executed step by step. The difference is mostly in presentation and abstraction.
 
-## Key controls
+### Key controls
 
 - **Steps**: number of refinement iterations
 - **CFG Scale**: strength of prompt guidance
 - **Sampler type**: update strategy, such as Euler or DPM++
 - **Seed**: initial noise configuration
 
-## Relationship to the full pipeline
+### Relationship to the full pipeline
 
 Putting everything together:
 
