@@ -17,9 +17,10 @@ After understanding diffusion models, it is important to introduce how pre-train
 <p align="center">
     <img width="900" src="https://github.com/user-attachments/assets/f8f533e5-863e-4569-9635-9373bc53b1b8" />
 </p>
+
 ## Sampler
 
-After understanding diffusion models and LoRAs, we need the component that actually runs the denoising loop: the **sampler**.
+After understanding diffusion models and LoRAs, we need the component that actually runs the denoising loop, the **sampler**.
 
 A sampler is responsible for turning random noise into an image by repeatedly applying the diffusion model over a sequence of steps. While the model defines *what* should be denoised, the sampler defines *how* that denoising process is executed over time. In practice, it is the part that makes generation actually happen, transforming theoretical denoising into a controlled iterative process that produces a final image.
 
