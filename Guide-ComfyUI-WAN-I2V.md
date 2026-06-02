@@ -164,33 +164,7 @@ The LoRA must influence the model before sampling begins.
 
 ### LoRA Strength Settings
 
-There is no universal perfect value.  
-A good starting point is usually **1.0**.
-
-#### Good starting points
-
-- **Style / realism LoRA**
-  - high noise: `0.4` to `1.0`
-  - low noise: `0.7` to `1.2`
-
-- **Motion LoRA**
-  - high noise: `1.0` to `1.6`
-  - low noise: `0.3` to `0.8`
-
-#### Practical rules
-
-- Start with **1.0** if you do not know the LoRA yet.
-- Increase gradually if the effect is too weak.
-- Lower the value if the output becomes overcooked, unstable, or noisy.
-- If the effect is too subtle, test the high-noise branch first for motion-focused LoRAs.
-- If the output loses detail, reduce the low-noise strength first for style-heavy LoRAs.
-
-#### Common balancing pattern
-
-A common setup looks like this:
-
-- **High noise = stronger for motion**
-- **Low noise = stronger for details**
+There is no universal perfect value. A good starting point is usually **1.0**.
 
 ## ModelSamplingSD3 (Shift)
 
@@ -198,12 +172,16 @@ A common setup looks like this:
 
 ### What the shift does
 
-The **shift** value changes the diffusion behavior in a way that can affect:
+The **shift** value modifies the noise schedule used during the diffusion process. In practice, it changes how the sampler traverses the denoising trajectory between pure noise and the final image or video. 
+
+Because the model was trained with a specific noise distribution, changing the shift alters how closely inference follows that training distribution. Depending on the model, this can affect:
 
 - stability
 - style
 - motion character
 - overall generation feel
+
+> PS: Different models are often trained with different expected shift values, so using the recommended setting is usually important for achieving the intended results.
 
 ### Where to place it
 
