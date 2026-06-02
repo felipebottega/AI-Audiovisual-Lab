@@ -76,12 +76,6 @@ flowchart LR
 16. **Save Video**  
     Exports the completed video file to disk, making the generated result available for viewing or further processing.
 
-### Lightning / LightX2V Workflows
-
-Some WAN 2.2 workflows use optional LightX2V (Lightning) LoRAs designed specifically for the high-noise and low-noise stages. These LoRAs are applied on top of the corresponding checkpoints and allow the model to generate videos using dramatically fewer sampling steps, reducing generation time and hardware requirements.
-
-While Lightning workflows can be significantly faster, they may sacrifice some generation flexibility and, depending on the scene, can produce less dynamic motion or lower overall quality compared to standard workflows. For this reason, many users choose the standard workflow when maximizing quality is the priority, and reserve Lightning workflows for rapid iteration and experimentation.
-
 ## Required files
 
 For a standard ComfyUI setup, you usually need the following files:
@@ -123,7 +117,10 @@ This stage comes after the structure is already defined and is responsible for:
 - less visual instability
 - more polished final frames
 
-## Why many Lightning workflows use 2 steps for each stage
+
+## Lightning / LightX2V Workflows
+
+Some WAN 2.2 workflows optionally use LightX2V (Lightning) LoRAs for the high-noise and low-noise stages. These LoRAs are applied on top of the base checkpoints and are designed to **distill the sampling process**, enabling high-quality results with significantly fewer steps. This allows the model to generate videos much faster and with lower computational cost. However, because the sampling process is heavily compressed, results may show **reduced temporal refinement and less stable or detailed motion** compared to standard multi-step workflows. For this reason, Lightning workflows are best suited for fast iteration and previews, while standard workflows remain preferable when maximum quality and motion consistency are the priority.
 
 In the **Lightning** style workflow, it is common to see something like:
 
@@ -139,47 +136,7 @@ So the model does not need many steps because the LoRA is already pushing it tow
 
 In a **full, non-Lightning workflow**, the same idea still applies, but the total step count is usually higher.
 
-## Resources and Associated Files on CivitAI
-
-WAN 2.2 files are commonly found through official sources and community mirrors such as **CivitAI**.
-
-In practice, many users do not download everything manually.  
-ComfyUI templates can often fetch the needed components automatically through **Browse Templates**.
-
-Typical resources include:
-
-- WAN 2.2 **High Noise** checkpoint
-- WAN 2.2 **Low Noise** checkpoint
-- **UMT5** text encoder
-- **VAE** files
-- community **LoRAs**
-- ready-made **ComfyUI workflows**
-
-### Why this matters
-
-This is helpful because WAN 2.2 workflows often break when one file is missing or mismatched.  
-Having the correct set of files avoids:
-
-- model loading errors
-- incompatible LoRA behavior
-- broken prompt encoding
-- poor video quality caused by wrong VAE selection
-
-### Practical file organization
-
-A common structure is:
-
-```text
-ComfyUI/models/
-```
-
-For LoRAs:
-
-```text
-ComfyUI/models/loras/
-```
-
-## Using LoRA
+## LoRAs
 
 ### What is a LoRA?
 
@@ -556,18 +513,43 @@ A very strong LoRA can create:
 
 The 5B version is lighter and more practical for limited hardware, but it is not the same quality target as the 14B workflow.
 
-## Summary
 
-The most practical way to work with WAN 2.2 in ComfyUI is to think in stages:
+## Resources and Associated Files on CivitAI
 
-- the **high-noise model** creates the structure
-- the **low-noise model** cleans it up
-- the **LoRA** adds specialization
-- the **sampler settings** decide how fast and how stable the result will be
+WAN 2.2 files are commonly found through official sources and community mirrors such as [CivitAI](https://civitai.com/). In practice, many users do not download everything manually. ComfyUI templates can often fetch the needed components automatically through **Browse Templates**.
 
-For most users, the **14B model** is the main target, while the **5B model** is the lighter fallback.
+Typical resources include:
 
-If you keep the branches aligned, place LoRAs correctly, and avoid mismatched files, WAN 2.2 becomes much easier to use in practice.
+- WAN 2.2 **High Noise** checkpoint
+- WAN 2.2 **Low Noise** checkpoint
+- **UMT5** text encoder
+- **VAE** files
+- community **LoRAs**
+- ready-made **ComfyUI workflows**
+
+### Why this matters
+
+This is helpful because WAN 2.2 workflows often break when one file is missing or mismatched.  
+Having the correct set of files avoids:
+
+- model loading errors
+- incompatible LoRA behavior
+- broken prompt encoding
+- poor video quality caused by wrong VAE selection
+
+### Practical file organization
+
+A common structure is:
+
+```text
+ComfyUI/models/
+```
+
+For LoRAs:
+
+```text
+ComfyUI/models/loras/
+```
 
 ##########################################################################
 
