@@ -264,18 +264,6 @@ A common setup looks like this:
 - **High noise = stronger for motion**
 - **Low noise = stronger for details**
 
-Example:
-
-```text
-Motion LoRA:
-High = 1.2
-Low  = 0.5
-
-Style LoRA:
-High = 0.6
-Low  = 1.0
-```
-
 ## ModelSamplingSD3 (Shift)
 
 `ModelSamplingSD3` is a ComfyUI node used to adjust how the model behaves during sampling.
@@ -301,20 +289,6 @@ LoRA
 ModelSamplingSD3
    ↓
 KSampler
-```
-
-### Typical values
-
-A common starting point is:
-
-```text
-3.0
-```
-
-Many WAN 2.2 workflows use values around:
-
-```text
-5.0
 ```
 
 ### Practical advice
@@ -357,8 +331,6 @@ It also matches the internal logic of WAN 2.2:
 - the second stage is for refinement
 
 This is why many workflows pair WAN 2.2 with two samplers rather than one.
-
----
 
 ## Parameters, Ranges, and Common Pitfalls
 
@@ -451,49 +423,6 @@ The **5B model** is the fallback when:
 - expecting the same seed to behave identically after changing resolution or frame count
 - increasing CFG too much
 - using too many steps in a Lightning workflow
-
----
-
-## Common Mistakes
-
-### 1. Using the wrong LoRA branch
-
-If a LoRA has separate high-noise and low-noise versions, do not attach them randomly.
-
-Use the matching branch.
-
-### 2. Ignoring the high-noise stage
-
-The high-noise stage is where the clip gets its structure and motion.  
-Skipping it or weakening it too much usually gives poor results.
-
-### 3. Placing LoRA too late
-
-LoRA must affect the model before sampling.  
-If it is added too late, the effect is reduced or lost.
-
-### 4. Mixing incompatible files
-
-A wrong checkpoint, encoder, or VAE can quietly destroy quality even if the workflow still runs.
-
-### 5. Overusing steps in Lightning
-
-Lightning workflows are meant to be fast.  
-If the model is optimized for few steps, adding many more does not always help.
-
-### 6. Pushing strength too hard
-
-A very strong LoRA can create:
-
-- texture artifacts
-- unstable motion
-- over-stylized frames
-- identity drift
-
-### 7. Treating the 5B model like the 14B model
-
-The 5B version is lighter and more practical for limited hardware, but it is not the same quality target as the 14B workflow.
-
 
 ## Resources and Associated Files on CivitAI
 
