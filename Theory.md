@@ -12,9 +12,15 @@ A **diffusion model** is a type of generative AI that creates images or videos t
 
 ### Image Space vs Latent Space
 
-When we look at an image, we see pixels. However, most modern diffusion models do not perform the denoising process directly in pixel space. Instead, the input is first compressed into a lower-dimensional representation called **latent space**. This latent representation preserves the most important visual information while requiring far less memory and computation. [2]
+When we look at an image, we see pixels. However, most modern diffusion models do not perform the denoising process directly in pixel space. Instead, the image is first compressed by a **Variational Autoencoder (VAE)** into a lower-dimensional representation called **latent space**. This latent representation preserves the most important visual information while requiring far less memory and computation. [2]
 
-The diffusion process then operates on these latents rather than the original pixels. Once denoising is complete, the latent representation is decoded back into an image or video frame. This approach makes generation significantly more efficient while maintaining high visual quality. For this reason, models such as Stable Diffusion and many modern video diffusion models are often referred to as **latent diffusion models**. [2]
+The diffusion process then operates on these latents rather than the original pixels. Once denoising is complete, the VAE decodes the latent representation back into an image or video frame.
+
+```text
+Pixels → VAE Encoder → Latent Space → Diffusion Process (U-Net) → Latent Space → VAE Decoder → Pixels
+```
+
+This approach makes generation significantly more efficient while maintaining high visual quality. For this reason, models such as Stable Diffusion and many modern video diffusion models are often referred to as **latent diffusion models**. [2]
 
 ## LoRA (Low-Rank Adaptation)
 
