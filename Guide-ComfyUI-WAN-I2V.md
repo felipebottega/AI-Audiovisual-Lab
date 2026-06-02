@@ -4,6 +4,10 @@
 
 A **diffusion model** is a type of generative AI that creates images or videos through an iterative denoising process. During training, the model learns how to recover visual information from data that has been progressively corrupted with random noise. During generation, it performs the reverse operation, starting from noise and gradually refining it over many steps into coherent visual content guided by conditioning inputs such as text prompts, images, or other control signals. This approach enables diffusion models to produce highly detailed and visually consistent results.
 
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/ad01adcb-d354-4162-bb88-5885452ac1de" />
+</p>
+
 ## Technical Description of WAN 2.2
 
 **Wan 2.2** is a multimodal diffusion-based video generation model (developed by Wan AI/Alibaba) released as open source. It uses a large **Mixture-of-Experts** (MoE) architecture. In practice, this means the generation process is split into stages specialized for different noise levels:
@@ -116,7 +120,6 @@ This stage comes after the structure is already defined and is responsible for:
 - better temporal coherence
 - less visual instability
 - more polished final frames
-
 
 ## Lightning / LightX2V Workflows
 
@@ -231,14 +234,12 @@ UNetLoader → KSampler → LoRA
 
 The LoRA must influence the model before sampling begins.
 
----
-
-## LoRA Strength Settings
+### LoRA Strength Settings
 
 There is no universal perfect value.  
 A good starting point is usually **1.0**.
 
-### Good starting points
+#### Good starting points
 
 - **Style / realism LoRA**
   - high noise: `0.4` to `1.0`
@@ -248,7 +249,7 @@ A good starting point is usually **1.0**.
   - high noise: `1.0` to `1.6`
   - low noise: `0.3` to `0.8`
 
-### Practical rules
+#### Practical rules
 
 - Start with **1.0** if you do not know the LoRA yet.
 - Increase gradually if the effect is too weak.
@@ -256,7 +257,7 @@ A good starting point is usually **1.0**.
 - If the effect is too subtle, test the high-noise branch first for motion-focused LoRAs.
 - If the output loses detail, reduce the low-noise strength first for style-heavy LoRAs.
 
-### Common balancing pattern
+#### Common balancing pattern
 
 A common setup looks like this:
 
@@ -331,17 +332,7 @@ WAN 2.2 workflows often split sampling across **two KSampler (Advanced)** nodes:
 
 ### High-noise KSampler
 
-This sampler is responsible for the first part of the denoising process.
-
-Typical settings:
-
-```text
-add_noise = enable
-start_at_step = 0
-end_at_step = 10
-```
-
-Its role is to:
+This sampler is responsible for the first part of the denoising process. Its role is to:
 
 - inject or manage noise
 - create the initial movement structure
@@ -349,17 +340,7 @@ Its role is to:
 
 ### Low-noise KSampler
 
-This sampler continues the generation after the structure is already established.
-
-Typical settings:
-
-```text
-add_noise = disable
-start_at_step = 10
-end_at_step = 20
-```
-
-Its role is to:
+This sampler continues the generation after the structure is already established. Its role is to:
 
 - refine the latent
 - sharpen details
