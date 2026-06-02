@@ -85,10 +85,6 @@ In a **full, non-Lightning workflow**, the same idea still applies, but the tota
 
 ## LoRAs
 
-### What is a LoRA?
-
-A **LoRA** (Low-Rank Adaptation) is a lightweight model add-on used to modify behavior without retraining the whole model.
-
 With WAN 2.2, LoRAs are often used to:
 
 - add a specific visual style
@@ -97,18 +93,6 @@ With WAN 2.2, LoRAs are often used to:
 - guide motion
 - adapt the model to a niche aesthetic
 - compensate for limitations in the base model
-
-### Why LoRAs matter with WAN 2.2
-
-WAN is not trained as an NSFW-focused model.  
-Because of that, many users rely on LoRAs to push the output toward specific styles or domains.
-
-That said, the main point is broader than NSFW alone:
-
-- the base model gives you a general foundation
-- the LoRA gives you a specialized behavior layer
-
-So LoRAs are useful for many purposes, not only for content restrictions.
 
 ### One LoRA file vs. separate high/low versions
 
@@ -135,7 +119,7 @@ In that case:
 - use the **high-noise LoRA** on the high-noise branch
 - use the **low-noise LoRA** on the low-noise branch
 
-### Why one LoRA may be enough for both branches
+### Why the same LoRA may be enough for both branches
 
 If you only connect a LoRA to one stage, the effect may fade or become inconsistent.
 
