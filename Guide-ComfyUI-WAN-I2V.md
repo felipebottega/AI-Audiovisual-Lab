@@ -34,6 +34,12 @@ For a standard ComfyUI setup, you usually need the following files:
 - **`wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors`**  
   The low-noise checkpoint. It refines the video after the main structure is already in place.
 
+- **`wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors`**
+  The high-noise Lightx2V LoRA. It is applied to the high-noise checkpoint and helps the model achieve good results with fewer sampling steps, reducing generation time while preserving the overall motion and structure.
+
+- **`wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors`**
+  The low-noise Lightx2V LoRA. It is applied to the low-noise checkpoint and helps maintain visual quality during the refinement stage when using low step counts.
+
 - **`umt5_xxl_fp8_e4m3fn_scaled.safetensors`**  
   The text encoder. It converts the prompt into features the model can use.
 
