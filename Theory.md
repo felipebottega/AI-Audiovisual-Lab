@@ -17,30 +17,39 @@ After understanding diffusion models, it is important to introduce how pre-train
 <p align="center">
     <img width="900" src="https://github.com/user-attachments/assets/f8f533e5-863e-4569-9635-9373bc53b1b8" />
 </p>
+## Sampler
 
-## KSampler (Sampling Process)
+After understanding diffusion models and LoRAs, we need the component that actually runs the denoising loop: the **sampler**.
 
-A **KSampler** (K-Diffusion Sampler) is responsible for turning random noise into an image by repeatedly applying the diffusion model over a sequence of steps. While the model defines how to denoise, the sampler defines how this denoising process is *executed over time*. In practice, the KSampler is what makes generation *actually happen*, turning theoretical denoising into a controlled iterative process that produces usable outputs.
+A sampler is responsible for turning random noise into an image by repeatedly applying the diffusion model over a sequence of steps. While the model defines *what* should be denoised, the sampler defines *how* that denoising process is executed over time. In practice, it is the part that makes generation actually happen, transforming theoretical denoising into a controlled iterative process that produces a final image.
 
-In practice, generation starts from pure noise in the latent space, and the KSampler progressively refines it. At each step, the model predicts how the current noisy latent should be updated, and the sampler applies this update using a chosen numerical method. Repeating this process gradually transforms noise into a structured image.
+## How it works
 
-Different samplers (such as Euler, Heun, or DPM++) define different ways of approximating this update process, affecting sharpness, stability, and convergence speed.
+Generation starts from pure noise in latent space. At each step, the model predicts how the current noisy latent should be updated, and the sampler applies this update using a numerical method. Repeating this process gradually transforms noise into a structured image.
 
-Key controls of a KSampler include:
+Different samplers, such as **Euler**, **Heun**, or **DPM++**, define different ways of approximating this update process, affecting sharpness, stability, and convergence speed.
 
-- **Steps**: number of refinement iterations  
-- **CFG Scale**: strength of prompt guidance  
-- **Sampler type**: update strategy (e.g., Euler, DPM++)  
-- **Seed**: initial noise configuration  
+## Automatic1111 vs ComfyUI
 
-In summary, the KSampler is the mechanism that *orchestrates the denoising process*, defining how the diffusion model is applied step by step until an image is formed.
+In **AUTOMATIC1111**, this appears mainly as **Sampling method** in the interface, where you directly choose the sampling algorithm.
 
-### Relationship to the full pipeline
+In **ComfyUI**, the same idea is exposed through the **KSampler** node. It performs the sampling process as part of the workflow and combines the sampler choice with other generation controls such as steps, seed, CFG scale, and scheduler.
+
+So the core concept is the same: both are selecting how the diffusion process is executed step by step. The difference is mostly in presentation and abstraction.
+
+## Key controls
+
+- **Steps**: number of refinement iterations
+- **CFG Scale**: strength of prompt guidance
+- **Sampler type**: update strategy, such as Euler or DPM++
+- **Seed**: initial noise configuration
+
+## Relationship to the full pipeline
 
 Putting everything together:
 
-- **Diffusion model:** Defines the denoising behavior.  
-- **LoRA:** Modifies the model’s behavior in a lightweight way.  
-- **KSampler:** Controls how denoising is applied over time.
+- **Diffusion model**: defines the denoising behavior
+- **LoRA**: modifies the model’s behavior in a lightweight way
+- **Sampler / KSampler**: controls how denoising is applied over time
 
-> PS: The "K" in KSampler comes from **Karras-style diffusion samplers**, a family of methods inspired by work from Tero Karras and collaborators. These methods improved how noise schedules and step sizes are handled during sampling.
+> PS: The "K" in KSampler comes from **Karras-style diffusion samplers**, a family of methods inspired by the work of **Tero Karras** and collaborators. These methods improved how noise schedules and step sizes are handled during sampling.
