@@ -54,3 +54,30 @@ Putting everything together:
 - **Sampler / KSampler**: controls how denoising is applied over time
 
 > PS: The "K" in KSampler comes from **Karras-style diffusion samplers**, a family of methods inspired by the work of **Tero Karras** and collaborators. These methods improved how noise schedules and step sizes are handled during sampling.
+
+
+## Checkpoints
+
+A **checkpoint** is a saved state of a trained model. It contains the learned weights that determine how the model interprets prompts and performs the denoising process during generation. Depending on the ecosystem, it can appear as a single file such as `.ckpt` or `.safetensors`, or as a Diffusers-style folder where the components are stored separately. In the Diffusers format, UNet, text encoder, and other parts can live in different subfolders; in a single-file format, those weights are bundled together. ([Hugging Face][1])
+
+A checkpoint is not a different kind of model. It is the model at a specific saved state. That is why checkpoints are used to resume training, compare variants, or run inference with one particular learned behavior. ([Hugging Face][2])
+
+### Image checkpoints
+
+An image checkpoint is trained to denoise still images. Its focus is spatial structure: shapes, textures, lighting, composition, and prompt alignment inside a single frame. Latent diffusion models were built around this image-synthesis setting, using denoising in latent space instead of working directly in pixel space. ([arXiv][3])
+
+### Video checkpoints
+
+A video checkpoint has to do everything an image checkpoint does, but it also has to keep frames temporally consistent. A video model is not only asked to produce good individual frames; it must also preserve motion, continuity, and object identity across time. In practice, many video diffusion models start from a pretrained image model and add temporal layers, or use a space-time U-Net that models space and time together. ([arXiv][4])
+
+### What is a U-Net?
+
+The U-Net is the backbone network that usually performs the denoising step. The original architecture uses a contracting path to capture context and a symmetric expanding path to recover detail, with skip connections between matching resolutions. In diffusion models, that makes U-Net a good fit for estimating the reverse step of the process, which is why it became the default backbone in early DDPM-style models and later latent diffusion models. ([arXiv][5])
+
+In simple terms: the checkpoint is the saved brain, and the U-Net is the part of that brain that learns how to clean noise step by step. The difference between image and video checkpoints is mostly in what that brain was trained to understand: a single frame, or a sequence of frames with time consistency. ([arXiv][4])
+
+[1]: https://huggingface.co/docs/diffusers/en/using-diffusers/other-formats "Model formats · Hugging Face"
+[2]: https://huggingface.co/docs/hub/en/models-uploading "Uploading models · Hugging Face"
+[3]: https://arxiv.org/abs/2112.10752 "[2112.10752] High-Resolution Image Synthesis with Latent Diffusion Models"
+[4]: https://arxiv.org/abs/2311.15127 "[2311.15127] Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets"
+[5]: https://arxiv.org/abs/1505.04597 "[1505.04597] U-Net: Convolutional Networks for Biomedical Image Segmentation"
