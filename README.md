@@ -4,7 +4,7 @@ This is a personal repository to document my studies, experiments, workflows, an
 
 Up to this point, the focus has been on explaining how to use the [ComfyUI](https://comfy.org/) and [Automatic1111](https://github.com/automatic1111/stable-diffusion-webui) programs, and the theory behind the algorithms used.
 
-Other relevant links are below:
+Some useful links are below:
 
 - https://stable-diffusion-art.com/prompt-guide/
 - https://rentry.org/artists_sd-v1-4
