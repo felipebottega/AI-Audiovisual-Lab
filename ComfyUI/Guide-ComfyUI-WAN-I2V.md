@@ -274,3 +274,8 @@ For LoRAs:
 ```text
 ComfyUI/models/loras/
 ```
+
+## Practical example
+
+Now we will see in practice how to execute an I2V workflow with WAN in ComfyUI. We will use the [x.json](x.json) file in this tutorial. You can consider it as a canonical I2V file that can be modified gradually according to your needs.
+
