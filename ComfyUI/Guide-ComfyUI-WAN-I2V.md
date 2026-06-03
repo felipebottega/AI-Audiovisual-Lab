@@ -24,54 +24,6 @@ flowchart LR
     A5 --> E
 ```
 
-1. **WAN 2.2 I2V High Noise Model**  
-   The model used during the first stage of generation. It operates in the high-noise region of the diffusion process, where the main goal is to establish motion, composition, scene structure, and overall dynamics.
-
-2. **Apply High Noise LoRAs**  
-   Applies LoRAs to the high-noise model. These LoRAs modify the model's behavior without changing the base checkpoint and are often used to improve motion, realism, style, or accelerate generation in Lightning workflows.
-
-3. **Model SamplingSD3**  
-   Configures the model for the sampling process. In practice, it prepares the checkpoint so that the sampler can perform the denoising steps correctly.
-
-4. **KSampler (High Noise Stage)**  
-   Executes the denoising steps for the high-noise stage. This phase establishes the overall structure of the video, including movement, camera direction, and large-scale visual features.
-
-5. **WAN 2.2 I2V Low Noise Model**  
-   The model used during the second stage of generation. It focuses on refining information that was established during the high-noise stage rather than creating new structure.
-
-6. **Apply Low Noise LoRAs**  
-   Applies LoRAs to the low-noise model. These LoRAs typically enhance refinement, detail quality, texture consistency, and overall visual polish.
-
-7. **Model SamplingSD3**  
-   Performs the same role as in the high-noise branch, preparing the low-noise model for the denoising process.
-
-8. **KSampler (Low Noise Stage)**  
-   Executes the denoising steps for the low-noise stage. This phase refines details, improves temporal consistency, and produces a cleaner final result.
-
-9. **Load Image**  
-   Loads the source image that serves as the starting point for Image-to-Video generation. The model uses this image as a reference for appearance, composition, and subject identity.
-
-10. **WanImageToVideo**  
-    The central node that prepares the Image-to-Video conditioning. It combines information from the source image, text prompt, CLIP encoder, and VAE to create the inputs required by the diffusion process.
-
-11. **Load CLIP**  
-    Loads the text encoder used to interpret prompts. The encoded text is converted into conditioning information that guides the video generation process.
-
-12. **Prompt**  
-    The text description that guides the generation. Prompts can influence content, actions, camera movement, style, atmosphere, and other visual characteristics.
-
-13. **Load VAE**  
-    Loads the Variational Autoencoder (VAE), which is responsible for converting between pixel space and latent space. Diffusion takes place in latent space because it is significantly more efficient.
-
-14. **VAE Decode**  
-    Converts the final latent representation into visible video frames. This is the stage where the compressed internal representation becomes actual images.
-
-15. **Create Video**  
-    Combines the decoded frames into a continuous video sequence using the selected frame rate and encoding settings.
-
-16. **Save Video**  
-    Exports the completed video file to disk, making the generated result available for viewing or further processing.
-
 ## Required files
 
 For a standard ComfyUI setup, you usually need the following files:
@@ -81,6 +33,12 @@ For a standard ComfyUI setup, you usually need the following files:
 
 - **`wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors`**  
   The low-noise checkpoint. It refines the video after the main structure is already in place.
+
+- **`wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors`**
+  The high-noise Lightx2V LoRA. It is applied to the high-noise checkpoint and helps the model achieve good results with fewer sampling steps, reducing generation time while preserving the overall motion and structure.
+
+- **`wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors`**
+  The low-noise Lightx2V LoRA. It is applied to the low-noise checkpoint and helps maintain visual quality during the refinement stage when using low step counts.
 
 - **`umt5_xxl_fp8_e4m3fn_scaled.safetensors`**  
   The text encoder. It converts the prompt into features the model can use.
@@ -133,10 +91,6 @@ In a **full, non-Lightning workflow**, the same idea still applies, but the tota
 
 ## LoRAs
 
-### What is a LoRA?
-
-A **LoRA** (Low-Rank Adaptation) is a lightweight model add-on used to modify behavior without retraining the whole model.
-
 With WAN 2.2, LoRAs are often used to:
 
 - add a specific visual style
@@ -145,18 +99,6 @@ With WAN 2.2, LoRAs are often used to:
 - guide motion
 - adapt the model to a niche aesthetic
 - compensate for limitations in the base model
-
-### Why LoRAs matter with WAN 2.2
-
-WAN is not trained as an NSFW-focused model.  
-Because of that, many users rely on LoRAs to push the output toward specific styles or domains.
-
-That said, the main point is broader than NSFW alone:
-
-- the base model gives you a general foundation
-- the LoRA gives you a specialized behavior layer
-
-So LoRAs are useful for many purposes, not only for content restrictions.
 
 ### One LoRA file vs. separate high/low versions
 
@@ -183,7 +125,7 @@ In that case:
 - use the **high-noise LoRA** on the high-noise branch
 - use the **low-noise LoRA** on the low-noise branch
 
-### Why one LoRA may be enough for both branches
+### Why the same LoRA may be enough for both branches
 
 If you only connect a LoRA to one stage, the effect may fade or become inconsistent.
 
@@ -228,33 +170,7 @@ The LoRA must influence the model before sampling begins.
 
 ### LoRA Strength Settings
 
-There is no universal perfect value.  
-A good starting point is usually **1.0**.
-
-#### Good starting points
-
-- **Style / realism LoRA**
-  - high noise: `0.4` to `1.0`
-  - low noise: `0.7` to `1.2`
-
-- **Motion LoRA**
-  - high noise: `1.0` to `1.6`
-  - low noise: `0.3` to `0.8`
-
-#### Practical rules
-
-- Start with **1.0** if you do not know the LoRA yet.
-- Increase gradually if the effect is too weak.
-- Lower the value if the output becomes overcooked, unstable, or noisy.
-- If the effect is too subtle, test the high-noise branch first for motion-focused LoRAs.
-- If the output loses detail, reduce the low-noise strength first for style-heavy LoRAs.
-
-#### Common balancing pattern
-
-A common setup looks like this:
-
-- **High noise = stronger for motion**
-- **Low noise = stronger for details**
+There is no universal perfect value. A good starting point is usually **1.0**.
 
 ## ModelSamplingSD3 (Shift)
 
@@ -262,25 +178,23 @@ A common setup looks like this:
 
 ### What the shift does
 
-The **shift** value changes the diffusion behavior in a way that can affect:
+The **shift** value modifies the noise schedule used during the diffusion process. In practice, it changes how the sampler traverses the denoising trajectory between pure noise and the final image or video. 
+
+Because the model was trained with a specific noise distribution, changing the shift alters how closely inference follows that training distribution. Depending on the model, this can affect:
 
 - stability
 - style
 - motion character
 - overall generation feel
 
+> PS: Different models are often trained with different expected shift values, so using the recommended setting is usually important for achieving the intended results.
+
 ### Where to place it
 
 It should usually come **after** the model modifications and **before** the sampler:
 
 ```text
-UNetLoader
-   ↓
-LoRA
-   ↓
-ModelSamplingSD3
-   ↓
-KSampler
+UNetLoader  → LoRA → ModelSamplingSD3 → KSampler
 ```
 
 ### Practical advice
@@ -323,98 +237,6 @@ It also matches the internal logic of WAN 2.2:
 - the second stage is for refinement
 
 This is why many workflows pair WAN 2.2 with two samplers rather than one.
-
-## Parameters, Ranges, and Common Pitfalls
-
-### Steps
-
-Typical ranges:
-
-- **Lightning workflows**: `4` total steps, often split as `2 + 2`
-- **Standard workflows**: `15–25`
-- **Higher-quality full workflows**: sometimes more, depending on hardware
-
-More steps can improve detail, but they also increase time.
-
-### CFG Scale
-
-Typical range:
-
-- `3.0–7.0`
-
-Common practical values:
-
-- `3.5` for a balanced result
-- `2.0` to `3.0` in compressed or Lightning-style workflows
-
-Too much CFG can cause artifacts or overly rigid results.
-
-### Resolution
-
-Common practical resolutions:
-
-- `832×480`
-- `1280×720`
-
-Higher resolution usually means:
-
-- more VRAM usage
-- slower generation
-- higher risk of running out of memory
-
-### FPS
-
-A common range is:
-
-- `24–27 FPS`
-
-For short clips, the frame count matters as much as the FPS.
-
-### Seed
-
-A fixed seed is useful when you want reproducibility.
-
-A random seed is better when exploring variations.
-
-### Scheduler
-
-Common options include:
-
-- **Simple**
-- **Karras**
-
-A simple scheduler is often easier to test.  
-Karras can sometimes produce smoother behavior.
-
-### VAE selection
-
-A practical rule is:
-
-- **14B I2V**: use the WAN 2.1-compatible VAE
-- **5B**: use the VAE intended for the 5B workflow
-
-Mixing them incorrectly can hurt quality.
-
-### VRAM considerations
-
-The **14B model** is much heavier.  
-For many users, it requires a high-memory GPU.
-
-The **5B model** is the fallback when:
-
-- VRAM is limited
-- faster iteration matters
-- you want a lighter test workflow
-
-### Common pitfalls
-
-- using the wrong LoRA type
-- placing LoRA after the sampler
-- using the wrong VAE
-- mixing 5B and 14B resources
-- expecting the same seed to behave identically after changing resolution or frame count
-- increasing CFG too much
-- using too many steps in a Lightning workflow
 
 ## Resources and Associated Files on CivitAI
 
