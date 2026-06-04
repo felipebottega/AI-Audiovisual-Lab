@@ -1,6 +1,6 @@
 # ComfyUI - Introduction
 
-ComfyUI is a powerful graphical user interface (GUI) designed specifically for Stable Diffusion workflows. Unlike traditional web-based interfaces, ComfyUI adopts a node-based approach that allows users to visually construct and customize their AI image generation pipelines through interconnected components. ComfyUI's main application is generating images and videos.
+ComfyUI is a powerful node-based interface for [Stable Diffusion](https://en.wikipedia.org/wiki/Stable_Diffusion). It uses a modular system where you build and customize your entire generation pipeline by connecting individual nodes. This approach is primarily used for creating AI-generated images and videos.
 
 ## Installation
 
