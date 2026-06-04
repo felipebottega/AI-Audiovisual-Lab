@@ -10,6 +10,8 @@ You can install ComfyUI via [this link](https://comfy.org/download). You can dow
     <img width="350" src="https://github.com/user-attachments/assets/c79592be-31e6-48c4-9918-ddf390dea92b" />
 </p>
 
+If you just want the direct link to the installer, here it is: https://github.com/comfyanonymous/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z
+
 ## Configuration and features
 
 ### Low quality rendering zoom threshold
