@@ -1,5 +1,39 @@
 # ComfyUI - Introduction
 
+ComfyUI is a powerful graphical user interface (GUI) designed specifically for Stable Diffusion workflows. Unlike traditional web-based interfaces, ComfyUI adopts a node-based approach that allows users to visually construct and customize their AI image generation pipelines through interconnected components. ComfyUI's main application is generating images and videos.
+
+## Installation
+
+You can install ComfyUI via [this link](https://comfy.org/download). You can download the local installer or download the project directly from GitHub. I recommend following the steps shown on GitHub for installation as a *Windows Portable*. After installation, the folder should have the structure shown below.
+
+<p align="center">
+    <img width="350" src="https://github.com/user-attachments/assets/c79592be-31e6-48c4-9918-ddf390dea92b" />
+</p>
+
+## Configuration and features
+
+### Low quality rendering zoom threshold
+
+Go to *settings → Lite Graph → Low quality rendering zoom threshold* and set the value to 0.01. This will cause the program to render the content of the nodes even when zoomed out.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/dfc6c8c6-825d-472d-9a93-40c1f1a78975" />
+</p>
+
+### Precision
+
+Go to *settings → Lite Graph*, enable the option *Disable default float widget rounding* and set the value of *Float widget rounding decimal places* to 6. This will cause the program to use more decimal places for float numbers.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/85af53ee-9d53-42bd-9009-7fe9275464bb" />
+</p>
+
+In the example below, we want to apply a rescale of 0.125. The default precision would change this value to 0.13, but with the configuration above it does what is expected. Note that it is necessary to use a float node for this.
+
+<p align="center">
+    <img width="700" src="https://github.com/user-attachments/assets/49424446-07db-4dda-ba40-093c98801d89" />
+</p>
+
 ### Bypass
 
 Nodes in purple won't be executed. To disable a node, simply right-click on it and select the Bypass option, as shown below.
