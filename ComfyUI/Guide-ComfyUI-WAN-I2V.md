@@ -322,7 +322,7 @@ This JSON provides the workflow to be used in the ComfyUI interface. It's possib
 
 You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) script with the parameter file [params.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/params.json) for this example. Edit the parameter file and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal. The path `path_to_input`  should be the absolute path to the image, while `path_to_output` should be the relative path.
 
-We also have the workflow [img2vid_canon_complete.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img2vid_canon_complete.json) and its API workflow file [img2vid_canon_complete.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2vid_canon_complete.json) available for download. The difference is that this one has some optional post-processing nodes: color and brightness node, upscale and downscale, background removal, and saving frames as PNG. These nodes come right after `VAE decode` and before `Create Video`.
+The workflow also have some optional post-processing nodes: color and brightness node, upscale and downscale, background removal, and saving frames as PNG. These nodes come right after `VAE decode` and before `Create Video`.
 
 <p align="center">
     <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2v_optional.png" />
