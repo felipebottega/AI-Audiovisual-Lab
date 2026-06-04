@@ -13,7 +13,7 @@
   "85": {
     "inputs": {
       "add_noise": "disable",
-      "noise_seed": 1042499201936153,
+      "noise_seed": 56283533665252,
       "steps": 4,
       "cfg": 1,
       "sampler_name": "euler",
@@ -46,7 +46,7 @@
   "86": {
     "inputs": {
       "add_noise": "enable",
-      "noise_seed": 879721581776686,
+      "noise_seed": 986959295087547,
       "steps": 4,
       "cfg": 1,
       "sampler_name": "euler",
@@ -228,7 +228,6 @@
       "filename_prefix": "video/ComfyUI",
       "format": "auto",
       "codec": "auto",
-      "video-preview": "",
       "video": [
         "94",
         0

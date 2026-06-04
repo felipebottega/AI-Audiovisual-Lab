@@ -1,1 +1,297 @@
-{"id":"00000000-0000-0000-0000-000000000000","revision":0,"last_node_id":135,"last_link_id":85,"nodes":[{"id":96,"type":"UNETLoader","pos":[33.125553131103516,1241.7738037109375],"size":[478.56817626953125,82],"flags":{},"order":0,"mode":0,"inputs":[{"localized_name":"unet_name","name":"unet_name","type":"COMBO","widget":{"name":"unet_name"},"link":null},{"localized_name":"weight_dtype","name":"weight_dtype","type":"COMBO","widget":{"name":"weight_dtype"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[71]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"UNETLoader"},"widgets_values":["wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors","default"]},{"id":126,"type":"LoraLoaderModelOnly","pos":[648.5726928710938,1243.1181640625],"size":[472.37249755859375,82.56060791015625],"flags":{},"order":5,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":71},{"localized_name":"lora_name","name":"lora_name","type":"COMBO","widget":{"name":"lora_name"},"link":null},{"localized_name":"strength_model","name":"strength_model","type":"FLOAT","widget":{"name":"strength_model"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[72]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"LoraLoaderModelOnly"},"widgets_values":["wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",1.0000000000000002]},{"id":103,"type":"ModelSamplingSD3","pos":[2095.47900390625,1244.3702392578125],"size":[270,58],"flags":{},"order":12,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":48},{"localized_name":"shift","name":"shift","type":"FLOAT","widget":{"name":"shift"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[29]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"ModelSamplingSD3"},"widgets_values":[5.000000000000001]},{"id":95,"type":"UNETLoader","pos":[42.45954513549805,977.9400024414062],"size":[476.5816345214844,82],"flags":{},"order":1,"mode":0,"inputs":[{"localized_name":"unet_name","name":"unet_name","type":"COMBO","widget":{"name":"unet_name"},"link":null},{"localized_name":"weight_dtype","name":"weight_dtype","type":"COMBO","widget":{"name":"weight_dtype"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[69]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"UNETLoader"},"widgets_values":["wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors","default"]},{"id":125,"type":"LoraLoaderModelOnly","pos":[664.8323364257812,975.9310913085938],"size":[485.791259765625,82],"flags":{},"order":6,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":69},{"localized_name":"lora_name","name":"lora_name","type":"COMBO","widget":{"name":"lora_name"},"link":null},{"localized_name":"strength_model","name":"strength_model","type":"FLOAT","widget":{"name":"strength_model"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[70]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"LoraLoaderModelOnly"},"widgets_values":["wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",1.0000000000000002]},{"id":84,"type":"CLIPLoader","pos":[48.831111907958984,714.2709350585938],"size":[434.9084167480469,111.22332763671875],"flags":{},"order":2,"mode":0,"inputs":[{"localized_name":"clip_name","name":"clip_name","type":"COMBO","widget":{"name":"clip_name"},"link":null},{"localized_name":"type","name":"type","type":"COMBO","widget":{"name":"type"},"link":null},{"localized_name":"device","name":"device","shape":7,"type":"COMBO","widget":{"name":"device"},"link":null}],"outputs":[{"localized_name":"CLIP","name":"CLIP","type":"CLIP","links":[39,40]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"CLIPLoader"},"widgets_values":["umt5_xxl_fp8_e4m3fn_scaled.safetensors","wan","default"]},{"id":89,"type":"CLIPTextEncode","pos":[676.5073852539062,690.7689208984375],"size":[400,200],"flags":{},"order":7,"mode":0,"inputs":[{"localized_name":"clip","name":"clip","type":"CLIP","link":39},{"localized_name":"text","name":"text","type":"STRING","widget":{"name":"text"},"link":null}],"outputs":[{"localized_name":"CONDITIONING","name":"CONDITIONING","type":"CONDITIONING","links":[43]}],"title":"CLIP Text Encode (Negative Prompt)","properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"CLIPTextEncode"},"widgets_values":["Overexposure, static, blurred details, subtitles, paintings, pictures, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, mutilated, redundant fingers, poorly painted hands, poorly painted faces, deformed, disfigured, deformed limbs, fused fingers, cluttered background, slow motion,"]},{"id":93,"type":"CLIPTextEncode","pos":[677.3758544921875,419.5401611328125],"size":[400,200],"flags":{},"order":8,"mode":0,"inputs":[{"localized_name":"clip","name":"clip","type":"CLIP","link":40},{"localized_name":"text","name":"text","type":"STRING","widget":{"name":"text"},"link":null}],"outputs":[{"localized_name":"CONDITIONING","name":"CONDITIONING","type":"CONDITIONING","links":[42]}],"title":"CLIP Text Encode (Positive Prompt)","properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"CLIPTextEncode"},"widgets_values":["cinematic animated scene of vikings landing on a shore, strong ocean motion with visible waves crashing against the ship, wind-driven movement affecting sails, ropes and clothing, subtle camera shake as if filmed from a moving ship, water splashes in foreground, continuous environmental motion, animated historical scene, dynamic lighting variation from moving clouds, characters subtly shifting posture and reacting, realistic temporal variation between frames"]},{"id":97,"type":"LoadImage","pos":[57.41532897949219,230.7058563232422],"size":[270,314.0000305175781],"flags":{},"order":3,"mode":0,"inputs":[{"localized_name":"image","name":"image","type":"COMBO","widget":{"name":"image"},"link":null},{"localized_name":"upload","name":"upload","type":"IMAGEUPLOAD","widget":{"name":"upload"},"link":null}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[45]},{"localized_name":"MASK","name":"MASK","type":"MASK","links":null}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"LoadImage"},"widgets_values":["viking-paint.jpg","image"]},{"id":104,"type":"ModelSamplingSD3","pos":[2095.51171875,969.2681274414062],"size":[270,58],"flags":{},"order":13,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":49},{"localized_name":"shift","name":"shift","type":"FLOAT","widget":{"name":"shift"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[33]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"ModelSamplingSD3"},"widgets_values":[5.000000000000001]},{"id":90,"type":"VAELoader","pos":[1303.8892822265625,817.1128540039062],"size":[312.6821594238281,58.8207893371582],"flags":{},"order":4,"mode":0,"inputs":[{"localized_name":"vae_name","name":"vae_name","type":"COMBO","widget":{"name":"vae_name"},"link":null}],"outputs":[{"localized_name":"VAE","name":"VAE","type":"VAE","links":[38,44]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"VAELoader"},"widgets_values":["wan_2.1_vae.safetensors"]},{"id":98,"type":"WanImageToVideo","pos":[2015.68896484375,327.3085021972656],"size":[270,210],"flags":{},"order":11,"mode":0,"inputs":[{"localized_name":"positive","name":"positive","type":"CONDITIONING","link":42},{"localized_name":"negative","name":"negative","type":"CONDITIONING","link":43},{"localized_name":"vae","name":"vae","type":"VAE","link":44},{"localized_name":"clip_vision_output","name":"clip_vision_output","shape":7,"type":"CLIP_VISION_OUTPUT","link":null},{"localized_name":"start_image","name":"start_image","shape":7,"type":"IMAGE","link":45},{"localized_name":"width","name":"width","type":"INT","widget":{"name":"width"},"link":null},{"localized_name":"height","name":"height","type":"INT","widget":{"name":"height"},"link":null},{"localized_name":"length","name":"length","type":"INT","widget":{"name":"length"},"link":null},{"localized_name":"batch_size","name":"batch_size","type":"INT","widget":{"name":"batch_size"},"link":null}],"outputs":[{"localized_name":"positive","name":"positive","type":"CONDITIONING","links":[30,34]},{"localized_name":"negative","name":"negative","type":"CONDITIONING","links":[31,35]},{"localized_name":"latent","name":"latent","type":"LATENT","links":[36]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"WanImageToVideo"},"widgets_values":[336,432,81,1]},{"id":86,"type":"KSamplerAdvanced","pos":[2459.341552734375,830.5303955078125],"size":[304.748046875,334],"flags":{},"order":14,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":33},{"localized_name":"positive","name":"positive","type":"CONDITIONING","link":34},{"localized_name":"negative","name":"negative","type":"CONDITIONING","link":35},{"localized_name":"latent_image","name":"latent_image","type":"LATENT","link":36},{"localized_name":"add_noise","name":"add_noise","type":"COMBO","widget":{"name":"add_noise"},"link":null},{"localized_name":"noise_seed","name":"noise_seed","type":"INT","widget":{"name":"noise_seed"},"link":null},{"localized_name":"steps","name":"steps","type":"INT","widget":{"name":"steps"},"link":null},{"localized_name":"cfg","name":"cfg","type":"FLOAT","widget":{"name":"cfg"},"link":null},{"localized_name":"sampler_name","name":"sampler_name","type":"COMBO","widget":{"name":"sampler_name"},"link":null},{"localized_name":"scheduler","name":"scheduler","type":"COMBO","widget":{"name":"scheduler"},"link":null},{"localized_name":"start_at_step","name":"start_at_step","type":"INT","widget":{"name":"start_at_step"},"link":null},{"localized_name":"end_at_step","name":"end_at_step","type":"INT","widget":{"name":"end_at_step"},"link":null},{"localized_name":"return_with_leftover_noise","name":"return_with_leftover_noise","type":"COMBO","widget":{"name":"return_with_leftover_noise"},"link":null}],"outputs":[{"localized_name":"LATENT","name":"LATENT","type":"LATENT","links":[32]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"KSamplerAdvanced"},"widgets_values":["enable",879721581776686,"randomize",4,1,"euler","simple",0,2,"enable"]},{"id":85,"type":"KSamplerAdvanced","pos":[3325.427490234375,1047.6129150390625],"size":[304.748046875,334],"flags":{},"order":15,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":29},{"localized_name":"positive","name":"positive","type":"CONDITIONING","link":30},{"localized_name":"negative","name":"negative","type":"CONDITIONING","link":31},{"localized_name":"latent_image","name":"latent_image","type":"LATENT","link":32},{"localized_name":"add_noise","name":"add_noise","type":"COMBO","widget":{"name":"add_noise"},"link":null},{"localized_name":"noise_seed","name":"noise_seed","type":"INT","widget":{"name":"noise_seed"},"link":null},{"localized_name":"steps","name":"steps","type":"INT","widget":{"name":"steps"},"link":null},{"localized_name":"cfg","name":"cfg","type":"FLOAT","widget":{"name":"cfg"},"link":null},{"localized_name":"sampler_name","name":"sampler_name","type":"COMBO","widget":{"name":"sampler_name"},"link":null},{"localized_name":"scheduler","name":"scheduler","type":"COMBO","widget":{"name":"scheduler"},"link":null},{"localized_name":"start_at_step","name":"start_at_step","type":"INT","widget":{"name":"start_at_step"},"link":null},{"localized_name":"end_at_step","name":"end_at_step","type":"INT","widget":{"name":"end_at_step"},"link":null},{"localized_name":"return_with_leftover_noise","name":"return_with_leftover_noise","type":"COMBO","widget":{"name":"return_with_leftover_noise"},"link":null}],"outputs":[{"localized_name":"LATENT","name":"LATENT","type":"LATENT","links":[37]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"KSamplerAdvanced"},"widgets_values":["disable",1042499201936153,"randomize",4,1,"euler","simple",2,4,"disable"]},{"id":87,"type":"VAEDecode","pos":[3751.9970703125,619.260498046875],"size":[140,46],"flags":{},"order":16,"mode":0,"inputs":[{"localized_name":"samples","name":"samples","type":"LATENT","link":37},{"localized_name":"vae","name":"vae","type":"VAE","link":38}],"outputs":[{"localized_name":"IMAGE","name":"IMAGE","type":"IMAGE","links":[85]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"VAEDecode"},"widgets_values":[]},{"id":122,"type":"LoraLoaderModelOnly","pos":[1271.1719970703125,1243.4580078125],"size":[519.2884521484375,89.94547271728516],"flags":{},"order":9,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":72},{"localized_name":"lora_name","name":"lora_name","type":"COMBO","widget":{"name":"lora_name"},"link":null},{"localized_name":"strength_model","name":"strength_model","type":"FLOAT","widget":{"name":"strength_model"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[48]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"LoraLoaderModelOnly"},"widgets_values":["improve_backgrounds.safetensors",0.5000000000000001]},{"id":119,"type":"LoraLoaderModelOnly","pos":[1279.35693359375,981.2911987304688],"size":[523.26123046875,98.8840560913086],"flags":{},"order":10,"mode":0,"inputs":[{"localized_name":"model","name":"model","type":"MODEL","link":70},{"localized_name":"lora_name","name":"lora_name","type":"COMBO","widget":{"name":"lora_name"},"link":null},{"localized_name":"strength_model","name":"strength_model","type":"FLOAT","widget":{"name":"strength_model"},"link":null}],"outputs":[{"localized_name":"MODEL","name":"MODEL","type":"MODEL","links":[49]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"LoraLoaderModelOnly"},"widgets_values":["improve_backgrounds.safetensors",0.5000000000000001]},{"id":94,"type":"CreateVideo","pos":[3983.395751953125,617.6348876953125],"size":[270,78],"flags":{},"order":17,"mode":0,"inputs":[{"localized_name":"images","name":"images","type":"IMAGE","link":85},{"localized_name":"audio","name":"audio","shape":7,"type":"AUDIO","link":null},{"localized_name":"fps","name":"fps","type":"FLOAT","widget":{"name":"fps"},"link":null}],"outputs":[{"localized_name":"VIDEO","name":"VIDEO","type":"VIDEO","links":[50]}],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"CreateVideo"},"widgets_values":[16]},{"id":108,"type":"SaveVideo","pos":[4363.169921875,616.68994140625],"size":[270,445.1428527832031],"flags":{},"order":18,"mode":0,"inputs":[{"localized_name":"video","name":"video","type":"VIDEO","link":50},{"localized_name":"filename_prefix","name":"filename_prefix","type":"STRING","widget":{"name":"filename_prefix"},"link":null},{"localized_name":"format","name":"format","type":"COMBO","widget":{"name":"format"},"link":null},{"localized_name":"codec","name":"codec","type":"COMBO","widget":{"name":"codec"},"link":null}],"outputs":[],"properties":{"cnr_id":"comfy-core","ver":"0.3.50","Node name for S&R":"SaveVideo"},"widgets_values":["video/ComfyUI","auto","auto"]}],"links":[[29,103,0,85,0,"MODEL"],[30,98,0,85,1,"CONDITIONING"],[31,98,1,85,2,"CONDITIONING"],[32,86,0,85,3,"LATENT"],[33,104,0,86,0,"MODEL"],[34,98,0,86,1,"CONDITIONING"],[35,98,1,86,2,"CONDITIONING"],[36,98,2,86,3,"LATENT"],[37,85,0,87,0,"LATENT"],[38,90,0,87,1,"VAE"],[39,84,0,89,0,"CLIP"],[40,84,0,93,0,"CLIP"],[42,93,0,98,0,"CONDITIONING"],[43,89,0,98,1,"CONDITIONING"],[44,90,0,98,2,"VAE"],[45,97,0,98,4,"IMAGE"],[48,122,0,103,0,"MODEL"],[49,119,0,104,0,"MODEL"],[50,94,0,108,0,"VIDEO"],[69,95,0,125,0,"MODEL"],[70,125,0,119,0,"MODEL"],[71,96,0,126,0,"MODEL"],[72,126,0,122,0,"MODEL"],[85,87,0,94,0,"IMAGE"]],"groups":[],"config":{},"extra":{"ds":{"scale":1.22845973573674,"offset":[-3708.584479071994,-201.6784877790497]}},"version":0.4}
+{
+  "84": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "85": {
+    "inputs": {
+      "add_noise": "disable",
+      "noise_seed": 56283533665252,
+      "steps": 4,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "start_at_step": 2,
+      "end_at_step": 4,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "103",
+        0
+      ],
+      "positive": [
+        "98",
+        0
+      ],
+      "negative": [
+        "98",
+        1
+      ],
+      "latent_image": [
+        "86",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "86": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 986959295087547,
+      "steps": 4,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "start_at_step": 0,
+      "end_at_step": 2,
+      "return_with_leftover_noise": "enable",
+      "model": [
+        "104",
+        0
+      ],
+      "positive": [
+        "98",
+        0
+      ],
+      "negative": [
+        "98",
+        1
+      ],
+      "latent_image": [
+        "98",
+        2
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "87": {
+    "inputs": {
+      "samples": [
+        "85",
+        0
+      ],
+      "vae": [
+        "90",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "89": {
+    "inputs": {
+      "text": "Overexposure, static, blurred details, subtitles, paintings, pictures, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, mutilated, redundant fingers, poorly painted hands, poorly painted faces, deformed, disfigured, deformed limbs, fused fingers, cluttered background, slow motion,",
+      "clip": [
+        "84",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    }
+  },
+  "90": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "93": {
+    "inputs": {
+      "text": "cinematic animated scene of vikings landing on a shore, strong ocean motion with visible waves crashing against the ship, wind-driven movement affecting sails, ropes and clothing, subtle camera shake as if filmed from a moving ship, water splashes in foreground, continuous environmental motion, animated historical scene, dynamic lighting variation from moving clouds, characters subtly shifting posture and reacting, realistic temporal variation between frames",
+      "clip": [
+        "84",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "94": {
+    "inputs": {
+      "fps": 16,
+      "images": [
+        "87",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video"
+    }
+  },
+  "95": {
+    "inputs": {
+      "unet_name": "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "96": {
+    "inputs": {
+      "unet_name": "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "97": {
+    "inputs": {
+      "image": "viking-paint.jpg"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "98": {
+    "inputs": {
+      "width": 336,
+      "height": 432,
+      "length": 81,
+      "batch_size": 1,
+      "positive": [
+        "93",
+        0
+      ],
+      "negative": [
+        "89",
+        0
+      ],
+      "vae": [
+        "90",
+        0
+      ],
+      "start_image": [
+        "97",
+        0
+      ]
+    },
+    "class_type": "WanImageToVideo",
+    "_meta": {
+      "title": "WanImageToVideo"
+    }
+  },
+  "103": {
+    "inputs": {
+      "shift": 5.000000000000001,
+      "model": [
+        "122",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3"
+    }
+  },
+  "104": {
+    "inputs": {
+      "shift": 5.000000000000001,
+      "model": [
+        "119",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3"
+    }
+  },
+  "108": {
+    "inputs": {
+      "filename_prefix": "video/ComfyUI",
+      "format": "auto",
+      "codec": "auto",
+      "video": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video"
+    }
+  },
+  "119": {
+    "inputs": {
+      "lora_name": "improve_backgrounds.safetensors",
+      "strength_model": 0.5000000000000001,
+      "model": [
+        "125",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "122": {
+    "inputs": {
+      "lora_name": "improve_backgrounds.safetensors",
+      "strength_model": 0.5000000000000001,
+      "model": [
+        "126",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "125": {
+    "inputs": {
+      "lora_name": "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+      "strength_model": 1.0000000000000002,
+      "model": [
+        "95",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "126": {
+    "inputs": {
+      "lora_name": "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+      "strength_model": 1.0000000000000002,
+      "model": [
+        "96",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  }
+}
