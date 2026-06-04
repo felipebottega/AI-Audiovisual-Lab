@@ -277,8 +277,47 @@ ComfyUI/models/loras/
 
 ## Practical example
 
-Now we will see in practice how to execute an I2V workflow with WAN in ComfyUI. We will use the [x.json](x.json) file in this tutorial. You can consider it as a canonical I2V file that can be modified gradually according to your needs.
+Now we will see in practice how to execute an I2V workflow with WAN in ComfyUI. We will use the [img2vid_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img2vid_canon.json) file in this tutorial. You can consider it as a canonical I2V file that can be modified gradually according to your needs.
 
 <p align="center">
     <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2v_vikings.png" />
 </p>
+
+There are two LoRAs being used in this workflow, but you can include others if you want.
+
+This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2vid_canon.json). Below, we show the beginning and end of this JSON, just to give an idea of ​​how it is structured.
+
+```
+{
+  "84": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+ 
+  ...
+
+  "126": {
+    "inputs": {
+      "lora_name": "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+      "strength_model": 1.0000000000000002,
+      "model": [
+        "96",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  }
+}
+```
+
+You can use the script [x](x) script with the parameter file [x]() for this example. Edit the parameter file and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal.
