@@ -320,4 +320,4 @@ This JSON provides the workflow to be used in the ComfyUI interface. It's possib
 }
 ```
 
-You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) script with the parameter file [params.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/params.json) for this example. Edit the parameter file and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal.
+You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) script with the parameter file [params.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/params.json) for this example. Edit the parameter file and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal. The path `path_to_input_  should be the absolute path to the image, while `path_to_output` should be the relative path.
