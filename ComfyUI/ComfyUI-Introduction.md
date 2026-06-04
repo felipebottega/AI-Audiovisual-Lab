@@ -4,13 +4,11 @@ ComfyUI is a powerful graphical user interface (GUI) designed specifically for S
 
 ## Installation
 
-You can install ComfyUI via [this link](https://comfy.org/download). You can download the local installer or download the project directly from GitHub. I recommend following the steps shown on GitHub for installation as a *Windows Portable*. After installation, the folder should have the structure shown below.
+You can install ComfyUI via [this link](https://comfy.org/download). You can download the local installer or download the project directly from GitHub. I recommend following the steps shown on GitHub for installation as a [*Windows Portable*](https://github.com/comfyanonymous/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z). No installation is required in this case, just extract the files; it's a standalone application. Once everything is ready, the folder should have the structure shown below.
 
 <p align="center">
     <img width="350" src="https://github.com/user-attachments/assets/c79592be-31e6-48c4-9918-ddf390dea92b" />
 </p>
-
-If you just want the direct link to the installer, here it is: https://github.com/comfyanonymous/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z
 
 ## Configuration and features
 
