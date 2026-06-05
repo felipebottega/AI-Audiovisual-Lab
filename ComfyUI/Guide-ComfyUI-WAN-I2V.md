@@ -283,8 +283,6 @@ Now we will see in practice how to execute an I2V workflow with WAN in ComfyUI. 
     <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2v_vikings.png" />
 </p>
 
-There are two LoRAs being used in this workflow, but you can include others if you want.
-
 This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2vid_canon.json). Below, we show the beginning and end of this JSON, just to give an idea of ​​how it is structured.
 
 ```
