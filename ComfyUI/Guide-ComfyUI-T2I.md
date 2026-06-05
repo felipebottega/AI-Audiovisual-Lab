@@ -1,13 +1,4 @@
-# Guide to using ComfyUI with WAN 2.2 - Image to Video (I2V)
-
-## Technical Description of WAN 2.2
-
-**Wan 2.2** is a multimodal diffusion-based video generation model (developed by Wan AI/Alibaba) released as open source. It uses a large **Mixture-of-Experts** (MoE) architecture. In practice, this means the generation process is split into stages specialized for different noise levels:
-
-- **High-noise stage**: builds the global structure, movement, and composition.
-- **Low-noise stage**: refines details, consistency, and visual polish.
-
-For I2V, the model turns a still image into a video while trying to preserve the identity, layout, and style of the source image.
+# Guide to ComfyUI - Text to Image (T2I)
 
 ## Basic Workflow Diagram
 
@@ -15,162 +6,23 @@ Although WAN 2.2 internally uses separate high-noise and low-noise stages, most 
 
 ```mermaid
 flowchart LR
-    A1[WAN 2.2 I2V High Noise Model] --> B1[Apply High Noise LoRAs] --> C1[Model SamplingSD3] --> D1[KSampler]
-    A2[WAN 2.2 I2V Low Noise Model] --> B2[Apply Low Noise LoRAs] --> C2[Model SamplingSD3] --> D2[KSampler]
-    D1 --> D2 --> E[VAE Decode] --> F[Create Video] --> G[Save Video]
-    A3[Load Image] --> B3[WanImageToVideo] --> D1
-    A4[Load CLIP] --> B4[Prompt] --> B3
-    A5[Load VAE] --> B3
-    A5 --> E
+    A[Checkpoint] --> B[CLIP]
+    B --> D
+    A --> C[LoRAs] --> D[Sampler]
+    E[Image Settings] --> D
+    D --> F[VAE Decode] --> G[Create Video] --> H[Save Image]
+    A --> F
 ```
 
 ## Required files
 
-For a standard ComfyUI setup, you usually need the following files:
-
-- **`wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors`**  
-  The high-noise checkpoint. It is responsible for the first part of the diffusion process, where the model decides motion, composition, and broad structure.
-
-- **`wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors`**  
-  The low-noise checkpoint. It refines the video after the main structure is already in place.
-
-- **`wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors`**
-  The high-noise Lightx2V LoRA. It is applied to the high-noise checkpoint and helps the model achieve good results with fewer sampling steps, reducing generation time while preserving the overall motion and structure.
-
-- **`wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors`**
-  The low-noise Lightx2V LoRA. It is applied to the low-noise checkpoint and helps maintain visual quality during the refinement stage when using low step counts.
-
-- **`umt5_xxl_fp8_e4m3fn_scaled.safetensors`**  
-  The text encoder. It converts the prompt into features the model can use.
-
-- **VAE file**  
-  Usually the VAE provided for WAN 2.2 / WAN 2.1-compatible workflows. The VAE is what helps decode the latent representation into an actual image/video output.
-
-- **Optional LoRA files**  
-  Used to add style, motion, realism, or other visual behaviors without retraining the full model.
-
-> A latent representation is a compressed version of an image or video that preserves its most important visual information. WAN 2.2 performs diffusion in this compressed space for efficiency, and the VAE later converts it back into normal pixels.
-
-## Low noise vs. high noise
-
-### High-noise stage
-This stage comes first and is the most important for:
-
-- initial motion
-- camera direction
-- scene layout
-- large shape placement
-- overall energy of the clip
-
-### Low-noise stage
-This stage comes after the structure is already defined and is responsible for:
-
-- sharper details
-- cleaner textures
-- better temporal coherence
-- less visual instability
-- more polished final frames
-
-## Lightning / LightX2V Workflows
-
-Some WAN 2.2 workflows optionally use LightX2V (Lightning) LoRAs for the high-noise and low-noise stages. These LoRAs are applied on top of the base checkpoints and are designed to **distill the sampling process**, enabling high-quality results with significantly fewer steps. This allows the model to generate videos much faster and with lower computational cost. However, because the sampling process is heavily compressed, results may show **reduced temporal refinement and less stable or detailed motion** compared to standard multi-step workflows. For this reason, Lightning workflows are best suited for fast iteration and previews, while standard workflows remain preferable when maximum quality and motion consistency are the priority.
-
-In the **Lightning** style workflow, it is common to see something like:
-
-- **2 high-noise steps**
-- **2 low-noise steps**
-
-This is not arbitrary. It works because Lightning LoRAs are designed to make the model usable with **very few denoising steps**. The practical logic is:
-
-- The **first 2 steps** give enough room to establish motion and composition.
-- The **next 2 steps** refine the output without wasting time on unnecessary denoising passes.
-
-So the model does not need many steps because the LoRA is already pushing it toward a fast, compressed generation path.
-
-In a **full, non-Lightning workflow**, the same idea still applies, but the total step count is usually higher.
+You only need a checkpoint file with the template. Optionally, you can have the LoRA files to apply. There are several templates and LoRAs available [here](https://civitai.com/), it will depend on your objective. 
 
 ## LoRAs
 
-With WAN 2.2, LoRAs are often used to:
+LoRAs (Low-Rank Adaptations) are small, specialized files used to modify or fine-tune a base checkpoint's behavior without altering the entire original model. In text-to-image (and text-to-video) workflows, they allow you to inject specific art styles, characters, poses, or structural concepts into your generation.
 
-- add a specific visual style
-- increase realism
-- improve cinematic behavior
-- guide motion
-- adapt the model to a niche aesthetic
-- compensate for limitations in the base model
-
-### One LoRA file vs. separate high/low versions
-
-This is one of the most important practical points.
-
-#### Case 1: the LoRA is a single file
-
-If the LoRA is delivered as **one file only**, apply the same LoRA to **both** branches:
-
-- high-noise branch
-- low-noise branch
-
-This keeps the adaptation present across the full denoising process.
-
-#### Case 2: the LoRA has separate versions
-
-Some LoRAs are built with different strengths or files for:
-
-- high-noise behavior
-- low-noise behavior
-
-In that case:
-
-- use the **high-noise LoRA** on the high-noise branch
-- use the **low-noise LoRA** on the low-noise branch
-
-### Why the same LoRA may be enough for both branches
-
-If you only connect a LoRA to one stage, the effect may fade or become inconsistent.
-
-Applying the same LoRA to both branches helps because:
-
-- the first stage sets the main direction
-- the second stage keeps the same style while refining the result
-
-That is especially useful for:
-
-- style LoRAs
-- character consistency
-- realistic rendering
-- branded aesthetics
-
-### High-noise vs. low-noise LoRA behavior
-
-In practice:
-
-- **motion / action LoRAs** often feel stronger on the **high-noise** stage
-- **detail / style LoRAs** often feel stronger on the **low-noise** stage
-
-This is not a strict rule, but it is a good mental model.
-
-### LoRA placement in ComfyUI
-
-Place LoRA nodes **before** the sampler.
-
-Correct flow:
-
-```text
-UNetLoader → LoRA → ModelSamplingSD3 → KSampler
-```
-
-Incorrect flow:
-
-```text
-UNetLoader → KSampler → LoRA
-```
-
-The LoRA must influence the model before sampling begins.
-
-### LoRA Strength Settings
-
-There is no universal perfect value. A good starting point is usually **1.0**.
+In ComfyUI, LoRAs are injected directly between the Checkpoint and the Sampler nodes. You can layer multiple LoRAs together, adjusting the strength of each individually to blend different styles or elements.
 
 ## ModelSamplingSD3 (Shift)
 
