@@ -2,7 +2,7 @@
 
 This is a personal repository to document my studies, experiments, workflows, and practical findings related to AI-based audiovisual tools and generative media.
 
-Up to this point, the focus has been on explaining how to use the [ComfyUI](https://comfy.org/) and [Automatic1111](https://github.com/automatic1111/stable-diffusion-webui) programs, and the theory behind the algorithms used.
+Up to this point, the focus has been on explaining how to use the [ComfyUI](https://comfy.org/) and [Automatic1111](https://github.com/automatic1111/stable-diffusion-webui), and the theory behind the algorithms used.
 
 Some useful links are below:
 
