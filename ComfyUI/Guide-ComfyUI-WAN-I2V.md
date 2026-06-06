@@ -283,7 +283,7 @@ Now we will see in practice how to execute an I2V workflow with WAN in ComfyUI. 
     <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2v_vikings.png" />
 </p>
 
-This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2vid_canon.json). Below, we show the beginning and end of this JSON, just to give an idea of ​​how it is structured.
+This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically, to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2vid_canon.json). Below, we show the beginning and end of this JSON, just to give an idea of ​​how it is structured.
 
 ```
 {
@@ -318,7 +318,7 @@ This JSON provides the workflow to be used in the ComfyUI interface. It's possib
 }
 ```
 
-You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. First create the parameter file with the command `python generate_params.py "img2vid_canon.json" "params.json"` in the terminal. Then edit the parameter file with the desired values and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal. Inside the parameter file, the path `path_to_input` should be the absolute path to the workflow API file, while `path_to_output` should be the relative path to the folder containing the outputs.
+You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the script.
 
 The workflow file also includes some optional post-processing nodes: color and brightness node, upscale and downscale, background removal, and saving frames as PNG. These nodes come right after `VAE decode` and before `Create Video`.
 
