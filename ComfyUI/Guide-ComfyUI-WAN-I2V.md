@@ -318,7 +318,7 @@ This JSON provides the workflow to be used in the ComfyUI interface. It's possib
 }
 ```
 
-You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) script with the parameter file [params.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/params.json) for this example. Edit the parameter file and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal. The path `path_to_input` should be the absolute path to the workflow API file, while `path_to_output` should be the relative path to the folder containing the outputs.
+You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. First create the parameter file with the command `python generate_params.py "img2vid_canon.json" "params.json"` in the terminal. Then edit the parameter file with the desired values and run the command `python run_workflow.py "img2vid_canon.json" "params.json"` in the terminal. Inside the parameter file, the path `path_to_input` should be the absolute path to the workflow API file, while `path_to_output` should be the relative path to the folder containing the outputs.
 
 The workflow file also includes some optional post-processing nodes: color and brightness node, upscale and downscale, background removal, and saving frames as PNG. These nodes come right after `VAE decode` and before `Create Video`.
 
