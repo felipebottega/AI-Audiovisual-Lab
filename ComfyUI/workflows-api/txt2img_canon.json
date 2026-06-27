@@ -64,7 +64,7 @@
   },
   "7": {
     "inputs": {
-      "text": "noisy, blurry, soft, deformed, ugly, low detailed, bad quality, watermark, long neck, tall, long torso, multiple legs, multiple fingers, missing limbs, deformed hands, deformed feet, mutations ugly hands, multiple navels, EasyNegativeV2, bad-hands-5, (worst quality, low quality:2), simple background, (blush, teeth:1.1) BadDreamFastNegativeV2, UnrealisticDream, Asian-Less-Neg, (bad-hands-5:2), (loli, petite, childlike, teen), cum, , thicc, chubby, fat, disproportion_head, huge_boobs, (worst quality:2), (low quality:2), (normal quality:2), lowres, bad anatomy, (bad hands:2), multiple limbs, extra limbs, deformed limbs, normal quality, ((monochrome)), ((grayscale)), (((bad_nipples))), (((bad_pussy))), (((corssed_eyes))), (blur:2), six fingers",
+      "text": "noisy, blurry, soft, deformed, ugly, low detailed, bad quality, watermark, long neck, multiple legs, multiple fingers, missing limbs, deformed hands, deformed feet, mutations ugly hands, multiple navels, EasyNegativeV2, bad-hands-5, (worst quality, low quality:2), (bad-hands-5:2), disproportion_head, (worst quality:2), (low quality:2), (normal quality:2), lowres, bad anatomy, (bad hands:2), multiple limbs, extra limbs, deformed limbs, normal quality, ((monochrome)), ((corssed_eyes))), (blur:2), six fingers",
       "clip": [
         "4",
         1
