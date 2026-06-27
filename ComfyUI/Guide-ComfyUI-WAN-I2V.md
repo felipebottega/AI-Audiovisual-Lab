@@ -1,4 +1,4 @@
-# Guide to using ComfyUI with WAN 2.2 - Image to Video (I2V)
+# Guide to ComfyUI - Image to Video (I2V)
 
 ## Technical Description of WAN 2.2
 
