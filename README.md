@@ -4,7 +4,21 @@ This is a personal repository to document my studies, experiments, workflows, an
 
 Up to this point, the focus has been on explaining how to use the [ComfyUI](https://comfy.org/) and [Automatic1111](https://github.com/automatic1111/stable-diffusion-webui), and the theory behind the algorithms used.
 
-Some useful links are below:
+## Roadmap
+- [x] ComfyUI - Introduction
+- [x] ComfyUI - Text to Image (T2I)
+- [ ] ComfyUI - Text to Video (T2V)
+- [ ] ComfyUI - Image to Image (I2I)
+- [ ] ComfyUI - Image to Text (T2I)
+- [x] ComfyUI - Image to Video (I2V)
+- [ ] ComfyUI - Image Grid
+- [ ] ComfyUI - Video Grid
+- [ ] ComfyUI - Video Sequence Merging
+- [ ] ConfyUI - Image with fixed Character
+- [ ] ConfyUI - Video with fixed Character
+- [ ] Automatic1111
+
+## Useful links
 
 - https://stable-diffusion-art.com/prompt-guide/
 - https://rentry.org/artists_sd-v1-4
