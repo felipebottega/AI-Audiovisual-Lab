@@ -1,53 +1,31 @@
-# Guide to ComfyUI - Image to Image (I2I)
+# Guide to ComfyUI - Image Upscale
 
-## Basic Workflow Diagram
+## Main nodes
 
-```mermaid
-flowchart LR
-    A[Checkpoint] --> B[CLIP]
-    B --> D
-    A --> C[LoRAs] --> D[Sampler]
-    E[Load Image] --> F[VAE Encode]
-    D --> G[VAE Decode] --> H[Save Image]
-    F --> D
-    A --> F
-    A --> G
-```
+Basically there are three to generate the upscale of an image. The first one, and the most basic, is the node *Upscale Image*. With this node, you are able to choose a method (*nearest-exact, bilinear, area, bicubic, lanczos*) and the target resolution.
 
-## Required files
+<p align="center">
+    <img width="300" src="https://github.com/user-attachments/assets/bb2b7469-311c-440b-b875-daa9cadd3620" />
+</p>
 
-You only need a checkpoint file with the template. Optionally, you can have the LoRA files to apply. There are several templates and LoRAs available [here](https://civitai.com/), it will depend on your objective. 
+The second one is the node called *Image Resize*. This is the one usually used in our examples. With this node, you are able to choose a method (*lanczos, nearest, bilinear, bicubic*). If the mode is set to *scale*, you can change the parameter *rescale_factor* to multiply the original resolution by this factor. In this mode the parameters *resize_width* and *resize_height* are ignored. The other method is the *resize*, where you just the parameters *resize_width* and *resize_height*.
 
-## LoRAs
+<p align="center">
+    <img width="320" src="https://github.com/user-attachments/assets/c59d2da6-70ba-43f5-984e-eb17c0539d34" />
+</p>
 
-LoRAs (Low-Rank Adaptations) are small, specialized files used to modify or fine-tune a base checkpoint's behavior without altering the entire original model. In text-to-image (and text-to-video) workflows, they allow you to inject specific art styles, characters, poses, or structural concepts into your generation.
+The third one is the node *Uoscale Image (using Model)*, which be use use in conjunction with the node *Load Upscale Model*. These model use AI to generate the upscale, instead of a deterministic algorithm. The biggest difference is that AI may create new detail in the image.
 
-In ComfyUI, LoRAs are injected directly between the Checkpoint and the Sampler nodes. You can layer multiple LoRAs together, adjusting the strength of each individually to blend different styles or elements.
+<p align="center">
+    <img width="650" src="https://github.com/user-attachments/assets/3ed52c5e-99eb-4abc-b601-a241e3f32d8b" />
+</p>
 
-## Sampler
-
-The Sampler is the core engine that removes random noise step-by-step to form the final image or video, guided by your prompt and settings. Key parameters in ComfyUI include:
-
-* **Steps:** The number of denoising iterations. Standard models require 20–30 steps, while *Lightning* workflows need only 4–8 steps.
-* **CFG Scale:** How strictly the model follows your prompt. Higher values force compliance but can cause artifacts, fast-sampling workflows typically use low values (1.0–2.0).
-* **Sampler & Scheduler:** The mathematical algorithms used to denoise.
+> PS: The 2x and 4x in the model name means the model will upscale the image by a factor of 2x or 4x, respectively. THese factors can't be changed.
 
 ## Practical example
 
-Now we will see in practice how to execute an T2I workflow in ComfyUI. We will use the [img2vid_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img2img_canon.json) file in this tutorial. You can consider it as a canonical T2I file that can be modified gradually according to your needs.
+You can use the [img_upscale.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img_upscale.json) file in this tutorial. 
 
-<p align="center">
-    <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2i.png" />
-</p>
-
-This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2img_canon.json). 
+This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img_upscale.json). 
 
 You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the scrip with the command `python run_workflow.py "{path_to_workflow_json}"` in the terminal.
-
-The workflow file also includes some optional post-processing nodes: upscale and downscale, quantize. These nodes come right after VAE decode and before Save Image. I've already configured these optional nodes for the current example workflow. 
-
-> This example uses the checkpoint called `pixelArtDiffusionXL_spriteShaper`, which creates pixel art style images. It's always necessary to divide the size of the generated image by 8 (with the *Image Resize* node) so that each pixel (simulated) has the correct size. The quantize node is used to limit the number of colors in the palette, which is also useful for pixel art.
-
-<p align="center">
-    <img width="600" src="https://github.com/user-attachments/assets/58d62148-2a1c-4955-b04f-9488039732db" />
-</p>
