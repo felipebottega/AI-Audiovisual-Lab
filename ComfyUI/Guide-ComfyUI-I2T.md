@@ -10,6 +10,8 @@ Use Captioning (BLIP/LLaVA) when you need to understand what is happening in an 
 
 ## Parameters 
 
+### BLIP
+
 - **Mode:** Defines the task. Caption produces a descriptive sentence. The mode *interrogate* expects a specific prompt (below the parameter) and returns an answer based on the visual input. The mode *caption* ignores the prompt and descrives the whole image at once.
 - **Min/Max Length:** Controls the token count of the output. Setting these too low may truncate sentences; too high may lead to repetitive or "hallucinated" filler text.
 - **Num Beams:** Specifies the number of "paths" the model explores to find the best sentence. Higher values (e.g., 5-10) improve quality and coherence but increase processing time.
@@ -21,9 +23,22 @@ Use Captioning (BLIP/LLaVA) when you need to understand what is happening in an 
     <img width="1000" src="https://github.com/user-attachments/assets/2ae85057-3e73-4bc6-989e-17c83d531c9e" />
 </p>
 
+### WD14
+
+- **Model:** Selects the specific neural network architecture for image analysis. Different models are fine-tuned for various aesthetic styles (e.g., anime vs. photorealistic) or specific dataset categories.
+- **Threshold:** The confidence level (0.0 to 1.0) required to accept a tag. Lower values include more (potentially inaccurate) descriptive details, higher values return only the most certain features.
+- **Character Threshold:** A separate confidence threshold dedicated specifically to character identity tags. A higher value (e.g., 0.85) is recommended to prevent the model from misidentifying characters.
+- **Replace Underscore:** When enabled, replaces the _ character in tags with spaces. This is useful for workflows that require natural text formatting rather than standard database tags.
+- **Trailing Comma:** When enabled, appends a comma to the end of the final tag in the string.
+- **Exclude Tags:** A field to list specific tags that should be ignored or removed from the output. This is effective for cleaning up unwanted noise like image quality keywords (e.g., "highres") or common subjects you wish to filter out.
+
 ## Practical example
 
 We can use the [img2img_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img2txt_canon.json) file in this tutorial. You can consider it as a canonical I2T file that can be modified gradually according to your needs.
+
+<p align="center">
+    <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2t.png" />
+</p>
 
 This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2txt_canon.json). 
 
