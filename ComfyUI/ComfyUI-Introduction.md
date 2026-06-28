@@ -73,3 +73,23 @@ The background box (named *UPSCALE* in this example) serves only to create a vis
     <img width="700" alt="image" src="https://github.com/user-attachments/assets/7b1915aa-197b-447f-a0ae-d210a07259b2" />
     <img width="300" alt="image" src="https://github.com/user-attachments/assets/eae99386-0204-42ab-ba1a-477766bd27b7" />
 </p>
+
+### Using Automatic1111 models and LoRAs
+
+You can use models and LoRAs from Automatic1111 if you have it installed on your machine. This way, you don't need to duplicate these files. This is the cleanest and officially supported way to do that.
+
+1. Locate your ComfyUI folder.
+2. Create or edit the file `extra_model_paths.yaml`.
+3. Add your Automatic1111 paths in the file:
+
+```
+a1111:
+  base_path: C:\path_to_automatic1111\stable-diffusion-webui
+  checkpoints: models/Stable-diffusion
+  loras: models/Lora
+  vae: models/VAE
+```
+
+4. Restart ComfyUI.
+
+
