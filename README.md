@@ -7,7 +7,7 @@ Up to this point, the focus has been on explaining how to use the [ComfyUI](http
 ## Roadmap
 - [x] ComfyUI - Introduction
 - [x] ComfyUI - Text to Image (T2I)
-- [ ] ComfyUI - Text to Video (T2V)
+- [x] ComfyUI - Text to Video (T2V)
 - [ ] ComfyUI - Image to Image (I2I)
 - [ ] ComfyUI - Image to Text (T2I)
 - [x] ComfyUI - Image to Video (I2V)
