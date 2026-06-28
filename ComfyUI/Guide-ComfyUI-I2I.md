@@ -31,7 +31,7 @@ The Sampler is the core engine that removes random noise step-by-step to form th
 * **Steps:** The number of denoising iterations. Standard models require 20–30 steps, while *Lightning* workflows need only 4–8 steps.
 * **CFG Scale:** How strictly the model follows your prompt. Higher values force compliance but can cause artifacts, fast-sampling workflows typically use low values (1.0–2.0).
 * **Sampler & Scheduler:** The mathematical algorithms used to denoise.
-* **Denoise:** Controls how much of the input latent is replaced with noise (0–1), determining how strongly the model can modify the original image.
+* **Denoise:** Controls how much of the input latent is replaced with noise (0-1), determining how strongly the model can modify the original image.
 
 ## Practical example
 
