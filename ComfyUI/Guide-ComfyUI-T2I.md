@@ -2,8 +2,6 @@
 
 ## Basic Workflow Diagram
 
-Although WAN 2.2 internally uses separate high-noise and low-noise stages, most ComfyUI workflows expose these stages as distinct nodes and checkpoints. The image and prompt are first converted into conditioning information, then the generation process is split into two phases. The outputs of these stages are combined to produce the final video. In Lightning workflows, specialized LoRAs are often applied to both stages, allowing the model to generate high-quality results with very few sampling steps.
-
 ```mermaid
 flowchart LR
     A[Checkpoint] --> B[CLIP]
