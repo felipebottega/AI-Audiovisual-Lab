@@ -274,7 +274,7 @@ ComfyUI/models/loras/
 
 ## Practical example
 
-Now we will see in practice how to execute an I2V workflow with WAN in ComfyUI. We will use the [img2vid_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/txt2vid_canon.json) file in this tutorial. You can consider it as a canonical I2V file that can be modified gradually according to your needs.
+Now we will see in practice how to execute an T2V workflow with WAN in ComfyUI. We will use the [txt2vid_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/txt2vid_canon.json) file in this tutorial. You can consider it as a canonical T2V file that can be modified gradually according to your needs.
 
 <p align="center">
     <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_t2v.png" />
