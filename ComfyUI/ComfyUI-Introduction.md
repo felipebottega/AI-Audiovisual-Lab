@@ -10,6 +10,30 @@ You can download and install ComfyUI via [this link](https://comfy.org/download)
     <img width="350" src="https://github.com/user-attachments/assets/c79592be-31e6-48c4-9918-ddf390dea92b" />
 </p>
 
+### ComfyUI-Manager
+
+Installing ComfyUI-Manager is basically mandatory these days. Assuming the portable version, you should execute the following command to install the ComfyUI-Manager:
+
+```
+.\python_embeded\python.exe -m pip install -r ComfyUI\manager_requirements.txt
+```
+
+After that, edit the file `run_nvidia_gpu.bat` and change the execution line fo this one 
+
+```
+.\python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --enable-manager
+```
+
+At the top of the editor, you will see the button *Extensions* now. This is the "Manager". Now you are able to install more nodes to your workflows easily.
+
+<p align="center">
+    <img width="900" src="https://github.com/user-attachments/assets/2a89825d-d7d2-4cb0-ac7e-374673f9d370" />
+</p>
+
+Acecss [the oficial website](https://docs.comfy.org/manager/install) for more information.
+
+
+
 ## Configuration and features
 
 ### Low quality rendering zoom threshold
