@@ -7,7 +7,7 @@ ComfyUI is a powerful node-based interface for [Stable Diffusion](https://en.wik
 You can download and install ComfyUI via [this link](https://comfy.org/download). I recommend following the steps shown on GitHub for installation as a *Windows Portable* ([direct link to download here](https://github.com/comfyanonymous/ComfyUI/releases/latest/download/ComfyUI_windows_portable_nvidia.7z)). No installation is required in this case, just extract the files, it's a standalone application. Once everything is ready, the folder should have the structure shown below.
 
 <p align="center">
-    <img width="350" src="https://github.com/user-attachments/assets/c79592be-31e6-48c4-9918-ddf390dea92b" />
+    <img width="320" src="https://github.com/user-attachments/assets/c79592be-31e6-48c4-9918-ddf390dea92b" />
 </p>
 
 ### ComfyUI-Manager
