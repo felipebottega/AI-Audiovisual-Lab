@@ -1,0 +1,57 @@
+{
+  "11": {
+    "inputs": {
+      "image": "example.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "13": {
+    "inputs": {
+      "source": [
+        "14",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
+    }
+  },
+  "14": {
+    "inputs": {
+      "mode": "caption",
+      "question": "What does the background consist of?",
+      "min_length": 24,
+      "max_length": 64,
+      "num_beams": 5,
+      "no_repeat_ngram_size": 3,
+      "early_stopping": false,
+      "images": [
+        "11",
+        0
+      ],
+      "blip_model": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "BLIP Analyze Image",
+    "_meta": {
+      "title": "BLIP Analyze Image"
+    }
+  },
+  "15": {
+    "inputs": {
+      "blip_model": "Salesforce/blip-image-captioning-base",
+      "vqa_model_id": "Salesforce/blip-vqa-base",
+      "device": "cuda"
+    },
+    "class_type": "BLIP Model Loader",
+    "_meta": {
+      "title": "BLIP Model Loader"
+    }
+  }
+}
