@@ -20,7 +20,15 @@ The third one is the node *Uoscale Image (using Model)*, which be use use in con
     <img width="650" src="https://github.com/user-attachments/assets/3ed52c5e-99eb-4abc-b601-a241e3f32d8b" />
 </p>
 
-> PS: The 2x and 4x in the model name means the model will upscale the image by a factor of 2x or 4x, respectively. THese factors can't be changed.
+> PS: The 2x and 4x in the model name means the model will upscale the image by a factor of 2x or 4x, respectively. These factors can't be changed.
+
+## Differences
+
+Each method has its pros ands cons. I won't discuss this subject here, but I will leave the image below for reference.
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/e47b993d-0a69-4a50-8917-3363a3376e0b" />
+</p>
 
 ## Practical example
 
