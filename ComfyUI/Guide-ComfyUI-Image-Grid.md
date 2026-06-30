@@ -49,6 +49,6 @@ All API JSON files are contained in the folder `workflows-api` of this repositor
   },
 ```
 
-As mentioned in many other tutorials, you can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for to run the API JSON workflows with the command `python run_workflow.py "{path_to_workflow_json}"` in the terminal. However, editing the parameters manually in the JSON is not ideal. Now we introduce another script, which will change up to two parameters in a list of values and execute the workflow programatically.
+As mentioned in many other tutorials, you can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) to run the API JSON workflows with the command `python run_workflow.py "{path_to_workflow_json}"` in the terminal. However, editing the parameters manually in the JSON is not ideal. Now we introduce another script, which will change up to two parameters in a list of values and execute the workflow programatically.
 
 
