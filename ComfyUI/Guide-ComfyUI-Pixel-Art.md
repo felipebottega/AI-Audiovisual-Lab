@@ -63,7 +63,7 @@ Pixel art videos require absolute sharpness, but some video players might smooth
 
 ## Practical example
 
-We can use the [img2img_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/pixel_art.json) file in this tutorial. You can consider it as a canonical file that can be modified gradually according to your needs.
+We can use the [pixelart.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/pixelart.json) file in this tutorial. You can consider it as a canonical file that can be modified gradually according to your needs.
 
 This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/pixelart.json). 
 
