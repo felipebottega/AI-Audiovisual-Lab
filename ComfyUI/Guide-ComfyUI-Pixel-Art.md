@@ -56,8 +56,10 @@ Once the model has generated the video internally, there are three paths you can
 Generally, the first path is the best choice, but you may find a need for the other two options at some point.
 
 <p align="center">
-    <img width="800" src="https://github.com/user-attachments/assets/4b7bdf45-eb7a-40a3-af40-331348afe749" />
+    <img width="800" src="https://github.com/user-attachments/assets/019eae5c-88da-4247-b8ea-7e5625d0b4fe" />
 </p>
+
+> PS: The *Remove Background* node is there just in case. It is useful when you want to create character animations and need to remove the background.
 
 Pixel art videos require absolute sharpness, but some video players might smooth out the image, potentially making the output look poor. It is worth keeping this in mind: the video itself might be perfectly sharp, but your player is misleading you. If you choose to save the PNGs (the second method), you can open them in *Aseprite* (or *LibreSprite*). In these programs, the frame sequence will render with true sharpness, allowing you to view the animation properly.
 
