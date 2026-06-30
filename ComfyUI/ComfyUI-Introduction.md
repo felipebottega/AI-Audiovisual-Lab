@@ -92,4 +92,30 @@ a1111:
 
 4. Restart ComfyUI.
 
+### Editing the file nodes.py
 
+The `SaveImage` node in `ComfyUI/nodes.py` appends a trailing underscore before the file extension, producing filenames such as `frame_00001_.png`. Some animation software, including LibreSprite, does not recognize these files as a numbered image sequence. To fix this, edit `ComfyUI/nodes.py` and replace:
+
+```python
+file = f"{filename_with_batch_num}_{counter:05}_.png"
+```
+
+with:
+
+```python
+file = f"{filename_with_batch_num}_{counter:05}.png"
+```
+
+For consistency, the same change can be applied to the `SaveLatent` node by replacing:
+
+```python
+file = f"{filename}_{counter:05}_.latent"
+```
+
+with:
+
+```python
+file = f"{filename}_{counter:05}.latent"
+```
+
+This preserves the existing naming convention while restoring compatibility with software that expects standard numbered image sequences.
