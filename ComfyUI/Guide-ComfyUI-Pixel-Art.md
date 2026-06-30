@@ -1,45 +1,70 @@
 # Guide to ComfyUI - Pixel Art
 
-There are two main approaches to Image to Text conversion in the context of Stable Diffusion and ComfyUI. The distinction lies in how the model interprets the visual data and the format of the output.
+In this tutorial, we will look at how to transform images into pixel art-style images. After generating the image, you can use BLIP to generate a prompt from it and use both the image and the prompt to feed another part of the workflow that will convert them into an animated pixel art video.
 
-- Natural Language Captioning (Standard): This approach generates a descriptive, human-readable sentence or paragraph. Models like BLIP or LLaVA analyze the scene and create a coherent text describing subjects, actions, and the environment. This is ideal for understanding the general composition or for converting images into descriptive prompts for image-to-image workflows.
+## Image to Image
 
-- Booru-style Tagging (Danbooru way): This approach uses models trained on specific datasets (like Danbooru) to output a flat list of comma-separated tags (e.g., 1girl, solo, masterpiece, illustration, blue hair). These tags are highly optimized for AI image generation models that were trained on tagged datasets (like Pony Diffusion or older SD 1.5 models), as they focus on specific attributes rather than grammatical sentences.
+In this first stage, we work exactly as described in the [image-to-image](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/Guide-ComfyUI-I2I.md) tutorial. That is, we need to provide an input image and a guidance prompt to the program, and it will generate the corresponding image. For this to work, it is necessary to use the `pixelArtDiffusionXL_spriteShaper` checkpoint, which was trained for this purpose.
 
-Use Captioning (BLIP/LLaVA) when you need to understand what is happening in an image or need a descriptive summary of a photograph. Use Tagging (WD14 Tagger/DeepDanbooru) when your goal is to extract prompt tags from an existing image to recreate a similar style or character in a new generation, especially when working with anime or stylized models.
-
-## Parameters 
-
-### BLIP
-
-- **Mode:** Defines the task. Caption produces a descriptive sentence. The mode *interrogate* expects a specific prompt (below the parameter) and returns an answer based on the visual input. The mode *caption* ignores the prompt and descrives the whole image at once.
-- **Min/Max Length:** Controls the token count of the output. Setting these too low may truncate sentences; too high may lead to repetitive or "hallucinated" filler text.
-- **Num Beams:** Specifies the number of "paths" the model explores to find the best sentence. Higher values (e.g., 5-10) improve quality and coherence but increase processing time.
-- **No Repeat Ngram Size:** Prevents the model from repeating a sequence of N words. Setting this to 2 or 3 helps avoid repetitive loops in generated text.
-- **Early Stopping:** When enabled, the model stops generating text as soon as it reaches an end-of-sentence token, optimizing speed and efficiency.
-
-<p align="center">
-    <img width="1000" src="https://github.com/user-attachments/assets/3775d7aa-45a1-4940-8708-9f0ccbf81101" />
-    <img width="1000" src="https://github.com/user-attachments/assets/2ae85057-3e73-4bc6-989e-17c83d531c9e" />
+<p align=center">
+    <img width="1100" src="https://github.com/user-attachments/assets/7c895043-c886-4a65-a591-75cf5387c1ef" />
 </p>
 
-### WD14
+It's always necessary to divide the size of the generated image by 8 (with the Image Resize node) so that each pixel (simulated) has the correct size. The quantize node is used to limit the number of colors in the palette, which is also useful for pixel art (optional).
 
-- **Model:** Selects the specific neural network architecture for image analysis. Different models are fine-tuned for various aesthetic styles (e.g., anime vs. photorealistic) or specific dataset categories.
-- **Threshold:** The confidence level (0.0 to 1.0) required to accept a tag. Lower values include more (potentially inaccurate) descriptive details, higher values return only the most certain features.
-- **Character Threshold:** A separate confidence threshold dedicated specifically to character identity tags. A higher value (e.g., 0.85) is recommended to prevent the model from misidentifying characters.
-- **Replace Underscore:** When enabled, replaces the _ character in tags with spaces. This is useful for workflows that require natural text formatting rather than standard database tags.
-- **Trailing Comma:** When enabled, appends a comma to the end of the final tag in the string.
-- **Exclude Tags:** A field to list specific tags that should be ignored or removed from the output. This is effective for cleaning up unwanted noise like image quality keywords (e.g., "highres") or common subjects you wish to filter out.
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/4d63fb38-6a58-45ea-80ef-c647e6e15b28" />
+    <img width="600" src="https://github.com/user-attachments/assets/58d62148-2a1c-4955-b04f-9488039732db" />
+</p>
+
+
+### Image to Text
+
+Once the image is generated, it is automatically sent to BLIP, which then generates a prompt describing the image.
+Note that there is also a *String to Text* node in this section. You can use this node to add more details to the prompt if you deem it necessary. Since BLIP only describes a static image, it does not provide movement instructions for the model that will generate the video. For this example, I used the following additional prompt:
+
+``
+The animation retains the original pixel art style with crisp pixel edges. The original composition and character proportions remain unchanged. Subtle natural motion, gentle blinking, slight hair and clothing movement. Smooth temporal consistency.
+``
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/9a843528-cef4-4a98-b3e9-3eb1742ad871" />
+</p>
+
+### Image to Video
+
+Finally, we move to the stage where the image (and the guidance prompt) serves as the basis for the video-generating model. At this phase, we proceed exactly as described in the [image-to-video](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/Guide-ComfyUI-I2V.md) tutorial. 
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/921a28d2-3966-4806-a356-9e8a2ee77543" />
+</p>
+
+The entire setup is the same, except that here we will use the `birdmanstyleanimationwanlora` LoRa, in addition to Wan's `lightx2v` LoRas. There is another LoRa specialized in pixel art that you can test later: the `wan2.2_animate_adapter_model`. I tested both LoRas, and they seem to work well.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/afa739bf-2e8f-40eb-abaa-d102d1ba8955" />
+</p>
+
+Once the model has generated the video internally, there are three paths you can take.
+
+The first is the standard approach: proceed to *Create Video* and *Save Video*.
+
+The second path is to select *Save Image*; instead of creating a video file, this generates a folder containing image files for every frame of the video. This allows for precise, frame-by-frame editing and enables the output to be used by other interfaces that generate animations from image sequences.
+
+The third path involves scaling the video before generating it. The advantage of this method is the ability to produce videos in different formats, such as animated GIFs. In my tests, scaling reduced video quality, though this is not necessarily always the case.
+
+Generally, the first path is the best choice, but you may find a need for the other two options at some point.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/4b7bdf45-eb7a-40a3-af40-331348afe749" />
+</p>
+
+Pixel art videos require absolute sharpness, but some video players might smooth out the image, potentially making the output look poor. It is worth keeping this in mind: the video itself might be perfectly sharp, but your player is misleading you. If you choose to save the PNGs (the second method), you can open them in *Aseprite* (or *LibreSprite*). In these programs, the frame sequence will render with true sharpness, allowing you to view the animation properly.
 
 ## Practical example
 
-We can use the [img2img_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img2txt_canon.json) file in this tutorial. You can consider it as a canonical I2T file that can be modified gradually according to your needs.
+We can use the [img2img_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/pixel_art.json) file in this tutorial. You can consider it as a canonical file that can be modified gradually according to your needs.
 
-<p align="center">
-    <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_i2t.png" />
-</p>
-
-This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2txt_canon.json). 
+This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/pixelart.json). 
 
 You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the scrip with the command `python run_workflow.py "{path_to_workflow_json}"` in the terminal.
