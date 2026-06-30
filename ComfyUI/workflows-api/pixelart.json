@@ -1,7 +1,7 @@
 {
   "3": {
     "inputs": {
-      "seed": 407168117695388,
+      "seed": 385432896313363,
       "steps": 20,
       "cfg": 4,
       "sampler_name": "euler",
@@ -83,7 +83,7 @@
   "12": {
     "inputs": {
       "pixels": [
-        "10",
+        "20",
         0
       ],
       "vae": [
@@ -103,6 +103,22 @@
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
       "title": "Load Checkpoint"
+    }
+  },
+  "20": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": 2046,
+      "height": 1548,
+      "crop": "disabled",
+      "image": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
     }
   },
   "28": {
@@ -348,7 +364,7 @@
   "52": {
     "inputs": {
       "add_noise": "disable",
-      "noise_seed": 870134293556933,
+      "noise_seed": 250440913025634,
       "steps": 4,
       "cfg": 2,
       "sampler_name": "euler",
@@ -381,7 +397,7 @@
   "53": {
     "inputs": {
       "add_noise": "enable",
-      "noise_seed": 720846421465569,
+      "noise_seed": 478147800340171,
       "steps": 4,
       "cfg": 2,
       "sampler_name": "euler",
@@ -578,7 +594,7 @@
       "mode": "rescale",
       "supersample": "false",
       "resampling": "nearest",
-      "rescale_factor": 0.5,
+      "rescale_factor": 0.125,
       "resize_width": 1,
       "resize_height": 1536,
       "image": [
@@ -589,6 +605,23 @@
     "class_type": "Image Resize",
     "_meta": {
       "title": "Image Resize"
+    }
+  },
+  "75": {
+    "inputs": {
+      "transparency": true,
+      "model": "isnet-anime",
+      "post_processing": true,
+      "only_mask": false,
+      "alpha_matting": true,
+      "alpha_matting_foreground_threshold": 240,
+      "alpha_matting_background_threshold": 10,
+      "alpha_matting_erode_size": 10,
+      "background_color": "none"
+    },
+    "class_type": "Image Rembg (Remove Background)",
+    "_meta": {
+      "title": "Image Rembg (Remove Background)"
     }
   }
 }
