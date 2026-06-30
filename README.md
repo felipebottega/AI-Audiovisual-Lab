@@ -12,7 +12,7 @@ Up to this point, the focus has been on explaining how to use the [ComfyUI](http
 - [x] ComfyUI - Image to Text (I2T)
 - [x] ComfyUI - Image to Video (I2V)
 - [x] ComfyUI - Upscale Image
-- [ ] ComfyUI - Pixel Art
+- [x] ComfyUI - Pixel Art
 - [ ] ComfyUI - Image Grid
 - [ ] ComfyUI - Video Grid
 - [ ] ComfyUI - Video Sequence Merging
