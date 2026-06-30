@@ -47,11 +47,11 @@ The entire setup is the same, except that here we will use the `birdmanstyleanim
 
 Once the model has generated the video internally, there are three paths you can take.
 
-The first is the standard approach: proceed to *Create Video* and *Save Video*.
+1. The first is the standard approach: proceed to *Create Video* and *Save Video*.
 
-The second path is to select *Save Image*; instead of creating a video file, this generates a folder containing image files for every frame of the video. This allows for precise, frame-by-frame editing and enables the output to be used by other interfaces that generate animations from image sequences.
+2. The second path is to select *Save Image*; instead of creating a video file, this generates a folder containing image files for every frame of the video. This allows for precise, frame-by-frame editing and enables the output to be used by other interfaces that generate animations from image sequences.
 
-The third path involves scaling the video before generating it. The advantage of this method is the ability to produce videos in different formats, such as animated GIFs. In my tests, scaling reduced video quality, though this is not necessarily always the case.
+3. The third path involves scaling the video before generating it. The advantage of this method is the ability to produce videos in different formats, such as animated GIFs. In my tests, scaling reduced video quality, though this is not necessarily always the case.
 
 Generally, the first path is the best choice, but you may find a need for the other two options at some point.
 
