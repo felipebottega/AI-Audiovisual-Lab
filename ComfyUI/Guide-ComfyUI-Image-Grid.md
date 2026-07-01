@@ -51,4 +51,28 @@ All API JSON files are contained in the folder `workflows-api` of this repositor
 
 As mentioned in many other tutorials, you can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) to run the API JSON workflows with the command `python run_workflow.py "{path_to_workflow_json}"` in the terminal. However, editing the parameters manually in the JSON is not ideal. Now we introduce another script, which will change up to two parameters in a list of values and execute the workflow programatically.
 
+## Text to Image Grid
 
+First you need to put the file [grid_txt2img.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/grid_txt2img.py) in the same location where are the executable (ex. `run_nvidia_gpu.bat`). The script content starts as follows:
+
+```python
+import os
+import json
+import time
+import datetime
+import requests
+from io import BytesIO
+from urllib import request
+from itertools import product
+from PIL import Image, ImageDraw, ImageFont
+
+# Server address.
+SERVER_URL = "http://127.0.0.1:8188"
+
+param1 = {"3": {"inputs": {"steps": [10, 20, 30, 50]}}}
+param2 = {"3": {"inputs": {"cfg": [2, 7, 12, 20]}}}
+api_json_file = "ComfyUI/user/default/workflows-api/txt2img_canon.json"
+big_grid_file = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
+```
+
+Usually you only need to change the variables `param1` and `param2` to the parameters you want to change. Note that the nested keys structure must be in accord with the API JSON file. Once you finished editing, save the file and run the command `python grid_txt2img.py`.
