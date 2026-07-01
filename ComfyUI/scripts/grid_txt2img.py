@@ -9,15 +9,18 @@ from itertools import product
 from PIL import Image, ImageDraw, ImageFont
 
 
-# Server address.
+### Server address ###
 SERVER_URL = "http://127.0.0.1:8188"
 
+
+### Parameters ###
 param1 = {"11": {"inputs": {"steps": [10, 20, 30, 50]}}}
 param2 = {"3": {"inputs": {"cfg": [2, 7, 12, 20]}}}
 api_json_file = "ComfyUI/user/default/workflows-api/txt2img_canon.json"
 big_grid_file = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
 
 
+### Functions ### 
 def find_leaf_list_paths(d, path=None):
     """
     Finds all paths whose final value is a list.
@@ -43,7 +46,6 @@ def find_leaf_list_paths(d, path=None):
 
     return results
 
-
 def set_nested_value(d, path, value):
     """
     Sets d[path[0]][path[1]]...[path[-1]] = value.
@@ -56,20 +58,31 @@ def set_nested_value(d, path, value):
 
     current[path[-1]] = value
 
-
 def clean_value_for_filename(value):
     return str(value).replace(".", "")
     
-    
-def filename_prefix(workflow, filename):
-        
-    for x in workflow:
-        if workflow[x]["class_type"] == "SaveImage":
-            workflow[x]["inputs"]["filename_prefix"] = filename
-            
+def set_filename_prefix(workflow, filename):
+    """
+    Sets filename_prefix in every output node that has this input.
+    Works with SaveImage, SaveVideo, VideoCombine, and similar nodes.
+    """
+    changed = 0
+
+    for node in workflow.values():
+        if not isinstance(node, dict):
+            continue
+
+        inputs = node.get("inputs", {})
+
+        if isinstance(inputs, dict) and "filename_prefix" in inputs:
+            inputs["filename_prefix"] = filename
+            changed += 1
+
+    if changed == 0:
+        print("Warning: no filename_prefix input found in workflow.")
+
     return workflow
     
-
 def get_first_output_image(history_item):
     """
     Extracts the first image from a ComfyUI history item.
@@ -82,7 +95,6 @@ def get_first_output_image(history_item):
             return node_output["images"][0]
 
     raise RuntimeError("No image output found in workflow history.")
-
 
 def download_comfy_image(image_info):
     """
@@ -100,11 +112,9 @@ def download_comfy_image(image_info):
 
     return Image.open(BytesIO(resp.content)).convert("RGB")
 
-
 def text_size(draw, text, font):
     bbox = draw.textbbox((0, 0), text, font=font)
     return bbox[2] - bbox[0], bbox[3] - bbox[1]
-
 
 def make_big_grid(results, values1, values2, name1, name2, output_file):
     """
@@ -177,6 +187,7 @@ def make_big_grid(results, values1, values2, name1, name2, output_file):
     grid.save(output_file)
 
 
+### Execution ###
 param1_paths = find_leaf_list_paths(param1)
 param2_paths = find_leaf_list_paths(param2)
 
@@ -203,7 +214,7 @@ for val1, val2 in product(values1, values2):
     # Load the API JSON file.
     with open(api_json_file, "r", encoding="utf-8") as f:
         workflow = json.load(f)
-        workflow = filename_prefix(workflow, filename)
+        workflow = set_filename_prefix(workflow, filename)
 
     set_nested_value(workflow, path1, val1)
     set_nested_value(workflow, path2, val2)
@@ -231,7 +242,6 @@ for val1, val2 in product(values1, values2):
     image = download_comfy_image(image_info)
 
     results[(val1, val2)] = image
-
 
 make_big_grid(results=results, values1=values1, values2=values2, name1=name1, name2=name2, output_file=big_grid_file)
 

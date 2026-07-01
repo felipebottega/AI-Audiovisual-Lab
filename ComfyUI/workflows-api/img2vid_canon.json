@@ -13,7 +13,7 @@
   "85": {
     "inputs": {
       "add_noise": "disable",
-      "noise_seed": 56283533665252,
+      "noise_seed": 0,
       "steps": 4,
       "cfg": 1,
       "sampler_name": "euler",

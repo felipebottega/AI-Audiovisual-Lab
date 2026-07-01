@@ -16,14 +16,15 @@ except ImportError:
     from moviepy.editor import VideoFileClip, CompositeVideoClip, ImageClip, concatenate_videoclips
 
 
-# Server address.
+### Server address ###
 SERVER_URL = "http://127.0.0.1:8188"
 
-# Parameters to vary.
+
+### Parameters ###
 # param1 = rows, param2 = columns.
 param1 = {"81": {"inputs": {"cfg": [3, 6]}}}
 param2 = {"86": {"inputs": {"shift": [2, 5]}}}
-
+image_path = "picture.jpg"
 api_json_file = "ComfyUI/user/default/workflows-api/txt2vid_canon.json"
 big_grid_file = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.mp4"
 
@@ -38,6 +39,7 @@ LABEL_FONT_SIZE = 22
 KEEP_TEMP_VIDEOS = True
 
 
+### Functions ### 
 def find_leaf_list_paths(d, path=None):
     """
     Finds all paths whose final value is a list.
@@ -55,7 +57,6 @@ def find_leaf_list_paths(d, path=None):
 
     return results
 
-
 def set_nested_value(d, path, value):
     """
     Sets d[path[0]][path[1]]...[path[-1]] = value.
@@ -67,22 +68,21 @@ def set_nested_value(d, path, value):
 
     current[path[-1]] = value
 
-
 def clean_value_for_filename(value):
-    text = str(value)
+    text = str(value)[:16]
     replacements = {
         "\\": "-",
         "/": "-",
         ":": "-",
         " ": "_",
         ".": "",
+        ",": "",
     }
 
     for old, new in replacements.items():
         text = text.replace(old, new)
 
     return text
-
 
 def set_filename_prefix(workflow, filename):
     """
@@ -106,6 +106,30 @@ def set_filename_prefix(workflow, filename):
 
     return workflow
 
+def set_image_path(workflow, path):
+    """
+    Sets the path to the input image in LoadImage nodes only.
+    Does not modify image links such as ["8", 0].
+    """
+    changed = 0
+
+    for node in workflow.values():
+        if not isinstance(node, dict):
+            continue
+
+        if node.get("class_type") != "LoadImage":
+            continue
+
+        inputs = node.get("inputs", {})
+
+        if isinstance(inputs, dict) and isinstance(inputs.get("image"), str):
+            inputs["image"] = path
+            changed += 1
+
+    if changed == 0:
+        print("Warning: no LoadImage node with image path found in workflow.")
+
+    return workflow
 
 def get_first_output_video(history_item):
     """
@@ -135,7 +159,6 @@ def get_first_output_video(history_item):
 
     raise RuntimeError("No video output found in workflow history.")
 
-
 def download_comfy_file(file_info, output_dir):
     """
     Downloads an output file from ComfyUI using the /view endpoint.
@@ -158,7 +181,6 @@ def download_comfy_file(file_info, output_dir):
 
     return str(local_path)
 
-
 def get_font(size):
     for font_name in ["arial.ttf", "DejaVuSans-Bold.ttf", "DejaVuSans.ttf"]:
         try:
@@ -167,7 +189,6 @@ def get_font(size):
             pass
 
     return ImageFont.load_default()
-
 
 def make_label_image(text, width, height=LABEL_H, font_size=LABEL_FONT_SIZE):
     """
@@ -213,30 +234,25 @@ def make_label_image(text, width, height=LABEL_H, font_size=LABEL_FONT_SIZE):
 
     return img
 
-
 def clip_subclip(clip, start, end):
     if hasattr(clip, "subclipped"):
         return clip.subclipped(start, end)
     return clip.subclip(start, end)
-
 
 def clip_resize(clip, size):
     if hasattr(clip, "resized"):
         return clip.resized(size)
     return clip.resize(newsize=size)
 
-
 def clip_position(clip, position):
     if hasattr(clip, "with_position"):
         return clip.with_position(position)
     return clip.set_position(position)
 
-
 def clip_duration(clip, duration):
     if hasattr(clip, "with_duration"):
         return clip.with_duration(duration)
     return clip.set_duration(duration)
-
 
 def make_video_grid(video_paths, values1, values2, name1, name2, output_file):
     """
@@ -310,7 +326,6 @@ def make_video_grid(video_paths, values1, values2, name1, name2, output_file):
     for clip in clips.values():
         clip.close()
 
-
 def run_workflow_and_wait(workflow):
     p = {"prompt": workflow}
     data = json.dumps(p).encode("utf-8")
@@ -333,64 +348,54 @@ def run_workflow_and_wait(workflow):
         time.sleep(10)
 
 
-def main():
-    param1_paths = find_leaf_list_paths(param1)
-    param2_paths = find_leaf_list_paths(param2)
+### Execution ###
+param1_paths = find_leaf_list_paths(param1)
+param2_paths = find_leaf_list_paths(param2)
 
-    if len(param1_paths) != 1:
-        raise ValueError(f"param1 should contain exactly one final list, but found {len(param1_paths)}.")
+if len(param1_paths) != 1:
+    raise ValueError(f"param1 should contain exactly one final list, but found {len(param1_paths)}.")
 
-    if len(param2_paths) != 1:
-        raise ValueError(f"param2 should contain exactly one final list, but found {len(param2_paths)}.")
+if len(param2_paths) != 1:
+    raise ValueError(f"param2 should contain exactly one final list, but found {len(param2_paths)}.")
 
-    path1, values1 = param1_paths[0]
-    path2, values2 = param2_paths[0]
+path1, values1 = param1_paths[0]
+path2, values2 = param2_paths[0]
 
-    name1 = path1[-1]
-    name2 = path2[-1]
+name1 = path1[-1]
+name2 = path2[-1]
 
-    video_paths = {}
+video_paths = {}
 
-    for i, val1 in enumerate(values1):
-        for j, val2 in enumerate(values2):
-            val1_name = clean_value_for_filename(val1)
-            val2_name = clean_value_for_filename(val2)
+for i, val1 in enumerate(values1):
+    for j, val2 in enumerate(values2):
+        val1_name = clean_value_for_filename(val1)
+        val2_name = clean_value_for_filename(val2)
 
-            filename = f"video_{name1}_{val1_name}_{name2}_{val2_name}"
+        filename = f"video_{name1}_{val1_name}_{name2}_{val2_name}"
 
-            with open(api_json_file, "r", encoding="utf-8") as f:
-                workflow = json.load(f)
-
-            set_nested_value(workflow, path1, val1)
-            set_nested_value(workflow, path2, val2)
+        with open(api_json_file, "r", encoding="utf-8") as f:
+            workflow = json.load(f)
             workflow = set_filename_prefix(workflow, filename)
+            workflow = set_image_path(workflow, image_path)
 
-            print(f"Executing {filename}")
-            prompt_id, history_item = run_workflow_and_wait(workflow)
-            print(f"Finished prompt {prompt_id} - {filename}")
+        set_nested_value(workflow, path1, val1)
+        set_nested_value(workflow, path2, val2)
 
-            video_info = get_first_output_video(history_item)
-            local_video = download_comfy_file(video_info, temp_video_dir)
-            video_paths[(i, j)] = local_video
+        print(f"Executing {filename}")
+        prompt_id, history_item = run_workflow_and_wait(workflow)
+        print(f"Finished prompt {prompt_id} - {filename}")
 
-    make_video_grid(
-        video_paths=video_paths,
-        values1=values1,
-        values2=values2,
-        name1=name1,
-        name2=name2,
-        output_file=big_grid_file,
-    )
+        video_info = get_first_output_video(history_item)
+        local_video = download_comfy_file(video_info, temp_video_dir)
+        video_paths[(i, j)] = local_video
 
-    if not KEEP_TEMP_VIDEOS:
-        for path in video_paths.values():
-            try:
-                os.remove(path)
-            except OSError:
-                pass
+make_video_grid(video_paths=video_paths, values1=values1, values2=values2, name1=name1, name2=name2, output_file=big_grid_file)
 
-    print(f"Finished. Video grid saved at: {big_grid_file}")
+if not KEEP_TEMP_VIDEOS:
+    for path in video_paths.values():
+        try:
+            os.remove(path)
+        except OSError:
+            pass
 
-
-if __name__ == "__main__":
-    main()
+print(f"Finished. Grid saved at: {big_grid_file}")
