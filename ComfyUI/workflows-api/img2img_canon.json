@@ -73,7 +73,7 @@
   },
   "10": {
     "inputs": {
-      "image": "roupa7.jpg"
+      "image": "picture.jpg"
     },
     "class_type": "LoadImage",
     "_meta": {
