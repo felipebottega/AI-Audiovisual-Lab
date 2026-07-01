@@ -87,7 +87,7 @@ This is not arbitrary. It works because Lightning LoRAs are designed to make the
 
 So the model does not need many steps because the LoRA is already pushing it toward a fast, compressed generation path.
 
-In a **full, non-Lightning workflow**, the same idea still applies, but the total step count is usually higher.
+In a **full, non-Lightning workflow**, the same idea still applies, but the total step count is usually higher. Normally you would use 20 steps for kind of workflow, 10 step for high noise and 10 steps for low noise. If you need more detail refinement, it is possible to use more steps fpr the low noise stage.
 
 ## LoRAs
 
