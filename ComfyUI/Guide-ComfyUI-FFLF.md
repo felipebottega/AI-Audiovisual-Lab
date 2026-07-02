@@ -10,7 +10,7 @@ Below we show an example where we extracted the first and last frames of an exis
       <video src="https://github.com/user-attachments/assets/f72f73f7-c127-49b6-9f4b-bd843d48e103" width="100%" controls></video>
     </td>
     <td width="50%" align="center">
-      <video src="https://github.com/user-attachments/assets/c4642c94-fa2b-43c1-bfa7-5fd9920d5422" width="100%" controls></video>
+      <video src="https://github.com/user-attachments/assets/a4bf04b6-44f8-48b5-bd83-055fa88ae950" width="100%" controls></video>
     </td>
   </tr>
 </table>
