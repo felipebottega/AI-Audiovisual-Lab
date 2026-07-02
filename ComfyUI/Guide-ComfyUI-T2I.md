@@ -1,5 +1,7 @@
 # Guide to ComfyUI - Text to Image (T2I)
 
+Text-to-Image, or T2I, is a generation method where the model creates an image directly from a text prompt. The prompt describes what should appear in the image, such as the subject, style, colors, composition, or mood, and the model uses this information to generate a new image from scratch.
+
 ## Basic Workflow Diagram
 
 ```mermaid
