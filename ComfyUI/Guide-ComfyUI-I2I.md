@@ -1,5 +1,9 @@
 # Guide to ComfyUI - Image to Image (I2I)
 
+Image-to-Image, or I2I, is a generation method where the model receives an input image and uses it as a visual reference to create a new image. Instead of starting only from a text prompt, the workflow starts from an existing image and modifies it according to the prompt and the generation parameters.
+
+This is useful when we want to preserve part of the original composition, pose, colors, or structure, while changing the style, details, lighting, background, or subject appearance. The strength of the transformation depends mainly on the denoise value: lower denoise values preserve more of the original image, while higher values allow stronger changes.
+
 ## Basic Workflow Diagram
 
 ```mermaid
