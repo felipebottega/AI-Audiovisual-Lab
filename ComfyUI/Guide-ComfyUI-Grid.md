@@ -187,14 +187,14 @@ TEMP_VIDEO_DIR = "ComfyUI/output"
 param1 = {
     "86": {
         "inputs": {
-            "cfg": [1, 4]
+            "cfg": [1]
         }
     }
 }
 param2 = {
-    "103": {
+    "86": {
         "inputs": {
-            "shift": [2, 5]
+            "noise_seed": [165697863152, 65475646262, 8978656434536]
         }
     }
 }
