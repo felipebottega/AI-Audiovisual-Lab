@@ -4,6 +4,10 @@ First Frame Last Frame (FFLF), or First Last Frame (FLF), is a method to create 
 
 Below we show an example where we extracted the first and last frames of an existing video and fed them to the FFLF workflow.
 
+<p align="center">
+  <img width="1100" src="https://github.com/user-attachments/assets/601074a4-4c50-49dc-b7ac-bb91d692ae9c" />
+</p>
+
 <table>
   <tr>
     <td width="50%" align="center">
