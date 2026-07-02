@@ -32,7 +32,7 @@ And here is the negative prompt: *sudden change, abrupt transition, jump cut, fl
 
 ## Practical example
 
-Now we will see in practice how to execute an FFLF workflow with WAN in ComfyUI. We will use the [txt2vid_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/FFLF.json) file in this tutorial. You can consider it as a canonical FFLF file that can be modified gradually according to your needs.
+Now we will see in practice how to execute an FFLF workflow with WAN in ComfyUI. We will use the [FFLF.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/FFLF.json) file in this tutorial. You can consider it as a canonical FFLF file that can be modified gradually according to your needs.
 
 <p align="center">
     <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_fflf.png" />
