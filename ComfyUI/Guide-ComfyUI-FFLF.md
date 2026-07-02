@@ -1,6 +1,8 @@
 # Guide to ComfyUI - First Frame Last Frame (FFLF)
 
-Suppose you have tow images that you want to use as initial and final frame of a certain scene or short video. It is possible to use Wan to create a video connectiong both frames as first and last frame.
+First Frame Last Frame (FFLF), or First Last Frame (FLF), is a method to create a video where its first and last frames match the images provided. Suppose you have two images that you want to use as initial and final frames of a certain scene or short video. It is possible to use Wan to create a transition video between both frames as first and last frame. The approach is very similar to the I2V workflow, but here we use two input images and the node *WanFirstLastFrametoVideo* instead of *WanImageToVideo*. This is the only difference between these workflows.
+
+Below we show an example where we extracted the first and last frames of an existing video and fed them to the FFLF workflow.
 
 <table>
   <tr>
