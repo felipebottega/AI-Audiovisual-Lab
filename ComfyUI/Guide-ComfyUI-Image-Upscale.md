@@ -14,7 +14,7 @@ The second one is the node called *Image Resize*. This is the one usually used i
     <img width="320" src="https://github.com/user-attachments/assets/c59d2da6-70ba-43f5-984e-eb17c0539d34" />
 </p>
 
-The third one is the node *Uoscale Image (using Model)*, which be use use in conjunction with the node *Load Upscale Model*. These model use AI to generate the upscale, instead of a deterministic algorithm. The biggest difference is that AI may create new detail in the image.
+The third one is the node *Upscale Image (using Model)*, which be use use in conjunction with the node *Load Upscale Model*. These model use AI to generate the upscale, instead of a deterministic algorithm. The biggest difference is that AI may create new detail in the image.
 
 <p align="center">
     <img width="650" src="https://github.com/user-attachments/assets/3ed52c5e-99eb-4abc-b601-a241e3f32d8b" />
