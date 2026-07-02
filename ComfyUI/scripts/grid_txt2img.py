@@ -9,15 +9,45 @@ from itertools import product
 from PIL import Image, ImageDraw, ImageFont
 
 
-### Server address ###
+### Constants ###
 SERVER_URL = "http://127.0.0.1:8188"
+API_JSON_FILE = "ComfyUI/user/default/workflows-api/txt2img_canon.json"
+BIG_GRID_FILE = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
 
 
 ### Parameters ###
-param1 = {"11": {"inputs": {"steps": [10, 20, 30, 50]}}}
-param2 = {"3": {"inputs": {"cfg": [2, 7, 12, 20]}}}
-api_json_file = "ComfyUI/user/default/workflows-api/txt2img_canon.json"
-big_grid_file = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
+
+# Grid parameters.
+param1 = {
+    "3": {
+        "inputs": {
+            "steps": [10, 20, 30, 50]
+        }
+    }
+}
+param2 = {
+    "3": {
+        "inputs": {
+            "cfg": [2, 7, 12, 20]
+        }
+    }
+}
+
+# Optional parameters.
+param_opt = {
+    "6": {    # positive prompt
+        "inputs": {
+            "text":
+                "best quality, amazing quality, perfect eyes, blushing, foreground, vibrant color palette, soft shadows and subtle highlights, light depth, solo, looking at viewer, cowboy shot, dynamic pose, girl, long hair, pink hair, purple hair, gradiant hair, twintails, kneeling on bed, bedroom, smile"
+        }
+    },
+    "7": {    # negative prompt
+        "inputs": {
+            "text":
+                "noisy, blurry, soft, deformed, ugly, low detailed, bad quality, watermark, long neck, multiple legs, multiple fingers, missing limbs, deformed hands, deformed feet, mutations ugly hands, multiple navels, EasyNegativeV2, bad-hands-5, (worst quality, low quality:2), (bad-hands-5:2), disproportion_head, (worst quality:2), (low quality:2), (normal quality:2), lowres, bad anatomy, (bad hands:2), multiple limbs, extra limbs, deformed limbs, normal quality, ((monochrome)), ((corssed_eyes))), (blur:2), six fingers"
+        }
+    }
+}
 
 
 ### Functions ### 
@@ -83,6 +113,45 @@ def set_filename_prefix(workflow, filename):
 
     return workflow
     
+
+def apply_param_overrides(workflow, params, strict=True):
+    """
+    Applies fixed parameter overrides to a ComfyUI API workflow.
+    """
+    for node_id, node_data in params.items():
+        if node_id not in workflow:
+            if strict:
+                raise KeyError(f"Node '{node_id}' not found in workflow.")
+            workflow[node_id] = {}
+
+        if not isinstance(node_data, dict):
+            raise TypeError(f"Override for node '{node_id}' must be a dictionary.")
+
+        for section_name, section_data in node_data.items():
+            if section_name not in workflow[node_id]:
+                if strict:
+                    raise KeyError(f"Section '{section_name}' not found in node '{node_id}'.")
+                workflow[node_id][section_name] = {}
+
+            if not isinstance(section_data, dict):
+                workflow[node_id][section_name] = section_data
+                continue
+
+            if not isinstance(workflow[node_id][section_name], dict):
+                raise TypeError(
+                    f"workflow['{node_id}']['{section_name}'] is not a dictionary."
+                )
+
+            for key, value in section_data.items():
+                if strict and key not in workflow[node_id][section_name]:
+                    raise KeyError(
+                        f"Key '{key}' not found in workflow['{node_id}']['{section_name}']."
+                    )
+
+                workflow[node_id][section_name][key] = value
+
+    return workflow
+
 def get_first_output_image(history_item):
     """
     Extracts the first image from a ComfyUI history item.
@@ -212,9 +281,10 @@ for val1, val2 in product(values1, values2):
     filename = f"image_{name1}_{val1_name}_{name2}_{val2_name}"
 
     # Load the API JSON file.
-    with open(api_json_file, "r", encoding="utf-8") as f:
+    with open(API_JSON_FILE, "r", encoding="utf-8") as f:
         workflow = json.load(f)
         workflow = set_filename_prefix(workflow, filename)
+        workflow = apply_param_overrides(workflow, param_opt)
 
     set_nested_value(workflow, path1, val1)
     set_nested_value(workflow, path2, val2)
@@ -243,6 +313,6 @@ for val1, val2 in product(values1, values2):
 
     results[(val1, val2)] = image
 
-make_big_grid(results=results, values1=values1, values2=values2, name1=name1, name2=name2, output_file=big_grid_file)
+make_big_grid(results=results, values1=values1, values2=values2, name1=name1, name2=name2, output_file=BIG_GRID_FILE)
 
-print(f"Finished. Grid saved at: {big_grid_file}")
+print(f"Finished. Grid saved at: {BIG_GRID_FILE}")

@@ -21,13 +21,44 @@ SERVER_URL = "http://127.0.0.1:8188"
 
 
 ### Parameters ###
+
+# Grid parameters.
 # param1 = rows, param2 = columns.
-param1 = {"81": {"inputs": {"cfg": [1, 3, 6]}}}
-param2 = {"86": {"inputs": {"shift": [1, 2, 5]}}}
+param1 = {
+    "81": {
+        "inputs": {
+            "cfg": [1, 3, 6]
+        }
+    }
+}
+param2 = {
+    "86": {
+        "inputs": {
+            "shift": [1, 2, 5]
+        }
+    }
+}
+
+# Workflow parameters.
 api_json_file = "ComfyUI/user/default/workflows-api/txt2vid_canon.json"
 big_grid_file = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.mp4"
-
 temp_video_dir = "ComfyUI/output"
+
+# Optional parameters.
+param_opt = {
+    "89": {    # positive prompt
+        "inputs": {
+            "text":
+                "cinematic animated scene of vikings landing on a shore, strong ocean motion with visible waves crashing against the ship, wind-driven movement affecting sails, ropes and clothing, subtle camera shake as if filmed from a moving ship, water splashes in foreground, continuous environmental motion, animated historical scene, dynamic lighting variation from moving clouds, characters subtly shifting posture and reacting, realistic temporal variation between frames"
+        }
+    },
+    "72": {    # negative prompt
+        "inputs": {
+            "text":
+                "Overexposure, static, blurred details, subtitles, paintings, pictures, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, mutilated, redundant fingers, poorly painted hands, poorly painted faces, deformed, disfigured, deformed limbs, fused fingers, cluttered background, slow motion"
+        }
+    }
+}
 
 # Video grid options.
 LOOPS = 5
@@ -101,6 +132,57 @@ def set_filename_prefix(workflow, filename):
 
     if changed == 0:
         print("Warning: no filename_prefix input found in workflow.")
+
+    return workflow
+
+def apply_param_overrides(workflow, params, strict=True):
+    """
+    Applies fixed parameter overrides to a ComfyUI API workflow.
+
+    Expected format:
+        {
+            "node_id": {
+                "inputs": {
+                    "parameter_name": value
+                }
+            }
+        }
+
+    If strict=True, the function raises an error if the node,
+    section, or parameter does not already exist in the workflow.
+    """
+
+    for node_id, node_data in params.items():
+        if node_id not in workflow:
+            if strict:
+                raise KeyError(f"Node '{node_id}' not found in workflow.")
+            workflow[node_id] = {}
+
+        if not isinstance(node_data, dict):
+            raise TypeError(f"Override for node '{node_id}' must be a dictionary.")
+
+        for section_name, section_data in node_data.items():
+            if section_name not in workflow[node_id]:
+                if strict:
+                    raise KeyError(f"Section '{section_name}' not found in node '{node_id}'.")
+                workflow[node_id][section_name] = {}
+
+            if not isinstance(section_data, dict):
+                workflow[node_id][section_name] = section_data
+                continue
+
+            if not isinstance(workflow[node_id][section_name], dict):
+                raise TypeError(
+                    f"workflow['{node_id}']['{section_name}'] is not a dictionary."
+                )
+
+            for key, value in section_data.items():
+                if strict and key not in workflow[node_id][section_name]:
+                    raise KeyError(
+                        f"Key '{key}' not found in workflow['{node_id}']['{section_name}']."
+                    )
+
+                workflow[node_id][section_name][key] = value
 
     return workflow
 
@@ -348,10 +430,11 @@ for i, val1 in enumerate(values1):
 
         with open(api_json_file, "r", encoding="utf-8") as f:
             workflow = json.load(f)
+            workflow = set_filename_prefix(workflow, filename)
+            workflow = apply_param_overrides(workflow, param_opt)
 
         set_nested_value(workflow, path1, val1)
         set_nested_value(workflow, path2, val2)
-        workflow = set_filename_prefix(workflow, filename)
 
         print(f"Executing {filename}")
         prompt_id, history_item = run_workflow_and_wait(workflow)

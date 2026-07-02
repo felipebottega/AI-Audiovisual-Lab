@@ -18,7 +18,7 @@ except ImportError:
 
 ### Constants ###
 SERVER_URL = "http://127.0.0.1:8188"
-API_JSON_FILE = "ComfyUI/user/default/workflows-api/img2vid_canon.json"
+API_JSON_FILE = "ComfyUI/user/default/workflows-api/FFLF.json"
 BIG_GRID_FILE = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.mp4"
 TEMP_VIDEO_DIR = "ComfyUI/output"
 
@@ -27,35 +27,54 @@ TEMP_VIDEO_DIR = "ComfyUI/output"
 
 # Grid parameters.
 param1 = {
-    "81": {
+    "86": {
         "inputs": {
-            "cfg": [3, 6]
+            "cfg": [1]
         }
     }
 }
 param2 = {
     "86": {
         "inputs": {
-            "shift": [2, 5]
+            "noise_seed": [165697863152, 65475646262, 8978656434536]
         }
     }
 }
-
 # Input parameters.
-image_path = "picture.jpg"
+image_path1 = "img1.png"
+image_path2 = "img2.png"
+
+param_input = {
+    "97": {    # first frame
+        "inputs": {
+            "image": image_path1
+        }
+    },
+    "142": {   # last frame
+        "inputs": {
+            "image": image_path2
+        }
+    }
+}
 
 # Optional parameters.
 param_opt = {
     "93": {    # positive prompt
         "inputs": {
             "text":
-                "cinematic animated scene of vikings landing on a shore, strong ocean motion with visible waves crashing against the ship, wind-driven movement affecting sails, ropes and clothing, subtle camera shake as if filmed from a moving ship, water splashes in foreground, continuous environmental motion, animated historical scene, dynamic lighting variation from moving clouds, characters subtly shifting posture and reacting, realistic temporal variation between frames"
+                "Fixed camera close-up of the same anime character in side profile. The video begins with the character biting his finger near his mouth. Then he slowly pulls his hand away from his mouth, revealing a small tooth held between his fingers. His expression gradually changes to a tense, painful, focused look. Preserve the same character, same hair, same skin tone, same background, same framing, same lighting, and same anime style. Smooth continuous motion, gradual transition from the first frame to the last frame, natural hand movement, subtle facial motion, coherent in-between frames."
         }
     },
     "89": {    # negative prompt
         "inputs": {
             "text":
-                "Overexposure, static, blurred details, subtitles, paintings, pictures, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, mutilated, redundant fingers, poorly painted hands, poorly painted faces, deformed, disfigured, deformed limbs, fused fingers, cluttered background, slow motion,"
+                "sudden change, abrupt transition, jump cut, flicker, morphing artifacts, extra fingers, deformed hand, missing fingers, warped face, distorted mouth, different character, identity change, background change, camera movement, blurry frames, inconsistent anatomy, duplicated flower"
+        }
+    },
+    "143": {
+        "inputs": {
+            "width": 512,
+            "height": 432
         }
     }
 }
@@ -133,31 +152,6 @@ def set_filename_prefix(workflow, filename):
 
     if changed == 0:
         print("Warning: no filename_prefix input found in workflow.")
-
-    return workflow
-
-def set_image_path(workflow, path):
-    """
-    Sets the path to the input image in LoadImage nodes only.
-    Does not modify image links such as ["8", 0].
-    """
-    changed = 0
-
-    for node in workflow.values():
-        if not isinstance(node, dict):
-            continue
-
-        if node.get("class_type") != "LoadImage":
-            continue
-
-        inputs = node.get("inputs", {})
-
-        if isinstance(inputs, dict) and isinstance(inputs.get("image"), str):
-            inputs["image"] = path
-            changed += 1
-
-    if changed == 0:
-        print("Warning: no LoadImage node with image path found in workflow.")
 
     return workflow
 
@@ -444,7 +438,7 @@ for i, val1 in enumerate(values1):
         with open(API_JSON_FILE, "r", encoding="utf-8") as f:
             workflow = json.load(f)
             workflow = set_filename_prefix(workflow, filename)
-            workflow = set_image_path(workflow, image_path)
+            workflow = apply_param_overrides(workflow, param_input)
             workflow = apply_param_overrides(workflow, param_opt)
 
         set_nested_value(workflow, path1, val1)

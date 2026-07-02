@@ -9,20 +9,52 @@ from itertools import product
 from PIL import Image, ImageDraw, ImageFont
 
 
-### Server address ###
+### Constants ###
 SERVER_URL = "http://127.0.0.1:8188"
+API_JSON_FILE = "ComfyUI/user/default/workflows-api/img2img_canon.json"
+BIG_GRID_FILE = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
 
 
 ### Parameters ###
-param1 = {"6": {"inputs": {"text": 
-    ["goth girls, park in the background, sunny day, masterpiece, high quality, pixelart, detailed",
-     "goth monsters, park in the background, dark day, masterpiece, high quality, pixelart, detailed",
-     "monster, park in the background, dark day, masterpiece, high quality, pixelart, detailed"]
-    }}}
-param2 = {"3": {"inputs": {"cfg": [2, 7, 12, 20]}}}
+
+# Grid parameters.
+param1 = {
+    "6": {
+        "inputs": {
+            "text": [
+                "goth girls, park in the background, sunny day, masterpiece, high quality, pixelart, detailed",
+                "goth monsters, park in the background, dark day, masterpiece, high quality, pixelart, detailed",
+                "monster, park in the background, dark day, masterpiece, high quality, pixelart, detailed"
+            ]
+        }
+    }
+}
+param2 = {
+    "3": {
+        "inputs": {
+            "cfg": [2, 7, 12, 20]
+        }
+    }
+}
+
+# Input parameters.
 image_path = "picture.jpg"
-api_json_file = "ComfyUI/user/default/workflows-api/img2img_canon.json"
-big_grid_file = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
+
+# Optional parameters.
+param_opt = {
+    "93": {    # positive prompt
+        "inputs": {
+            "text":
+                "Fixed camera close-up of the same anime character in side profile. The video begins with the character biting his finger near his mouth. Then he slowly pulls his hand away from his mouth, revealing a small tooth held between his fingers. His expression gradually changes to a tense, painful, focused look. Preserve the same character, same hair, same skin tone, same background, same framing, same lighting, and same anime style. Smooth continuous motion, gradual transition from the first frame to the last frame, natural hand movement, subtle facial motion, coherent in-between frames."
+        }
+    },
+    "89": {    # negative prompt
+        "inputs": {
+            "text":
+                "sudden change, abrupt transition, jump cut, flicker, morphing artifacts, extra fingers, deformed hand, missing fingers, warped face, distorted mouth, different character, identity change, background change, camera movement, blurry frames, inconsistent anatomy, duplicated flower"
+        }
+    }
+}
 
 
 ### Functions ### 
@@ -110,6 +142,62 @@ def set_image_path(workflow, path):
 
     if changed == 0:
         print("Warning: no LoadImage node with image path found in workflow.")
+
+    return workflow
+    
+def apply_param_overrides(workflow, params, strict=True):
+    """
+    Applies fixed parameter overrides to a ComfyUI API workflow.
+
+    Example:
+        params = {
+            "3": {
+                "inputs": {
+                    "cfg": 7
+                }
+            }
+        }
+
+    This sets:
+        workflow["3"]["inputs"]["cfg"] = 7
+
+    If strict=True, raises errors when a node or input does not exist.
+    If strict=False, creates missing dictionaries when possible.
+    """
+
+    for node_id, node_data in params.items():
+        if strict and node_id not in workflow:
+            raise KeyError(f"Node {node_id} not found in workflow.")
+
+        if node_id not in workflow:
+            workflow[node_id] = {}
+
+        if not isinstance(node_data, dict):
+            raise TypeError(f"Override for node {node_id} must be a dictionary.")
+
+        for section_name, section_data in node_data.items():
+            if strict and section_name not in workflow[node_id]:
+                raise KeyError(f"Section '{section_name}' not found in node {node_id}.")
+
+            if section_name not in workflow[node_id]:
+                workflow[node_id][section_name] = {}
+
+            if not isinstance(section_data, dict):
+                workflow[node_id][section_name] = section_data
+                continue
+
+            if not isinstance(workflow[node_id][section_name], dict):
+                raise TypeError(
+                    f"workflow[{node_id}][{section_name}] is not a dictionary."
+                )
+
+            for key, value in section_data.items():
+                if strict and key not in workflow[node_id][section_name]:
+                    raise KeyError(
+                        f"Key '{key}' not found in workflow[{node_id}][{section_name}]."
+                    )
+
+                workflow[node_id][section_name][key] = value
 
     return workflow
     
@@ -242,10 +330,11 @@ for val1, val2 in product(values1, values2):
     filename = f"image_{name1}_{val1_name}_{name2}_{val2_name}"
 
     # Load the API JSON file.
-    with open(api_json_file, "r", encoding="utf-8") as f:
+    with open(API_JSON_FILE, "r", encoding="utf-8") as f:
         workflow = json.load(f)
         workflow = set_filename_prefix(workflow, filename)
         workflow = set_image_path(workflow, image_path)
+        workflow = apply_param_overrides(workflow, param_opt)
 
     set_nested_value(workflow, path1, val1)
     set_nested_value(workflow, path2, val2)
@@ -275,6 +364,6 @@ for val1, val2 in product(values1, values2):
     results[(val1, val2)] = image
 
 
-make_big_grid(results=results, values1=values1, values2=values2, name1=name1, name2=name2, output_file=big_grid_file)
+make_big_grid(results=results, values1=values1, values2=values2, name1=name1, name2=name2, output_file=BIG_GRID_FILE)
 
-print(f"Finished. Grid saved at: {big_grid_file}")
+print(f"Finished. Grid saved at: {BIG_GRID_FILE}")
