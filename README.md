@@ -15,7 +15,7 @@ Up to this point, the focus has been on explaining how to use the [ComfyUI](http
 - [x] ComfyUI - Pixel Art
 - [x] ComfyUI - Image Grid
 - [x] ComfyUI - Video Grid
-- [ ] ComfyUI - Video Sequence Merging
+- [x] ComfyUI - Video Sequence Merging
 - [ ] ConfyUI - Image with fixed Character
 - [ ] ConfyUI - Video with fixed Character
 - [ ] Automatic1111
