@@ -292,14 +292,14 @@ for val1, val2 in product(values1, values2):
     p = {"prompt": workflow}
     data = json.dumps(p).encode("utf-8")
 
-    # Envia o workflow para execução.
+    # Send workflow to execution.
     req = request.Request(f"{SERVER_URL}/prompt", data=data)
     resp = request.urlopen(req)
     prompt_id = json.load(resp)["prompt_id"]
 
     print(f"Executing {prompt_id} - {filename}")
 
-    # Espera finalizar antes de enviar o próximo.
+    # Wait to finish before sending te next.
     while True:
         status = requests.get(f"{SERVER_URL}/history/{prompt_id}").json()
 

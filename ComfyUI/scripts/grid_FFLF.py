@@ -40,6 +40,7 @@ param2 = {
         }
     }
 }
+
 # Input parameters.
 image_path1 = "img1.png"
 image_path2 = "img2.png"
@@ -446,7 +447,6 @@ for i, val1 in enumerate(values1):
 
         print(f"Executing {filename}")
         prompt_id, history_item = run_workflow_and_wait(workflow)
-        print(f"Finished prompt {prompt_id} - {filename}")
 
         video_info = get_first_output_video(history_item)
         local_video = download_comfy_file(video_info, TEMP_VIDEO_DIR)
