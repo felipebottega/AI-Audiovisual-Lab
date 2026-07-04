@@ -68,14 +68,15 @@ First select the image in the *Load Image* node, right click on it and select *O
   </tr>
 </table>
 
-Click on the *Color Selector* to choose a color and the select the icon <img width="29" height="31" alt="image" src="https://github.com/user-attachments/assets/0e643bd2-20df-4045-b804-9156097754ce" /> to start painting over the image. The idea is to give the model an idea of what you want. It just a sketch. You can use as many color and details as you want, but for this example we just used one color and a single shape for simplicity. 
+Click on the *Color Selector* to choose a color and the select the icon <img width="29" height="31" alt="image" src="https://github.com/user-attachments/assets/0e643bd2-20df-4045-b804-9156097754ce" /> to start painting over the image. The idea is to give the model an idea of what you want. This is just a sketch. You can use as many colors and details as you want, but for this example we just used one color and a single shape for simplicity. 
 
-<table align="center">
+<p align="center">
     <img width="300" src="https://github.com/user-attachments/assets/757859f8-d45f-49dc-8ca9-a06c2046d810" />
-</table>
+</p>
 
 Once you have finished painting, select the icon <img width="26" height="27" alt="image" src="https://github.com/user-attachments/assets/94719fde-aece-40fc-b992-455fff645ba7" /> to apply the mask. You should apply exactly over the area you painted the colors, which is the area you want to inpaint.
 
+Inpainting with normal checkpoints is not easy, you test several values for CFG, denoise, sampler, scheduler, expand and blur radius. In some tests I had good results with CFG as high as 16, so don't be shy to try extreme values. I also recommend using the grid script for inpainting for testing, this will accelerate your search for good parameters.
 
-
+## Qwen
 
