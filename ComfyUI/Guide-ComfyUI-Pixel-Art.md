@@ -39,7 +39,7 @@ Finally, we move to the stage where the image (and the guidance prompt) serves a
     <img width="1100" src="https://github.com/user-attachments/assets/921a28d2-3966-4806-a356-9e8a2ee77543" />
 </p>
 
-The entire setup is the same, except that here we will use the `birdmanstyleanimationwanlora` LoRa, in addition to Wan's `lightx2v` LoRas. There is another LoRa specialized in pixel art that you can test later: the `wan2.2_animate_adapter_model`. I tested both LoRas, and they seem to work well.
+The entire setup is the same, except that here we will use the `birdmanstyleanimationwanlora` LoRA, in addition to Wan's `lightx2v` LoRAs. There is another LoRA specialized in pixel art that you can test later: the `wan2.2_animate_adapter_model`. I tested both LoRAs, and they seem to work well.
 
 <p align="center">
     <img width="800" src="https://github.com/user-attachments/assets/afa739bf-2e8f-40eb-abaa-d102d1ba8955" />
