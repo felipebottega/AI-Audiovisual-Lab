@@ -1,6 +1,6 @@
 # Guide to ComfyUI - Inpainting
 
-*Inpainting* is a technique used to replace or modify a masked region of an image while keeping the rest mostly unchanged. We will consider two workflows in this tutorial. The first one uses an arbitrary checkpoint to perform the inpainting, whereas the second one uses a diffusion model from the *Qwen* ecosystem specifically trained for inpainting. 
+*Inpainting* is a technique used to replace or modify a masked region of an image while keeping the rest mostly unchanged. We will consider two workflows in this tutorial. The first one uses an arbitrary checkpoint to perform the inpainting, whereas the second one uses a diffusion model from the [*Qwen*](https://qwen.ai/home) ecosystem specifically trained for inpainting. 
 
 In theory, any checkpoint can be used for inpainting. This makes the workflow simpler, but it also requires more trial and error until you find a good result. Most of this tutorial will be explained with this workflow in mind. At the end, we will see that the Qwen workflow only requires a few modifications.
 
@@ -78,5 +78,64 @@ Once you have finished painting, select the icon <img width="26" height="27" alt
 
 Inpainting with normal checkpoints is not easy, you test several values for CFG, denoise, sampler, scheduler, expand and blur radius. In some tests I had good results with CFG as high as 16, so don't be shy to try extreme values. I also recommend using the grid script for inpainting for testing, this will accelerate your search for good parameters.
 
-## Qwen
+For inpainting, keep the prompt short and focused on the masked region. Describe only the object or change you want to generate, plus a few important visual details such as color, material, shape, or lighting. Avoid long prompts describing the entire image, since ComfyUI may lose quality or become confused with very large prompts. The prompt should guide what happens inside the mask, while the workflow should preserve the rest of the image.
 
+> PS: Painting colors is not mandatory, one can just paint the mask and run the program.
+
+## Qwen Inpainting Workflow
+
+This workflow uses the Qwen model together with the *InstantX Inpainting ControlNet* to edit only a selected region of an input image. The basic idea is simple: we load an image, paint a mask over the region that should be changed, and let the model regenerate only that masked area according to the prompt. The unmasked area is kept from the original image by compositing the generated result back over the input image.
+
+The main blocks are:
+
+1. **Model loading**
+
+   The workflow loads the Qwen image diffusion model, the Qwen text encoder, the Qwen VAE, and the InstantX Inpainting ControlNet.
+
+2. **Image and mask**
+
+   The input image is loaded with the standard `Load Image` node. By right-clicking this node and selecting `Open in Mask Editor`, we can paint the mask directly inside ComfyUI.
+
+   In the mask:
+
+   - the painted region is the area to be regenerated
+   - the unpainted region is the area to be preserved
+
+3. **Prompt conditioning**
+
+   The positive prompt describes what should appear in the masked region. The negative prompt can be used to avoid unwanted objects, artifacts, bad anatomy, text, watermarks, or other defects.
+
+4. **Inpainting ControlNet**
+
+   The masked image and the mask are passed to the Qwen InstantX Inpainting ControlNet. This gives the sampler information about both the original image and the region that should be edited.
+
+5. **Latent sampling**
+
+   The image is encoded into latent space, the mask is applied as a latent noise mask, and the sampler generates the edited result. The denoise value is usually set to `1` in this workflow, because the mask controls where the generation is allowed to happen.
+
+6. **Decode and composite**
+
+   After sampling, the latent result is decoded back into an image. Then `ImageCompositeMasked` is used to paste the generated masked region over the original image.
+
+   This final compositing step is important because diffusion models may slightly modify pixels outside the mask. By compositing the result with the original image, the workflow guarantees that the unmasked area remains unchanged.
+
+In short, the workflow is:
+
+```text
+Load Image
+  ↓
+Paint Mask in Mask Editor
+  ↓
+Qwen Model + Text Encoder + VAE
+  ↓
+Qwen InstantX Inpainting ControlNet
+  ↓
+VAE Encode + Set Latent Noise Mask
+  ↓
+KSampler
+  ↓
+VAE Decode
+  ↓
+ImageCompositeMasked
+  ↓
+Save Image
