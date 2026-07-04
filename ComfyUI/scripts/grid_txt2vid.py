@@ -99,13 +99,16 @@ def set_nested_value(d, path, value):
     current[path[-1]] = value
 
 def clean_value_for_filename(value):
-    text = str(value)
+    text = str(value)[:16]
     replacements = {
         "\\": "-",
         "/": "-",
         ":": "-",
         " ": "_",
         ".": "",
+        ",": "",
+        "(": "",
+        ")": "",
     }
 
     for old, new in replacements.items():

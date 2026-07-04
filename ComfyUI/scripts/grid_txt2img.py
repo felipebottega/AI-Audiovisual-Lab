@@ -89,7 +89,22 @@ def set_nested_value(d, path, value):
     current[path[-1]] = value
 
 def clean_value_for_filename(value):
-    return str(value).replace(".", "")
+    text = str(value)[:16]
+    replacements = {
+        "\\": "-",
+        "/": "-",
+        ":": "-",
+        " ": "_",
+        ".": "",
+        ",": "",
+        "(": "",
+        ")": "",
+    }
+
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+
+    return text
     
 def set_filename_prefix(workflow, filename):
     """

@@ -11,49 +11,57 @@ from PIL import Image, ImageDraw, ImageFont
 
 ### Constants ###
 SERVER_URL = "http://127.0.0.1:8188"
-API_JSON_FILE = "ComfyUI/user/default/workflows-api/img2img_canon.json"
+API_JSON_FILE = "ComfyUI/user/default/workflows-api/image_qwen_image_instantx_inpainting_controlnet.json"
 BIG_GRID_FILE = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
+
+
 
 
 ### Parameters ###
 
 # Grid parameters.
-param1 = {
-    "6": {
+param2 = {
+    "262": {
         "inputs": {
-            "text": [
-                "goth girls, park in the background, sunny day, masterpiece, high quality, pixelart, detailed",
-                "goth monsters, park in the background, dark day, masterpiece, high quality, pixelart, detailed",
-                "monster, park in the background, dark day, masterpiece, high quality, pixelart, detailed"
-            ]
+            "strength_model": [1.0, 1.3, 1.6, 1.9]
         }
     }
 }
-param2 = {
+param1 = {
     "3": {
         "inputs": {
-            "cfg": [2, 7, 12, 20]
+            "cfg": [0.8, 1, 1.2]
         }
     }
 }
 
 # Input parameters.
-image_path = "picture.jpg"
+image_path = "ComfyUI\\input\\clipspace\\clipspace-painted-masked-1783188160838.png"
 
 # Optional parameters.
 param_opt = {
-    "93": {    # positive prompt
+    "121:199": {
         "inputs": {
-            "text":
-                "Fixed camera close-up of the same anime character in side profile. The video begins with the character biting his finger near his mouth. Then he slowly pulls his hand away from his mouth, revealing a small tooth held between his fingers. His expression gradually changes to a tense, painful, focused look. Preserve the same character, same hair, same skin tone, same background, same framing, same lighting, and same anime style. Smooth continuous motion, gradual transition from the first frame to the last frame, natural hand movement, subtle facial motion, coherent in-between frames."
+            "expand":
+                20
         }
     },
-    "89": {    # negative prompt
+    "121:252": {
         "inputs": {
-            "text":
-                "sudden change, abrupt transition, jump cut, flicker, morphing artifacts, extra fingers, deformed hand, missing fingers, warped face, distorted mouth, different character, identity change, background change, camera movement, blurry frames, inconsistent anatomy, duplicated flower"
+            "blur_radius":
+                4
         }
-    }
+    },
+    "172": {
+        "inputs": {
+            "largest_size": 1000
+        }
+    },
+    "7": {
+        "inputs": {
+            "text": "noisy, blurry, deformed, ugly, low detailed, bad quality, watermark",
+        }
+    },
 }
 
 

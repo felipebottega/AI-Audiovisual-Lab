@@ -127,6 +127,8 @@ def clean_value_for_filename(value):
         " ": "_",
         ".": "",
         ",": "",
+        "(": "",
+        ")": "",
     }
 
     for old, new in replacements.items():
