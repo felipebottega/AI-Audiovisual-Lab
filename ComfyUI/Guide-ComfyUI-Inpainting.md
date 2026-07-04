@@ -92,7 +92,7 @@ For inpainting, keep the prompt short and focused on the masked region. Describe
 
 This workflow uses the Qwen model together with the *InstantX Inpainting ControlNet* to edit only a selected region of an input image. The basic idea is simple: we load an image, paint a mask over the region that should be changed, and let the model regenerate only that masked area according to the prompt. The unmasked area is kept from the original image by compositing the generated result back over the input image.
 
-> PS: Use the file [inpainting.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/inpainting.json) for the interactive workflow and [this one](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/inpainting.json) for the API workflow.
+> PS: Use the file [inpainting.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/image_qwen_image_instantx_inpainting_controlnet.json) for the interactive workflow and [this one](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/image_qwen_image_instantx_inpainting_controlnet.json) for the API workflow.
 
 The procedure is the same as before, except that this workflow uses only 4 steps in the sampler. This is because we are using the 4-step LoRA `Qwen-Image-Lightning-4steps-V1.0`.
 
