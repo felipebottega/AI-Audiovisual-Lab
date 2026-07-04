@@ -74,7 +74,11 @@ Click on the *Color Selector* to choose a color and the select the icon <img wid
     <img width="300" src="https://github.com/user-attachments/assets/757859f8-d45f-49dc-8ca9-a06c2046d810" />
 </p>
 
-Once you have finished painting, select the icon <img width="26" height="27" alt="image" src="https://github.com/user-attachments/assets/94719fde-aece-40fc-b992-455fff645ba7" /> to apply the mask. You should apply exactly over the area you painted the colors, which is the area you want to inpaint.
+Once you have finished painting, select the icon <img width="26" height="27" alt="image" src="https://github.com/user-attachments/assets/94719fde-aece-40fc-b992-455fff645ba7" /> to apply the mask. You should apply exactly over the area you painted the colors, which is the area you want to inpaint. The final result is shown below.
+
+<p align="center">
+    <img width="300" src="https://github.com/user-attachments/assets/4be2dfa9-6e73-492d-8196-4417f8b3b577" />
+</p>
 
 Inpainting with normal checkpoints is not easy, you test several values for CFG, denoise, sampler, scheduler, expand and blur radius. In some tests I had good results with CFG as high as 16, so don't be shy to try extreme values. I also recommend using the grid script for inpainting for testing, this will accelerate your search for good parameters.
 
