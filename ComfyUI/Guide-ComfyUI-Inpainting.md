@@ -90,56 +90,8 @@ For inpainting, keep the prompt short and focused on the masked region. Describe
 
 This workflow uses the Qwen model together with the *InstantX Inpainting ControlNet* to edit only a selected region of an input image. The basic idea is simple: we load an image, paint a mask over the region that should be changed, and let the model regenerate only that masked area according to the prompt. The unmasked area is kept from the original image by compositing the generated result back over the input image.
 
-The main blocks are:
+> PS: Use the file [inpainting.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/inpainting.json) for the interactive workflow and [this one](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/inpainting.json) for the API workflow.
 
-1. **Model loading**
+The procedure is the same as before, except that this workflow uses only 4 steps in the sampler. This is because we are using the 4-step LoRA `Qwen-Image-Lightning-4steps-V1.0`.
 
-   The workflow loads the Qwen image diffusion model, the Qwen text encoder, the Qwen VAE, and the InstantX Inpainting ControlNet.
-
-2. **Image and mask**
-
-   The input image is loaded with the standard `Load Image` node. By right-clicking this node and selecting `Open in Mask Editor`, we can paint the mask directly inside ComfyUI.
-
-   In the mask:
-
-   - the painted region is the area to be regenerated
-   - the unpainted region is the area to be preserved
-
-3. **Prompt conditioning**
-
-   The positive prompt describes what should appear in the masked region. The negative prompt can be used to avoid unwanted objects, artifacts, bad anatomy, text, watermarks, or other defects.
-
-4. **Inpainting ControlNet**
-
-   The masked image and the mask are passed to the Qwen InstantX Inpainting ControlNet. This gives the sampler information about both the original image and the region that should be edited.
-
-5. **Latent sampling**
-
-   The image is encoded into latent space, the mask is applied as a latent noise mask, and the sampler generates the edited result. The denoise value is usually set to `1` in this workflow, because the mask controls where the generation is allowed to happen.
-
-6. **Decode and composite**
-
-   After sampling, the latent result is decoded back into an image. Then `ImageCompositeMasked` is used to paste the generated masked region over the original image.
-
-   This final compositing step is important because diffusion models may slightly modify pixels outside the mask. By compositing the result with the original image, the workflow guarantees that the unmasked area remains unchanged.
-
-In short, the workflow is:
-
-```text
-Load Image
-  ↓
-Paint Mask in Mask Editor
-  ↓
-Qwen Model + Text Encoder + VAE
-  ↓
-Qwen InstantX Inpainting ControlNet
-  ↓
-VAE Encode + Set Latent Noise Mask
-  ↓
-KSampler
-  ↓
-VAE Decode
-  ↓
-ImageCompositeMasked
-  ↓
-Save Image
+This workflow is not just a generic checkpoint adapted for inpainting. Most of its models were trained specifically for this task. Because of that, the workflow is heavier and takes more time to run, but it can produce much better results in difficult cases. Even so, this does not mean that it will always be better. There are situations where the simpler approach works better, especially when the edit is small or the generic checkpoint already understands the object well. There is no universal rule: test both workflows and experiment with different parameters.
