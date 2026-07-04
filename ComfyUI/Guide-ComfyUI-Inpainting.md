@@ -97,3 +97,47 @@ This workflow uses the Qwen model together with the *InstantX Inpainting Control
 The procedure is the same as before, except that this workflow uses only 4 steps in the sampler. This is because we are using the 4-step LoRA `Qwen-Image-Lightning-4steps-V1.0`.
 
 This workflow is not just a generic checkpoint adapted for inpainting. Most of its models were trained specifically for this task. Because of that, the workflow is heavier and takes more time to run, but it can produce much better results in difficult cases. Even so, this does not mean that it will always be better. There are situations where the simpler approach works better, especially when the edit is small or the generic checkpoint already understands the object well. There is no universal rule: test both workflows and experiment with different parameters.
+
+## Tips
+
+### Iterate over the result
+
+Inpainting is often an iterative process. Do not expect the perfect result in a single generation. A good strategy is to obtain a reasonable first result, save it, load it again in the inpainting workflow, and then improve smaller details step by step. For example, you can first generate the general object or shape, and then run inpainting again to fix borders, shadows, hands, texture, or small artifacts.
+
+This process can also include switching between workflows. Sometimes the normal checkpoint workflow gives a better first approximation, while the Qwen workflow is better for refining the result. In other cases, the opposite happens. You can use one workflow to create the main edit and another one to polish the details.
+
+### Use a mask larger than the object
+
+The mask should usually be slightly larger than the exact region you want to change. If the mask is too tight, the model may not have enough space to blend the new content with the surrounding image. This can create hard borders, leftovers from the original object, or unnatural transitions.
+
+For objects that interact with the environment, such as a hand holding a ball or a person sitting on a sofa, include some surrounding pixels in the mask. The model may need to modify contact regions, shadows, folds, or nearby contours.
+
+### Adjust denoise according to the size of the change
+
+Low denoise values preserve more of the original image, but they may leave visible traces of the old object. High denoise values allow stronger changes, but they also make the result less predictable. If the edit is small, start with moderate denoise. If you want to replace the masked content with something very different, you may need higher denoise.
+
+A common problem is using a denoise value that is too low for a large semantic change. In this case, the model understands the prompt but cannot fully remove the original content.
+
+### Keep the prompt focused
+
+For inpainting, the prompt should focus on what must appear inside the masked region. Avoid describing the whole image again unless it is necessary. The model already receives the image as context, so a long prompt may confuse the edit.
+
+A good prompt usually describes the new object, its position, material, color, and how it should blend with the image. For example, instead of writing a long description of the entire scene, write something like:
+
+```text
+a realistic orange basketball held by the hand, matching the original lighting and perspective
+```
+
+### Use visual guidance when the model is confused
+
+Sometimes a mask and a prompt are not enough. If the model does not understand the shape, position, or scale of the object, paint a rough guide before applying the mask. The drawing does not need to be beautiful. A simple colored sketch can be enough to tell the model where the new object should be and how large it should be.
+
+This is especially useful when inserting objects, changing poses, or creating contact between two elements, such as a hand holding an object.
+
+### Do not rely on one seed
+
+Inpainting is unstable. Two seeds with the same parameters may produce very different results. If the setup is almost working, test several seeds before changing the entire workflow. Sometimes the correct configuration is already there, but the current seed is bad.
+
+### Preserve the original image with compositing
+
+Even if the workflow is supposed to edit only the masked region, the generated image may contain small changes outside the mask. The *Image Composite Masked* node is useful because it pastes only the masked region from the generated image back onto the original image. This helps preserve the unmasked area exactly as it was.
