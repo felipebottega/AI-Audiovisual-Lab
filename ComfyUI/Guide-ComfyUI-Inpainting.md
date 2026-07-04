@@ -1,21 +1,25 @@
 # Guide to ComfyUI - Inpainting
 
-Image-to-Image, or I2I, is a generation method where the model receives an input image and uses it as a visual reference to create a new image. Instead of starting only from a text prompt, the workflow starts from an existing image and modifies it according to the prompt and the generation parameters.
+*Inpainting* is a technique used to replace or modify a masked region of an image while keeping the rest mostly unchanged. We will consider two workflows in this tutorial. The first one uses an arbitrary checkpoint to perform the inpainting, whereas the second one uses a diffusion model from the *Qwen* ecosystem specifically trained for inpainting. 
 
-This is useful when we want to preserve part of the original composition, pose, colors, or structure, while changing the style, details, lighting, background, or subject appearance. The strength of the transformation depends mainly on the denoise value: lower denoise values preserve more of the original image, while higher values allow stronger changes.
+In theory, any checkpoint can be used for inpainting. This makes the workflow simpler, but it also requires more trial and error until you find a good result. Most of this tutorial will be explained with this workflow in mind. At the end, we will see that the Qwen workflow only requires a few modifications.
 
 ## Basic Workflow Diagram
 
+This is the worflow for arbitrary checkpoints. 
+
 ```mermaid
 flowchart LR
-    A[Checkpoint] --> B[CLIP]
-    B --> D
-    A --> C[LoRAs] --> D[Sampler]
-    E[Load Image] --> F[VAE Encode]
-    D --> G[VAE Decode] --> H[Save Image]
-    F --> D
+    A[Checkpoint] --> B[CLIP] --> C[Sampler]
+    D[Load Image] --> E[Grow and Blur Mask] --> G
+    D --> F[VAE Encode] --> G[Set Latent Noise Mask] --> C
+    H[VAE Decode] --> I[Image Composition Masked] --> J[Save Image]
+    E --> I
+    D --> I
+    A --> C
     A --> F
-    A --> G
+    A --> H
+    C --> H
 ```
 
 ## Required files
