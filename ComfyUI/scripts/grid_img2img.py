@@ -42,13 +42,13 @@ image_path = "picture.jpg"
 
 # Optional parameters.
 param_opt = {
-    "93": {    # positive prompt
+    "6": {    # positive prompt
         "inputs": {
             "text":
                 "Fixed camera close-up of the same anime character in side profile. The video begins with the character biting his finger near his mouth. Then he slowly pulls his hand away from his mouth, revealing a small tooth held between his fingers. His expression gradually changes to a tense, painful, focused look. Preserve the same character, same hair, same skin tone, same background, same framing, same lighting, and same anime style. Smooth continuous motion, gradual transition from the first frame to the last frame, natural hand movement, subtle facial motion, coherent in-between frames."
         }
     },
-    "89": {    # negative prompt
+    "7": {    # negative prompt
         "inputs": {
             "text":
                 "sudden change, abrupt transition, jump cut, flicker, morphing artifacts, extra fingers, deformed hand, missing fingers, warped face, distorted mouth, different character, identity change, background change, camera movement, blurry frames, inconsistent anatomy, duplicated flower"
