@@ -120,19 +120,11 @@ A common problem is using a denoise value that is too low for a large semantic c
 
 ### Keep the prompt focused
 
-For inpainting, the prompt should focus on what must appear inside the masked region. Avoid describing the whole image again unless it is necessary. The model already receives the image as context, so a long prompt may confuse the edit.
-
-A good prompt usually describes the new object, its position, material, color, and how it should blend with the image. For example, instead of writing a long description of the entire scene, write something like:
-
-```text
-a realistic orange basketball held by the hand, matching the original lighting and perspective
-```
+For inpainting, the prompt should focus on what must appear inside the masked region. Avoid describing the whole image again unless it is necessary. The model already receives the image as context, so a long prompt may confuse the edit. A good prompt usually describes the new object, its position, material, color, and how it should blend with the image. 
 
 ### Use visual guidance when the model is confused
 
 Sometimes a mask and a prompt are not enough. If the model does not understand the shape, position, or scale of the object, paint a rough guide before applying the mask. The drawing does not need to be beautiful. A simple colored sketch can be enough to tell the model where the new object should be and how large it should be.
-
-This is especially useful when inserting objects, changing poses, or creating contact between two elements, such as a hand holding an object.
 
 ### Do not rely on one seed
 
