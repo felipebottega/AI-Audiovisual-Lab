@@ -1,6 +1,22 @@
 # Guide to ComfyUI - IP-Adapter
 
-*IP-Adapter* is ...
+*IP-Adapter* is a technique used to guide image generation from one or more reference images. Instead of describing everything only with text, you can provide an image and let the model extract visual information from it. This can be used to transfer style, composition, clothing, character appearance, facial identity, color palette, or general visual mood.
+
+This is different from normal *img2img*. In *img2img*, the input image is the starting point of the generation. The model directly transforms that image. With IP-Adapter, the reference image is not necessarily transformed directly. It is used as guidance. The final image can have a different pose, framing, background, style, or composition, depending on the prompt and the workflow.
+
+This makes IP-Adapter useful when you want reference-based generation without being fully locked to the original image.
+
+Common uses:
+
+- keeping a character visually consistent;
+- using a reference for clothing;
+- transferring a face or facial identity;
+- copying the general style of an image;
+- following the composition of a reference;
+- guiding the color palette or visual mood;
+- combining a text prompt with visual reference control.
+
+However, IP-Adapter is not magic. It does not guarantee perfect consistency by itself. The result still depends on the checkpoint, prompt, weight, preset, denoise behavior, ControlNet, LoRAs, and the quality of the reference image.
 
 ## Basic Workflow Diagram
 
