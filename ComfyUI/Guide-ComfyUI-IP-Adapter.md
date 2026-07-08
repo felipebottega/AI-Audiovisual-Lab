@@ -18,6 +18,8 @@ Common uses:
 
 However, IP-Adapter is not magic. It does not guarantee perfect consistency by itself. The result still depends on the checkpoint, prompt, weight, preset, denoise behavior, ControlNet, LoRAs, and the quality of the reference image.
 
+> PS: Be aware that the IP-Adapter always expects a square image, otherwise it will crop at the center.
+
 ## Basic Workflow Diagram
 
 This is the worflow for arbitrary checkpoints. 
