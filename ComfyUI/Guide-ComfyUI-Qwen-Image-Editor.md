@@ -111,5 +111,22 @@ You can also ask the model to redraw your object or character from a new angle. 
 Now we ask something more difficult of the model: to change the viewpoint of an entire scene instead of just a character. In this case, it was necessary to create a more elaborate prompt.
 
 <p align="center">
-    <img width="900" src="https://github.com/user-attachments/assets/cd300935-036d-4c43-8db5-5b8cd1428f40" />
+    <img width="1100" src="https://github.com/user-attachments/assets/cd300935-036d-4c43-8db5-5b8cd1428f40" />
 </p>
+
+### Example 7 - Multiple changes
+
+In this example, we shift the point of view and introduce a character positioned in a specific way within this new setting.
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/654c640c-6194-4fd0-8968-8aca02b5c361" />
+</p>
+
+### Example 8 - Change scenario
+
+It is also possible to take a photo of a person and another photo of a setting, and ask the model to place that person in that setting.
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/ba9840e2-fb02-4f5f-9a04-e7bc1a82968a" />
+</p>
+
