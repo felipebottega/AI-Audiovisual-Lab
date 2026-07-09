@@ -27,7 +27,7 @@ The node `Image Edit Qwen 2509` is wrapper for a more complex subgraph of nodes.
     <img width="700" src="https://github.com/user-attachments/assets/04b4192a-e952-4133-bec6-132953e7aa0d" />
 </p>
 
-## Practical example
+## Practical examples
 
 Now we will see in practice how to execute an inpainting workflow in ComfyUI. We will use the [IPAdapter.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/qwen_image_edit.json) file in this tutorial. You can consider it as a canonical file that can be modified gradually according to your needs.
 
@@ -38,3 +38,18 @@ Now we will see in practice how to execute an inpainting workflow in ComfyUI. We
 This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/qwen_image_edit.json). 
 
 You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the scriptwith the command `python run_workflow.py "{path_to_workflow_json}"`.
+
+Since this workflow offers many possibilities, it is worthwhile to demonstrate some practical examples of its application.
+
+### Example 1 - Removal
+
+In this example, you provide an image and ask the model to remove an element from it. Notice that this prompt is different from the prompts used in regular text-to-image generation. Usually, you describe the scene directly or provide a list of tags that describe what you want to generate. Qwen Image Edit works differently, it uses the input image as the visual reference and follows natural language instructions to modify it.
+
+However, this does not mean that you are having a conversation with the model. The prompt should still be written as a clear set of instructions, explaining what should change and what should stay the same. Finding the right prompt is not always obvious, and small changes in wording can have a significant impact on the final result.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/5a0e34d3-e8aa-4480-ac03-6843471b0513" />
+    <img width="800" src="https://github.com/user-attachments/assets/225643d9-6842-4a12-988a-113d56b92532" />
+</p>
+
+Sometimes, you can achieve the desired result with a simple prompt, like the one in this example. Always start simple and only expand the prompt if necessary.
