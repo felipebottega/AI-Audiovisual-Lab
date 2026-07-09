@@ -140,7 +140,7 @@ Changing text is also possible, just ask the model.
 
 ### Example 10 - Visual guides
 
-In the [inpainting tutorial](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/Guide-ComfyUI-Inpainting.md), we saw how to draw on the image to guide the model during the inpainting process. This is also possible with Qwen Image Edit, but in an even more versatile way. You aren't limited to simply drawing the outline of the object you want to appear there; you can place markers and instruct the model to draw something over them, sketch a stick figure to guide a pose, or even use text to guide the model.
+In the [inpainting tutorial](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/Guide-ComfyUI-Inpainting.md), we saw how to draw on the image to guide the model during the inpainting process. This is also possible with Qwen Image Edit, but in an even more versatile way. You aren't limited to simply drawing a sketch of the object you want to appear there, you can place markers and instruct the model to draw something over them, sketch a stick figure to guide a pose, or even use text to guide the model.
 
 <p align="center">
     <img width="700" src="https://github.com/user-attachments/assets/3afff6a1-b67e-47de-a89c-46147afdf205" />
