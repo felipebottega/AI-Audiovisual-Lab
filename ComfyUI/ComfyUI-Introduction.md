@@ -119,3 +119,9 @@ file = f"{filename}_{counter:05}.latent"
 ```
 
 This preserves the existing naming convention while restoring compatibility with software that expects standard numbered image sequences.
+
+### Reading Workflow Metadata
+
+ComfyUI can save workflow metadata inside the images and videos it generates. Because of that, one of the easiest ways to recover a workflow is to drag the generated file directly back into the ComfyUI interface. If the file contains the metadata, ComfyUI will automatically load the workflow that was used to create it.
+
+This is a very practical way to inspect old generations, reuse previous settings, or understand how a specific result was made. Instead of manually writing down every parameter, you can often rely on the generated output itself as a record of the workflow. However, this only works if the metadata was preserved. If the file was compressed, converted, edited, uploaded to some websites, or processed by external tools, the workflow metadata may be removed.
