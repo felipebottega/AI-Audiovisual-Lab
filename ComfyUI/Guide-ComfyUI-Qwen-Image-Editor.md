@@ -1,24 +1,12 @@
 # Guide to ComfyUI - Qwen Image Editor
 
-*IP-Adapter* is a technique used to guide image generation from one or more reference images. Instead of describing everything only with text, you can provide an image and let the model extract visual information from it. This can be used to transfer style, composition, clothing, character appearance, facial identity, color palette, or general visual mood.
+*Qwen Image Edit* is an image editing model from the Qwen ecosystem designed to modify an existing image using natural language instructions. Instead of generating an image completely from scratch, it uses the input image as the main reference and applies the requested changes while trying to preserve the original composition, style, lighting, and visual coherence.
 
-This is different from normal *img2img*. In *img2img*, the input image is the starting point of the generation. The model directly transforms that image. With IP-Adapter, the reference image is not necessarily transformed directly. It is used as guidance. The final image can have a different pose, framing, background, style, or composition, depending on the prompt and the workflow.
+It can be used for tasks such as inpainting, object replacement, style changes, pose adjustments, background edits, outpainting-like expansions, and general image transformation. One of its strengths is that it can understand visual context very well, so it often works with simple prompts and can follow drawn guides, masks, or marked regions in the image.
 
-This makes IP-Adapter useful when you want reference-based generation without being fully locked to the original image.
+However, Qwen Image Edit is not always perfectly literal. For precise edits, it is important to clearly describe what must change and what must stay the same. The prompt should usually define the input image as the source of truth and explicitly ask the model to preserve identity, pose, composition, lighting, outfit, background, or any other important element.
 
-Common uses:
-
-- keeping a character visually consistent;
-- using a reference for clothing;
-- transferring a face or facial identity;
-- copying the general style of an image;
-- following the composition of a reference;
-- guiding the color palette or visual mood;
-- combining a text prompt with visual reference control.
-
-However, IP-Adapter is not magic. It does not guarantee perfect consistency by itself. The result still depends on the checkpoint, prompt, weight, preset, denoise behavior, ControlNet, LoRAs, and the quality of the reference image.
-
-> PS: Be aware that the IP-Adapter always expects a square image, otherwise it will crop at the center.
+> PS: In this tutorial we will be working with *Qwen Image Editor 2509*. This number refers to the model release version, following a year-month style convention. Here, `25` means 2025 and `09` means September.
 
 ## Basic Workflow Diagram
 
@@ -26,109 +14,28 @@ This is the worflow for arbitrary checkpoints.
 
 ```mermaid
 flowchart LR
-    A[Checkpoint] --> B[CLIP] --> C[Sampler]
-    A --> D[LoRas] --> F[IPAdapter] --> C
-    E[Load Image] --> F
-    C --> G[VAE Decode] --> H[Save Image]
-    A --> G
+    A[Load Image 1] --> B[Image Edit Qwen 2509] --> F[Save Image]
+    C[Load Image 2] --> B
+    D[Load Image 3] --> B
+    E[Prompt] --> B
 ```
 
-## Parameters
-
-### Preset
-
-The `preset` defines what kind of information the IP-Adapter tries to extract from the reference image. Some presets are better for general appearance, some for composition, and some are specialized for faces.
-
-General presets:
-
-| Preset | Main use | Practical note |
-|---|---|---|
-| `LIGHT` | Subtle reference influence | Good when the reference should only slightly guide the result. |
-| `STANDARD` | General-purpose reference | Usually the safest starting point. Try this first before using stronger presets. |
-| `VIT-G` | Richer visual reference | Can capture more details, but may also become harder to control. |
-| `PLUS` | Stronger reference influence | Useful when `STANDARD` is too weak, but it can start copying the reference too much. |
-| `PLUS (kolors general)` | General Kolors usage | Use mainly with Kolors-based workflows. |
-| `REGULAR - FLUX and SD3.5 only` | Flux / SD3.5 workflows | Do not use this with normal SDXL or SD1.5 workflows. |
-| `COMPOSITION` | Pose, layout, framing, structure | Useful when you care more about the image structure than the character identity or style. |
-
-Face presets:
-
-| Preset | Best for | Practical note |
-|---|---|---|
-| `PLUS FACE` | General portrait guidance | Good when you want the face to resemble the reference, but not necessarily preserve identity perfectly. |
-| `FULL FACE` | Stronger portrait guidance | SD1.5 only. Stronger than `PLUS FACE`, but less flexible. |
-| `FACEID` | Facial identity | Better when the goal is to preserve the identity of a person. |
-| `FACEID PLUS` | Stronger facial identity | More aggressive than `FACEID`. Can help with consistency, but may reduce freedom. |
-| `FACEID PLUS KOLORS` | Face identity with Kolors | Specific variant for Kolors workflows. |
-| `FACEID PLUS V2` | Refined facial identity | Usually a better option when available, especially for identity consistency. |
-| `FACEID PORTRAIT` | Portrait / style transfer | More focused on portrait appearance and style transfer than pure identity locking. |
-| `FACEID PORTRAIT UNNORM` | Strong SDXL portrait transfer | SDXL only. Stronger and less normalized, so it can be powerful but also less predictable. |
-
-A simple rule:
-
-| Goal | Suggested preset |
-|---|---|
-| General visual reference | `STANDARD` |
-| Stronger visual reference | `PLUS` |
-| Keep the same face/person | `FACEID`, `FACEID PLUS`, or `FACEID PLUS V2` |
-| Transfer pose/layout/composition | `COMPOSITION` |
-| Light influence only | `LIGHT` |
-
-### Weight
-
-The `weight` controls how strongly the IP-Adapter pushes the generation toward the reference image. This is one of the most important parameters. A higher value does not simply mean “better consistency”. If the weight is too high, the IP-Adapter may start copying the reference image too literally. 
-
-### Start At
-
-The `start_at` value defines when the IP-Adapter starts influencing the denoising process. Early denoising steps define the large structure of the image: pose, layout, silhouette, camera angle, and general composition. Later steps refine details, textures, colors, and small visual features. Because of that, `start_at` changes the type of influence the reference image has.
-
-| Start At | Effect |
-|---|---|
-| `0.0` | The reference influences the image from the beginning. Stronger effect on pose, layout, and structure. |
-| `0.2` to `0.4` | A balanced range. The base model can establish the scene before the reference becomes stronger. |
-| `0.5` to `0.7` | The reference mostly affects appearance, texture, and details. Less structural influence. |
-| Very late | The reference may become too weak to meaningfully guide the image. |
-
-The following image was provided to IP-Adapter to influence the given prompt. 
+The node `Image Edit Qwen 2509` is wrapper for a more complex subgraph of nodes. It is possible to access this subgraph by clicking on the expand icon on the upper right corner of the node. We will not discuss what is happening in this subgraph and will simply accept that it is working correctly.
 
 <p align="center">
-    <img width="200" src="https://github.com/user-attachments/assets/7b80a02e-ab2d-4e6c-8eef-50c1c63d4969" />
-    <img width="400" src="https://github.com/user-attachments/assets/dbd0f7b7-99fa-4744-b32f-3a7e409b2571" />
+    <img width="300" src="https://github.com/user-attachments/assets/259573c5-3948-4d8c-83e2-59c9d0c2cfdd" />
+    <img width="700" src="https://github.com/user-attachments/assets/04b4192a-e952-4133-bec6-132953e7aa0d" />
 </p>
 
-Below we have a grid of image resulting from the combination of weights (horizontal) and starting points (vertical), using the preset *STANDARD (medium strength)*. In all images, the end point was set to 1, which means the Ip-Adapter influenced the denoising process until the end. Note that the later we allow the IP-Adapter to start influencing the process, the less relevant the weight value becomes.
+## How Qwen Image Edit Works
 
-<p align="center">
-    <img width="1100" src="https://github.com/user-attachments/assets/24c52c29-22c4-4fc2-8f71-d68785f7c40c" />
-</p>
+Qwen Image Edit combines the visual information from the input image with the instructions written in the prompt. The image provides the scene, composition, subject, pose, lighting, colors, and other visual details, while the prompt tells the model what should be changed, preserved, added, removed, or transformed. In this sense, the final result is not based on the prompt alone, but on the interaction between the image and the prompt.
 
-> PS: In this examples we used the checkpoint *Juggernaut XL*, which is a realistic checkpoint.
+For simple edits, one image is usually enough: the input image acts as the main source of truth, and the prompt describes the desired transformation. For example, when converting an anime illustration into a photorealistic image, the model reads the character, pose, outfit, expression, and framing from the original image, then tries to translate those elements into a realistic photographic style.
 
-### End At
+## Tips
 
-The `end_at` value defines when the IP-Adapter stops influencing the denoising process. If `end_at` is set to `1.0`, the IP-Adapter remains active until the end of the generation. This usually preserves the reference more strongly. If it stops earlier, the model has more freedom in the final details.
-
-| End At | Effect |
-|---|---|
-| `0.5` | The reference stops early. The model has more freedom afterward. |
-| `0.7` to `0.9` | Balanced behavior. The reference guides the image but does not dominate until the final step. |
-| `1.0` | The reference remains active until the end. Stronger preservation. |
-
-A useful strategy is to control *when* the IP-Adapter acts instead of only changing the weight. For example:
-
-| Problem | Possible adjustment |
-|---|---|
-| The result copies the reference pose too much | Increase `start_at` |
-| The result copies the reference details too much | Decrease `end_at` or lower `weight` |
-| The reference is barely visible | Lower `start_at`, increase `end_at`, or increase `weight` |
-| The prompt is being ignored | Lower `weight` or shorten the active range |
-| The image needs stronger identity preservation | Increase `weight` or keep `end_at` close to `1.0` |
-
-Below we have an example similar to the previous one, except that now we are varying thet ending point. In all images, the starting point was set to 1. Since IP-Adapter exerted influence from the very beginning, note that in extreme cases, even the pose from the original image emerged.
-
-<p align="center">
-    <img width="1100" src="https://github.com/user-attachments/assets/109d89a7-f81b-47e8-aff3-48726966fe26" />
-</p>
+Be clear about what must change and what must stay the same. Avoid vague prompts like “make it realistic” or “improve the image.” For controlled results, explicitly tell the model to preserve important elements such as identity, pose, outfit, expression, camera angle, background, and composition. When precision matters, drawn marks such as crosses, circles, arrows, or rough guides can help indicate where an edit should happen, but the prompt should also tell the model to remove those marks in the final image.
 
 ## Practical example
 
