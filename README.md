@@ -2,21 +2,6 @@
 
 This is a personal repository to document my studies, experiments, workflows, and practical findings related to AI-based audiovisual tools and generative media. The focus has been on explaining how to use the [ComfyUI](https://comfy.org/) and the theory behind the algorithms used.
 
-## Roadmap
-- [x] ComfyUI - Introduction
-- [x] ComfyUI - Text to Image (T2I)
-- [x] ComfyUI - Text to Video (T2V)
-- [x] ComfyUI - Image to Image (I2I)
-- [x] ComfyUI - Image to Text (I2T)
-- [x] ComfyUI - Image to Video (I2V)
-- [x] ComfyUI - Upscale Image
-- [x] ComfyUI - Pixel Art
-- [x] ComfyUI - Image Grid
-- [x] ComfyUI - Video Grid
-- [x] ComfyUI - Video Sequence Merging
-- [ ] ConfyUI - Image with fixed Character
-- [ ] ConfyUI - Video with fixed Character
-
 ## Useful links
 
 - https://stable-diffusion-art.com/prompt-guide/
