@@ -71,3 +71,14 @@ It is important to note that the output can vary significantly depending on the 
 <p align="center">
     <img width="800" src="https://github.com/user-attachments/assets/a1e1dbb2-6960-48e0-8540-03ee3037fba5" />
 </p>
+
+### Example 4 - Change specifics
+
+Just as it is possible to modify characters, you can also alter objects, clothing, styles, and more. 
+
+It is important to keep in mind that, while powerful, Qwen Image Edit is not a complete substitute for inpainting or IP-Adapter. Depending on the context, using a specific checkpoint with simple inpainting might be more effective than trying to handle everything through prompt engineering within this workflow.
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/5c0df246-9168-4f22-afc1-d7582fe56c96" />
+</p>
+
