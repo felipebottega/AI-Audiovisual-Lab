@@ -53,3 +53,21 @@ However, this does not mean that you are having a conversation with the model. T
 </p>
 
 Sometimes, you can achieve the desired result with a simple prompt, like the one in this example. Always start simple and only expand the prompt if necessary.
+
+### Example 2 - Change characters
+
+Qwen Image Edit accepts up to three input images. However, you need to be more careful when writing the prompt, as the model lacks any internal indexing to determine which image you are referring to.
+
+<p align="center">
+    <img width="1100" src="https://github.com/user-attachments/assets/68be6131-6869-4635-9a83-86fcf8fbe2af" />
+</p>
+
+### Example 3 - Actions
+
+You can change the position or pose, or even have the characters perform specific actions. Basically, you can tell them to do anything, just like real actors.
+
+It is important to note that the output can vary significantly depending on the seed. Sometimes an attempt turns out terrible, while the next one looks beautiful. You cannot conclude that a prompt is bad based on just a few attempts; generate plenty of images before drawing conclusions.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/a1e1dbb2-6960-48e0-8540-03ee3037fba5" />
+</p>
