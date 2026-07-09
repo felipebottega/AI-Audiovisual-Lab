@@ -82,3 +82,13 @@ It is important to keep in mind that, while powerful, Qwen Image Edit is not a c
     <img width="1100" src="https://github.com/user-attachments/assets/5c0df246-9168-4f22-afc1-d7582fe56c96" />
 </p>
 
+### Example 5 - Remove specifics
+
+In the previous example, the character retained the pose from the reference image used for the outfit. Not only that, but the background also changed. While this could have been resolved by further refining the prompt, we left it as is.
+
+The real issue is that the brand name appeared at the bottom of the image. You can simply ask the model to remove it.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/9c833716-a33e-403b-bf13-0fddc3383802" />
+</p>
+
