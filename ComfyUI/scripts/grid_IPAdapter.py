@@ -21,26 +21,41 @@ BIG_GRID_FILE = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%
 param1 = {
     "22": {
         "inputs": {
-            "end_at": [0.2, 0.5, 0.8]
+            "weight": [0.1, 0.5, 0.9]
         }
     }
 }
 param2 = {
-    "22": {
+    "22": {    # positive prompt
         "inputs": {
-            "weight": [0.1, 0.3, 0.5, 0.7]
+            "preset": [
+                "STANDARD (medium strength)",
+                "PLUS (high strength)",
+                "PLUS FACE (portraits)",
+                "COMPOSITION",
+                "FACEID"
+            ]
         }
     }
 }
 
 # Optional parameters.
 param_opt = {
-    "22": {    # positive prompt
+    "22": {
         "inputs": {
-            "preset":
-                "STANDARD (medium strength)"
+            "start_at": 0.3
         }
-    }
+    },
+    "22": {
+        "inputs": {
+            "end_at": 0.8
+        }
+    },
+    "23": {
+        "inputs": {
+            "image": "D:\\Pictures\\Anime & Mangá\\024.jpg"
+        }
+    },
 }
 
 
