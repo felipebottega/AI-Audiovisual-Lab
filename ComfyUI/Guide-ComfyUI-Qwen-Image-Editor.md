@@ -92,3 +92,24 @@ The real issue is that the brand name appeared at the bottom of the image. You c
     <img width="800" src="https://github.com/user-attachments/assets/9c833716-a33e-403b-bf13-0fddc3383802" />
 </p>
 
+We can take this generated image and go a step further: modify multiple objects in the scene at once.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/9b51fd57-caa8-4ffb-bc56-ba2881774430" />
+</p>
+
+> PS: Notice how the image became increasingly reddish as more changes were made. This sort of thing can happen with AI image generation, the output gradually diverges in certain areas. Controlling this is entirely up to the user. Don't expect the AI ​​to be a magic box that always gets everything perfect.
+
+### Example 6 - Angle change
+
+You can also ask the model to redraw your object or character from a new angle. It is capable of recreating unseen parts and inferring what the view would look like from a different perspective.
+
+<p align="center">
+    <img width="800" src="https://github.com/user-attachments/assets/57eb8163-7ba2-4725-8b5f-d07d600cb451" />
+</p>
+
+Now we ask something more difficult of the model: to change the viewpoint of an entire scene instead of just a character. In this case, it was necessary to create a more elaborate prompt.
+
+<p align="center">
+    <img width="900" src="https://github.com/user-attachments/assets/cd300935-036d-4c43-8db5-5b8cd1428f40" />
+</p>
