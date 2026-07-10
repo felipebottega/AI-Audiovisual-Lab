@@ -132,73 +132,28 @@ pose_estimator: dw-ll_ucoco_384.onnx
 scale_stick_for_xinsr_cn: enable
 ```
 
+## OpenPose Studio
+
+At first, this node will just pass on the pose computed by the DW Estimator and save the same output. After the first execution, you should mark to bypass all nodes, except the OpenPose Studio and the subsequent Save Image node. 
+
+<p align="center">
+    <img width="500" src="https://github.com/user-attachments/assets/67bb33cd-ff88-45a3-8a24-9a622f470fb4" />
+</p>
+
+Onde this is done, click on the image inside the OpenPose Studio. This will open a new window, where you can edit the pose. After you finished editing, click to apply and run the workflow again. This will save the image of the edited pose.
+
+<p align="center">
+    <img width="400" src="https://github.com/user-attachments/assets/8bb13d69-79c0-42f6-b960-991cdbb6535a" />
+</p>
+
 ## Practical example
 
-Now we will see in practice how to execute an T2I workflow in ComfyUI. We will use the [txt2img_canon.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/txt2img_canon.json) file in this tutorial. You can consider it as a canonical T2I file that can be modified gradually according to your needs.
+There are three workflows with regard to OpenPose:
 
-<p align="center">
-    <img width="1100" src="https://raw.githubusercontent.com/felipebottega/AI-Audiovisual-Lab/refs/heads/main/assets/workflow_t2i.png" />
-</p>
+- [img2pose.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img2pose.json) is the main file. In converts an image into a PNG of its pose. The corresponding API JSON file can be found [here](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img2pose.json).
 
-This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/txt2img_canon.json). Below, we show the beginning and end of this JSON, just to give an idea of ​​how it is structured.
+- [img_pose2img.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/img_pose2img.json) is the **img2img** workflow plus pose. The corresponding API JSON file can be found [here](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/img_pose2img.json).
 
-```
-{
-  "3": {
-    "inputs": {
-      "seed": 566510339945522,
-      "steps": 20,
-      "cfg": 5,
-      "sampler_name": "euler",
-      "scheduler": "normal",
-      "denoise": 1,
-      "model": [
-        "11",
-        0
-      ],
-      "positive": [
-        "6",
-        0
-      ],
-      "negative": [
-        "7",
-        0
-      ],
-      "latent_image": [
-        "5",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
-  },
- 
-  ...
+- [txt_pose2img.json](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows/txt_pose2img.json) is the **txt2img** workflow plus pose. The corresponding API JSON file can be found [here](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/txt_pose2img.json).
 
-"13": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "images": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "SaveImage",
-    "_meta": {
-      "title": "Save Image"
-    }
-  }
-}
-```
-
-You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the scriptwith the command `python run_workflow.py "{path_to_workflow_json}"`.
-
-The workflow file also includes some optional post-processing nodes: upscale and downscale, quantize. These nodes come right after VAE decode and before Save Image. I've already configured these optional nodes for the current example workflow. 
-
-> This example uses the checkpoint called `pixelArtDiffusionXL_spriteShaper`, which creates pixel art style images. It's always necessary to divide the size of the generated image by 8 (with the *Image Resize* node) so that each pixel (simulated) has the correct size. The quantize node is used to limit the number of colors in the palette, which is also useful for pixel art.
-
-<p align="center">
-    <img width="600" src="https://github.com/user-attachments/assets/58d62148-2a1c-4955-b04f-9488039732db" />
-</p>
+You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the script with the command `python run_workflow.py "{path_to_workflow_json}"`.
