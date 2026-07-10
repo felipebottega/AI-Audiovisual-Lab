@@ -2,21 +2,42 @@
 
 ## Introduction to ControlNet
 
+*ControlNet* is a method for guiding image generation with additional visual information. Instead of relying only on the text prompt, it allows the diffusion model to follow a structural reference such as a pose map, depth map, edge image, segmentation mask, line drawing, etc.
+
+In this tutorial, ControlNet is used with an OpenPose image. The pose map defines the position of the body, limbs, hands, and face, while the checkpoint and text prompt determine the character, clothing, style, lighting, and background. In other words, ControlNet controls the composition and structure without replacing the normal generation process.
+
 ## Basic Workflow Diagram
+
+Below is the diagram for creating the pose. The *OpenPose Studio* branch is optional, it is only useful if you want to edit the pose before saving. We will discuss this further later on.
+
+```mermaid
+flowchart LR
+    A[Load Image] --> B[DWPose Estimator] --> C[Save Image]
+    B --> D[OpenPose Studio] --> E[Save Image]
+```
+
+This will create the pose, which is just a PNG file. After that you need to insert it in a ControlNet node of a txt2img or img2img workflow. We show both workflows below.
+
+### OpenPose in a txt2img workflow
 
 ```mermaid
 flowchart LR
     A[Checkpoint] --> B[CLIP]
-    B --> D
     A --> C[LoRAs] --> D[Sampler]
     E[Image Settings] --> D
     D --> F[VAE Decode] --> G[Create Video] --> H[Save Image]
     A --> F
+    B --> I[Apply ControlNet] --> D
+    J[Load Image] --> I
+    K[Load ControlNet Model] --> I
+    A --> I
 ```
+
+
 
 ## Required files
 
-You only need a checkpoint file with the template. Optionally, you can have the LoRA files to apply. There are several templates and LoRAs available [here](https://civitai.com/), it will depend on your objective. 
+https://huggingface.co/xinsir/controlnet-openpose-sdxl-1.0/blob/main/diffusion_pytorch_model.safetensors
 
 ## LoRAs
 
