@@ -53,7 +53,7 @@ param_opt = {
     },
     "23": {
         "inputs": {
-            "image": "D:\\Pictures\\Anime & Mangá\\024.jpg"
+            "image": "...picure.png"
         }
     },
 }
