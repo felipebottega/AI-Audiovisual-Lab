@@ -1,4 +1,4 @@
-# Guide to ComfyUI - Pose
+# Guide to ComfyUI - Pose Image
 
 ## Introduction to ControlNet
 
@@ -153,10 +153,6 @@ You can use the pose as one of the images for Qwen Image Edit. It will understan
 <p align="center">
     <img width="1100" src="https://github.com/user-attachments/assets/7e4178f2-9700-4af5-b296-eaf5eb6c0769" />
 </p>
-
-
-
-## OpenPose for video
 
 ## Practical example
 
