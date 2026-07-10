@@ -18,13 +18,15 @@ flowchart LR
 
 This will create the pose, which is just a PNG file. After that you need to insert it in a ControlNet node of a txt2img or img2img workflow. We show both workflows below.
 
-### OpenPose in a txt2img workflow
+### OpenPose with txt2img workflow
+
+Use OpenPose with txt2img when the pose should be the main structural reference and no initial image needs to be preserved. The pose map controls the body position, while the prompt, checkpoint, LoRAs, and reference tools determine the character, clothing, style, and background. This is usually the cleanest option for creating a new image in a specific pose.
 
 ```mermaid
 flowchart LR
     A[Checkpoint] --> B[CLIP]
     A --> C[LoRAs] --> D[Sampler]
-    D --> F[VAE Decode] --> G[Create Video] --> H[Save Image]
+    D --> F[VAE Decode] --> G[Save Image]
     A --> F
     B --> I[Apply ControlNet] --> D
     J[Load Image] --> I
@@ -32,6 +34,32 @@ flowchart LR
     A --> I
 ```
 
+### OpenPose with img2img worflow
+
+Use OpenPose with **img2img** when you also want to retain visual information from an existing image.
+
+* **Preserving the same pose:** OpenPose helps prevent the body structure from drifting during restyling or refinement.
+* **Preserving and reinforcing the source pose:** Extract the OpenPose map from the same image used as the img2img input. Since both inputs contain the same body structure, there is no pose conflict. The ControlNet helps prevent anatomical drift while the image is restyled, refined, or regenerated with a higher denoise value.
+* **Changing the pose more strongly:** Use a higher denoise value so the old body structure can be replaced by the new pose.
+* **Inpainting a person:** Mask the original person and enough space for the new pose, while preserving the rest of the scene.
+
+Low denoise preserves the source image but resists pose changes. High denoise gives OpenPose more freedom, but preserves less of the original character and details.
+
+```mermaid
+flowchart LR
+    A[Checkpoint] --> B[CLIP]
+    A --> C[LoRAs] --> D[Sampler]
+    E[Load Image] --> F[VAE Encode]
+    D --> G[VAE Decode] --> H[Save Image]
+    I[Load Image ]--> J[Apply ControlNet]
+    K[Load ControlNet Model] --> J
+    J --> D
+    F --> D
+    A --> F
+    A --> G
+    A --> J
+    B --> J
+```
 
 
 ## Required files
