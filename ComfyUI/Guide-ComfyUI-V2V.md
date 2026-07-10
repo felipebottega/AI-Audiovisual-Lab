@@ -4,16 +4,17 @@
 
 ## Basic Workflow Diagram
 
-Although WAN 2.2 internally uses separate high-noise and low-noise stages, most ComfyUI workflows expose these stages as distinct nodes and checkpoints. The image and prompt are first converted into conditioning information, then the generation process is split into two phases. The outputs of these stages are combined to produce the final video. In Lightning workflows, specialized LoRAs are often applied to both stages, allowing the model to generate high-quality results with very few sampling steps.
+The workflow is very similar to the I2V workflow, except that here instead 
 
 ```mermaid
 flowchart LR
     A1[WAN 2.2 I2V High Noise Model] --> B1[Apply High Noise LoRAs] --> C1[Model SamplingSD3] --> D1[KSampler]
     A2[WAN 2.2 I2V Low Noise Model] --> B2[Apply Low Noise LoRAs] --> C2[Model SamplingSD3] --> D2[KSampler]
     D1 --> D2 --> E[VAE Decode] --> F[Create Video] --> G[Save Video]
-    A3[Load Image] --> B3[WanImageToVideo] --> D1
-    A4[Load CLIP] --> B4[Prompt] --> B3
-    A5[Load VAE] --> B3
+    A3[Load Video] --> B3[Get Video Components] --> D3[Wan22FunControlToVideo] --> D1
+    A4[Load CLIP] --> B4[Prompt] --> D3
+    A5[Load VAE] --> D3
+    A6[Load Image] --> D3
     A5 --> E
 ```
 
