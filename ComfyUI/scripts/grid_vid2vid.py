@@ -43,7 +43,7 @@ param2 = {
 
 # Input parameters.
 image_path = "...picture.png"
-video_path = "...video"
+video_path = "...video.mp4"
 
 # Optional parameters.
 param_opt = {
