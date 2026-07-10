@@ -38,12 +38,11 @@ flowchart LR
 
 Use OpenPose with **img2img** when you also want to retain visual information from an existing image.
 
-* **Preserving the same pose:** OpenPose helps prevent the body structure from drifting during restyling or refinement.
-* **Preserving and reinforcing the source pose:** Extract the OpenPose map from the same image used as the img2img input. Since both inputs contain the same body structure, there is no pose conflict. The ControlNet helps prevent anatomical drift while the image is restyled, refined, or regenerated with a higher denoise value.
-* **Changing the pose more strongly:** Use a higher denoise value so the old body structure can be replaced by the new pose.
-* **Inpainting a person:** Mask the original person and enough space for the new pose, while preserving the rest of the scene.
+* **Source-pose reinforcement:** Extract the pose map from the same image used as the **img2img** input. Both inputs then describe the same body structure, so OpenPose stabilizes the pose and reduces anatomical drift during restyling, refinement, or higher-denoise regeneration.
+* **Pose replacement:** Use a different pose map to redraw the subject in a new pose. This requires higher denoise so the original body structure can be removed and replaced, at the cost of preserving fewer source-image details.
+* **Pose-guided inpainting:** Mask the original person and enough surrounding space for the new body position, then use OpenPose to guide the reconstruction while keeping the unmasked background unchanged.
 
-Low denoise preserves the source image but resists pose changes. High denoise gives OpenPose more freedom, but preserves less of the original character and details.
+Low denoise preserves the original image more strongly. High denoise gives the new pose more control.
 
 ```mermaid
 flowchart LR
@@ -61,24 +60,77 @@ flowchart LR
     B --> J
 ```
 
-
 ## Required files
 
-https://huggingface.co/xinsir/controlnet-openpose-sdxl-1.0/blob/main/diffusion_pytorch_model.safetensors
+When working with OpenPose, the ControlNet model used should be compatible with the checkpoint in the workflow. In this case we are using the [diffusion_pytorch_model](https://huggingface.co/xinsir/controlnet-openpose-sdxl-1.0/blob/main/diffusion_pytorch_model.safetensors) OpenPose model for it is the one compatible with the Pony Diffusion V6 XL checkpoint. All ControlNet models should be downloaded and placed in the folder `ComfyUI/models/controlnet`.
 
-## LoRAs
+<p align="center">
+    <img width="400" src="https://github.com/user-attachments/assets/68c45456-38c0-41a5-911e-817dc106cc1b" />
+</p>
 
-LoRAs (Low-Rank Adaptations) are small, specialized files used to modify or fine-tune a base checkpoint's behavior without altering the entire original model. In text-to-image (and text-to-video) workflows, they allow you to inject specific art styles, characters, poses, or structural concepts into your generation.
+## Parameters
 
-In ComfyUI, LoRAs are injected directly between the Checkpoint and the Sampler nodes. You can layer multiple LoRAs together, adjusting the strength of each individually to blend different styles or elements.
+The **DWPose Estimator** converts a regular image into an OpenPose-style pose map. It first detects each person in the image and then estimates the body, hand, and facial keypoints.
 
-## Sampler
+<p align="center">
+    <img width="300" src="https://github.com/user-attachments/assets/f0307723-6bda-415d-9ba4-fd1d4bcc6731" />
+</p>
 
-The Sampler is the core engine that removes random noise step-by-step to form the final image or video, guided by your prompt and settings. Key parameters in ComfyUI include:
+### Detect Hand
 
-* **Steps:** The number of denoising iterations. Standard models require 20–30 steps, while *Lightning* workflows need only 4–8 steps.
-* **CFG Scale:** How strictly the model follows your prompt. Higher values force compliance but can cause artifacts, fast-sampling workflows typically use low values (1.0–2.0).
-* **Sampler & Scheduler:** The mathematical algorithms used to denoise.
+Controls whether hand and finger keypoints are included.
+
+### Detect Body
+
+Controls whether the main body skeleton is detected.
+
+### Detect Face
+
+Controls whether facial landmarks are included in the pose map. Facial landmarks do not preserve identity and should not be treated as a detailed expression reference.
+
+### Resolution
+
+Defines the resolution used by the preprocessor when analyzing the input image. Increasing the resolution cannot recover details that are not visible in the original image.
+
+### BBox Detector
+
+The bounding-box detector finds each person before the pose estimator analyzes them.
+
+- **`yolox_l.onnx`:** A reliable general-purpose detector with good accuracy. It works well with multiple people and is usually fast when ONNX GPU acceleration is available.
+- **`yolox_l.torchscript.pt`:** The TorchScript version of YOLOX-L. It runs through PyTorch and is useful when ONNX acceleration is unavailable, misconfigured, or running on the CPU.
+- **`yolo_nas_l_fp16.onnx`:** The largest YOLO-NAS option. It is heavier and slower, but can help with difficult scenes containing small, partially hidden, or overlapping people.
+- **`yolo_nas_m_fp16.onnx`:** The medium YOLO-NAS option. It provides a balance between speed and detection capability.
+- **`yolo_nas_s_fp16.onnx`:** The smallest and fastest YOLO-NAS option. It is suitable for a clearly visible person but may be less reliable with small or obstructed subjects.
+- **`None`:** Disables the dedicated person detector. This may work for an image already cropped around one person, but it is generally less reliable for full scenes or multiple subjects.
+
+### Pose Estimator
+
+After the bounding-box detector finds a person, the pose estimator locates the body, hand, foot, and facial keypoints.
+
+- **`dw-ll_ucoco_384.onnx`:** The higher-resolution ONNX estimator. It usually provides the best quality for body, face, hands, and feet, especially when ONNX GPU acceleration is working correctly.
+- **`dw-ll_ucoco_384_bs5.torchscript.pt`:** The TorchScript version of the higher-resolution estimator. It runs through PyTorch and is a good alternative when ONNX is unavailable or not using the GPU correctly.
+- **`dw-ll_ucoco.onnx`:** A lower-resolution variant. It is faster and uses less memory, but may be less accurate for hands, feet, faces, and small people.
+
+### Scale Stick for Xinsir ControlNet
+
+Controls how the detected skeleton is rendered in the final pose image.
+
+- **`enable`:** Adjusts the line thickness and keypoint size to better match the pose-map format expected by Xinsir OpenPose ControlNet models.
+- **`disable`:** Uses the standard OpenPose line and keypoint sizes.
+
+This parameter does not change the detected pose or the physical thickness of the generated character. It only changes how the skeleton is drawn.
+
+## Recommended Quality Configuration
+
+```text
+detect_hand: enable
+detect_body: enable
+detect_face: enable
+resolution: 1024
+bbox_detector: yolox_l.onnx
+pose_estimator: dw-ll_ucoco_384.onnx
+scale_stick_for_xinsr_cn: enable
+```
 
 ## Practical example
 
