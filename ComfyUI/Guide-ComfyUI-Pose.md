@@ -146,6 +146,11 @@ Onde this is done, click on the image inside the OpenPose Studio. This will open
     <img width="800" src="https://github.com/user-attachments/assets/8bb13d69-79c0-42f6-b960-991cdbb6535a" />
 </p>
 
+## OpenPose and Qwen Image Edit
+
+
+## OpenPose for video
+
 ## Practical example
 
 There are three workflows with regard to OpenPose:
