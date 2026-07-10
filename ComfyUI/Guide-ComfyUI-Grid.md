@@ -391,7 +391,7 @@ We consider the example with the following images and prompts. The horizontal ax
       <br>
       <strong>grid_qwen_image_edit_three_images</strong>
       <br><br>
-      <!-- Add image here -->
+      <img width="800" src="https://github.com/user-attachments/assets/7b5e00cc-16af-4ff9-9b6c-f5f7ffe212c7" />
     </td>
   </tr>
 </table>
