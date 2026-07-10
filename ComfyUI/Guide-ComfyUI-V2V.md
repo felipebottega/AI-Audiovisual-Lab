@@ -4,7 +4,7 @@
 
 ## Basic Workflow Diagram
 
-The workflow is very similar to the I2V workflow, except that here instead 
+The workflow is very similar to the I2V workflow, except that in this case, we use the `Wan22FunControlToVideo` node to take a reference image and a video as input. The reference image is optional. In theory, the video can be anything, but this node expects a ControlNet-style video. If you provide something else, the results will be unpredictable.
 
 ```mermaid
 flowchart LR
