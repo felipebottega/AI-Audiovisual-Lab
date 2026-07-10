@@ -70,57 +70,34 @@ When working with OpenPose, the ControlNet model used should be compatible with 
 
 ## Parameters
 
+### DWPose Estimator
+
 The **DWPose Estimator** converts a regular image into an OpenPose-style pose map. It first detects each person in the image and then estimates the body, hand, and facial keypoints.
 
 <p align="center">
     <img width="300" src="https://github.com/user-attachments/assets/f0307723-6bda-415d-9ba4-fd1d4bcc6731" />
 </p>
 
-### Detect Hand
+- **Detect Hand:** Controls whether hand and finger keypoints are included.
+- **Detect Body:** Controls whether the main body skeleton is detected.
+- **Detect Face:** Controls whether facial landmarks are included in the pose map. Facial landmarks do not preserve identity and should not be treated as a detailed expression reference.
+- **Resolution:** Defines the resolution used by the preprocessor when analyzing the input image. Increasing the resolution cannot recover details that are not visible in the original image.
+- **BBox Detector:** The bounding-box detector finds each person before the pose estimator analyzes them.
+    - **`yolox_l.onnx`:** A reliable general-purpose detector with good accuracy. It works well with multiple people and is usually fast when ONNX GPU acceleration is available.
+    - **`yolox_l.torchscript.pt`:** The TorchScript version of YOLOX-L. It runs through PyTorch and is useful when ONNX acceleration is unavailable, misconfigured, or running on the CPU.
+    - **`yolo_nas_l_fp16.onnx`:** The largest YOLO-NAS option. It is heavier and slower, but can help with difficult scenes containing small, partially hidden, or overlapping people.
+    - **`yolo_nas_m_fp16.onnx`:** The medium YOLO-NAS option. It provides a balance between speed and detection capability.
+    - **`yolo_nas_s_fp16.onnx`:** The smallest and fastest YOLO-NAS option. It is suitable for a clearly visible person but may be less reliable with small or obstructed subjects.
+    - **`None`:** Disables the dedicated person detector. This may work for an image already cropped around one person, but it is generally less reliable for full scenes or multiple subjects.
+- **Pose Estimator:** After the bounding-box detector finds a person, the pose estimator locates the body, hand, foot, and facial keypoints.
+    - **`dw-ll_ucoco_384.onnx`:** The higher-resolution ONNX estimator. It usually provides the best quality for body, face, hands, and feet, especially when ONNX GPU acceleration is working correctly.
+    - **`dw-ll_ucoco_384_bs5.torchscript.pt`:** The TorchScript version of the higher-resolution estimator. It runs through PyTorch and is a good alternative when ONNX is unavailable or not using the GPU correctly.
+    - **`dw-ll_ucoco.onnx`:** A lower-resolution variant. It is faster and uses less memory, but may be less accurate for hands, feet, faces, and small people.
+- **Scale Stick for Xinsir ControlNet:** Controls how the detected skeleton is rendered in the final pose image. This parameter does not change the detected pose or the physical thickness of the generated character. It only changes how the skeleton is drawn.
+    - **`enable`:** Adjusts the line thickness and keypoint size to better match the pose-map format expected by Xinsir OpenPose ControlNet models.
+    - **`disable`:** Uses the standard OpenPose line and keypoint sizes.
 
-Controls whether hand and finger keypoints are included.
-
-### Detect Body
-
-Controls whether the main body skeleton is detected.
-
-### Detect Face
-
-Controls whether facial landmarks are included in the pose map. Facial landmarks do not preserve identity and should not be treated as a detailed expression reference.
-
-### Resolution
-
-Defines the resolution used by the preprocessor when analyzing the input image. Increasing the resolution cannot recover details that are not visible in the original image.
-
-### BBox Detector
-
-The bounding-box detector finds each person before the pose estimator analyzes them.
-
-- **`yolox_l.onnx`:** A reliable general-purpose detector with good accuracy. It works well with multiple people and is usually fast when ONNX GPU acceleration is available.
-- **`yolox_l.torchscript.pt`:** The TorchScript version of YOLOX-L. It runs through PyTorch and is useful when ONNX acceleration is unavailable, misconfigured, or running on the CPU.
-- **`yolo_nas_l_fp16.onnx`:** The largest YOLO-NAS option. It is heavier and slower, but can help with difficult scenes containing small, partially hidden, or overlapping people.
-- **`yolo_nas_m_fp16.onnx`:** The medium YOLO-NAS option. It provides a balance between speed and detection capability.
-- **`yolo_nas_s_fp16.onnx`:** The smallest and fastest YOLO-NAS option. It is suitable for a clearly visible person but may be less reliable with small or obstructed subjects.
-- **`None`:** Disables the dedicated person detector. This may work for an image already cropped around one person, but it is generally less reliable for full scenes or multiple subjects.
-
-### Pose Estimator
-
-After the bounding-box detector finds a person, the pose estimator locates the body, hand, foot, and facial keypoints.
-
-- **`dw-ll_ucoco_384.onnx`:** The higher-resolution ONNX estimator. It usually provides the best quality for body, face, hands, and feet, especially when ONNX GPU acceleration is working correctly.
-- **`dw-ll_ucoco_384_bs5.torchscript.pt`:** The TorchScript version of the higher-resolution estimator. It runs through PyTorch and is a good alternative when ONNX is unavailable or not using the GPU correctly.
-- **`dw-ll_ucoco.onnx`:** A lower-resolution variant. It is faster and uses less memory, but may be less accurate for hands, feet, faces, and small people.
-
-### Scale Stick for Xinsir ControlNet
-
-Controls how the detected skeleton is rendered in the final pose image.
-
-- **`enable`:** Adjusts the line thickness and keypoint size to better match the pose-map format expected by Xinsir OpenPose ControlNet models.
-- **`disable`:** Uses the standard OpenPose line and keypoint sizes.
-
-This parameter does not change the detected pose or the physical thickness of the generated character. It only changes how the skeleton is drawn.
-
-## Recommended Quality Configuration
+### Recommended Quality Configuration
 
 ```text
 detect_hand: enable
