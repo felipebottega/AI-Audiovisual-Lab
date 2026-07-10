@@ -11,57 +11,54 @@ from PIL import Image, ImageDraw, ImageFont
 
 ### Constants ###
 SERVER_URL = "http://127.0.0.1:8188"
-API_JSON_FILE = "ComfyUI/user/default/workflows-api/qwen_image_instantx_inpainting_controlnet.json"
+API_JSON_FILE = "ComfyUI/user/default/workflows-api/qwen_image_edit_two_images.json"
 BIG_GRID_FILE = f"ComfyUI/output/grid_{datetime.datetime.now().strftime('%Y-%m-%d-%H_%M_%S')}.png"
-
-
 
 
 ### Parameters ###
 
 # Grid parameters.
-param2 = {
-    "262": {
+param1 = {
+    "433:3": {
         "inputs": {
-            "strength_model": [1.0, 1.3, 1.6, 1.9]
+            "seed": [11, 18]
         }
     }
 }
-param1 = {
-    "3": {
+
+param2 = {
+    "435": {
         "inputs": {
-            "cfg": [0.8, 1, 1.2]
+            "value": [               
+                ("Draw the anime girl with the clothes from the real photo. Keep the boy and"
+                "scenario as the same. Keep their pose, camera angle, all the same. No texts."),
+                
+                ("Draw the anime boy with the clothes from the real photo. Keep the girl and"
+                "scenario as the same. Keep their pose, camera angle, all the same. No texts."),
+                
+                ("Draw the anime girl with the clothes from the real photo. Remove the boy and"
+                "keep the scenario as the same. Keep their pose, camera angle, all the same. No texts."),
+                
+                ("Draw the anime boy with the clothes from the real photo. Remove the girl and"
+                "keep the scenario as the same. Keep their pose, camera angle, all the same. No texts."),
+                
+            ]
         }
     }
 }
 
 # Input parameters.
-image_path = "ComfyUI\\input\\clipspace\\clipspace-painted-masked-1783188160838.png"
+image_path1 = "...picture1.png"
+image_path2 = "...picture2.png"
+image_path3 = None
 
 # Optional parameters.
 param_opt = {
-    "121:199": {
-        "inputs": {
-            "expand":
-                20
-        }
-    },
-    "121:252": {
-        "inputs": {
-            "blur_radius":
-                4
-        }
-    },
-    "172": {
-        "inputs": {
-            "largest_size": 1000
-        }
-    },
-    "7": {
-        "inputs": {
-            "text": "noisy, blurry, deformed, ugly, low detailed, bad quality, watermark",
-        }
-    },
+#    "433:3": {
+#        "inputs": {
+#            "seed": [11, 12, 18]
+#        }
+#    }
 }
 
 
@@ -143,28 +140,45 @@ def set_filename_prefix(workflow, filename):
 
     return workflow
 
-def set_image_path(workflow, path):
+def set_image_paths(workflow, image_path1, image_path2, image_path3):
     """
-    Sets the path to the input image in LoadImage nodes only.
-    Does not modify image links such as ["8", 0].
+    Sets the paths to the three Qwen Image Edit input images.
+    If a path is None, the corresponding LoadImage node is removed and
+    direct references to it are removed from the workflow.
     """
-    changed = 0
 
-    for node in workflow.values():
-        if not isinstance(node, dict):
+    image_nodes = {
+        "78": image_path1,
+        "469": image_path2,
+        "470": image_path3,
+    }
+
+    for node_id, path in image_nodes.items():
+        if node_id not in workflow:
+            print(f"Warning: image node {node_id} not found in workflow.")
             continue
 
-        if node.get("class_type") != "LoadImage":
-            continue
+        if path is None:
+            workflow.pop(node_id)
 
-        inputs = node.get("inputs", {})
+            for node in workflow.values():
+                if not isinstance(node, dict):
+                    continue
 
-        if isinstance(inputs, dict) and isinstance(inputs.get("image"), str):
-            inputs["image"] = path
-            changed += 1
+                inputs = node.get("inputs", {})
+                if not isinstance(inputs, dict):
+                    continue
 
-    if changed == 0:
-        print("Warning: no LoadImage node with image path found in workflow.")
+                for key, value in list(inputs.items()):
+                    if value == [node_id, 0]:
+                        inputs.pop(key)
+        else:
+            inputs = workflow[node_id].get("inputs", {})
+
+            if isinstance(inputs, dict) and "image" in inputs:
+                inputs["image"] = path
+            else:
+                print(f"Warning: image input not found in node {node_id}.")
 
     return workflow
     
@@ -356,7 +370,7 @@ for val1, val2 in product(values1, values2):
     with open(API_JSON_FILE, "r", encoding="utf-8") as f:
         workflow = json.load(f)
         workflow = set_filename_prefix(workflow, filename)
-        workflow = set_image_path(workflow, image_path)
+        workflow = set_image_paths(workflow, image_path1, image_path2, image_path3)
         workflow = apply_param_overrides(workflow, param_opt)
 
     set_nested_value(workflow, path1, val1)
