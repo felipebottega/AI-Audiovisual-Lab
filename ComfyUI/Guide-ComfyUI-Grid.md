@@ -354,3 +354,45 @@ Since this workflow can be used up to three images, we have one workflow for eac
   - Script: [grid_qwen_image_edit_three_image.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/grid_qwen_image_edit_three_images.py)
   - API JSON file: `grid_qwen_image_edit_three_images.json` 
 
+We consider the example with the following images and prompts. The horizontal axis of the grid are the prompts and thr vertical axis are the seeds.
+
+<p align="center">
+  <img width="300" src="https://github.com/user-attachments/assets/30293094-b11e-471a-9f46-d46bdbed21b4" />
+  <img width="300" src="https://github.com/user-attachments/assets/1f7a1cf3-89d3-459d-be16-dafe7ac2562b" />
+  <img width="400" src="https://github.com/user-attachments/assets/fc3b45b0-480c-4dfb-8f09-8c074b5a43dc" />
+</p>
+
+- **Prompt 1:** "Draw the anime girl with the clothes from the real photo. Keep the boy and scenario as the same. Keep their pose, camera angle, all the same. No texts."
+- **Prompt 2:** "Draw the anime boy with the clothes from the real photo. Keep the girl and scenario as the same. Keep their pose, camera angle, all the same. No texts."
+- **Prompt 3:** "Draw the anime girl with the clothes from the real photo. Remove the boy and keep the scenario as the same. Keep their pose, camera angle, all the same. No texts."
+- **Prompt 4:** "Draw the anime boy with the clothes from the real photo. Remove the girl and keep the scenario as the same. Keep their pose, camera angle, all the same. No texts."
+
+<table>
+  <tr>
+    <td align="center">
+      <br>
+      <strong>grid_qwen_image_edit_one_image</strong>
+      <br><br>
+      <img width="800" src="https://github.com/user-attachments/assets/282d3217-4f8d-486f-9c46-4fe3d3d35c7b" />
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <br>
+      <strong>grid_qwen_image_edit_two_images</strong>
+      <br><br>
+      <img width="800" src="https://github.com/user-attachments/assets/987f060e-9b42-45db-96ce-becaf09c11e4" />
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <br>
+      <strong>grid_qwen_image_edit_three_images</strong>
+      <br><br>
+      <!-- Add image here -->
+    </td>
+  </tr>
+</table>
+
