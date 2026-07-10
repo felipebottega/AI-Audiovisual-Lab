@@ -21,10 +21,6 @@ This will create the pose, which is just a mp4 file. After that you need to inse
 
 The **Load Video** node reads the input video and converts it into a sequence of images. Each video frame becomes one image that can be processed by the following nodes.
 
-<p align="center">
-    <img width="300" src="https://github.com/user-attachments/assets/REPLACE_WITH_LOAD_VIDEO_IMAGE" />
-</p>
-
 - **Video:** Selects the video file that will be loaded. The uploaded file is stored in the ComfyUI input directory and becomes available in the node's video selector.
 - **Force Rate:** Changes the frame rate used when extracting the video frames.
     - **`0`:** Preserves the original frame rate.
@@ -48,6 +44,10 @@ The **Load Video** node reads the input video and converts it into a sequence of
     - **`Wan`:** Uses settings designed for Wan workflows, including a suggested frame rate of 16 FPS, dimensions divisible by 8, and a frame count compatible with the $4n+1$ structure used by Wan video models.
 
 > PS: For a standalone pose-extraction workflow, the format preset is not strictly required. However, selecting `Wan` is useful when the pose video will later be passed directly into a Wan vid2vid or control-video workflow. The preset can truncate a few frames from the end when the loaded frame count does not match the required structure.
+
+### Image Batch to Image List
+
+Converts a batch of video frames into a list so each frame can be processed individually.
 
 ### DWPose Estimator
 
@@ -87,6 +87,10 @@ bbox_detector: yolox_l.onnx
 pose_estimator: dw-ll_ucoco_384.onnx
 scale_stick_for_xinsr_cn: enable
 ```
+
+### Image List to Image Batch
+
+Combines the processed frame list back into a batch so it can be encoded as a video.
 
 ## Practical example
 
