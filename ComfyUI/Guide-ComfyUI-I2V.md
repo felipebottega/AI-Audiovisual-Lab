@@ -1,13 +1,6 @@
 # Guide to ComfyUI - Image to Video (I2V)
 
-## Technical Description of WAN 2.2
-
-**Wan 2.2** is a multimodal diffusion-based video generation model (developed by Wan AI/Alibaba) released as open source. It uses a large **Mixture-of-Experts** (MoE) architecture. In practice, this means the generation process is split into stages specialized for different noise levels:
-
-- **High-noise stage**: builds the global structure, movement, and composition.
-- **Low-noise stage**: refines details, consistency, and visual polish.
-
-For I2V, the model turns a still image into a video while trying to preserve the identity, layout, and style of the source image.
+*Image-to-Video* (I2V) starts from a reference image and animates it according to the prompt, making it better for preserving a specific character, composition, outfit, or art style.
 
 ## Basic Workflow Diagram
 

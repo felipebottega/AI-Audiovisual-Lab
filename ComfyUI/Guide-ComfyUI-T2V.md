@@ -1,13 +1,6 @@
 # Guide to ComfyUI - Text to Video (T2V)
 
-## Technical Description of WAN 2.2
-
-**Wan 2.2** is a multimodal diffusion-based video generation model (developed by Wan AI/Alibaba) released as open source. It uses a large **Mixture-of-Experts** (MoE) architecture. In practice, this means the generation process is split into stages specialized for different noise levels:
-
-- **High-noise stage**: builds the global structure, movement, and composition.
-- **Low-noise stage**: refines details, consistency, and visual polish.
-
-For T2V, the model turns a text prompt into a video.
+*Text-to-Video* (T2V) generates a video from a text prompt alone. The prompt describes the subject, environment, action, camera behavior, lighting, and visual style, while the model creates both the initial scene and its motion.
 
 ## Basic Workflow Diagram
 

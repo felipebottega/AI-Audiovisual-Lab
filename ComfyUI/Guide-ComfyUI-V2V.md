@@ -1,13 +1,6 @@
 # Guide to ComfyUI - Video to Video (V2V)
 
-## Technical Description of WAN 2.2
-
-**Wan 2.2** is a multimodal diffusion-based video generation model (developed by Wan AI/Alibaba) released as open source. It uses a large **Mixture-of-Experts** (MoE) architecture. In practice, this means the generation process is split into stages specialized for different noise levels:
-
-- **High-noise stage**: builds the global structure, movement, and composition.
-- **Low-noise stage**: refines details, consistency, and visual polish.
-
-For I2V, the model turns a still image into a video while trying to preserve the identity, layout, and style of the source image.
+*Video-to-Video* (V2V) uses an existing video as the main source of motion, timing, camera movement, and scene structure, then transforms or edits it according to a prompt or other control inputs. Depending on the workflow, V2V can restyle the whole video, replace subjects, refine details, or follow structural guides such as pose, depth, or edges (using *ControlNet*).
 
 ## Basic Workflow Diagram
 
