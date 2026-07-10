@@ -137,13 +137,13 @@ scale_stick_for_xinsr_cn: enable
 At first, this node will just pass on the pose computed by the DW Estimator and save the same output. After the first execution, you should mark to bypass all nodes, except the OpenPose Studio and the subsequent Save Image node. 
 
 <p align="center">
-    <img width="500" src="https://github.com/user-attachments/assets/67bb33cd-ff88-45a3-8a24-9a622f470fb4" />
+    <img width="800" src="https://github.com/user-attachments/assets/67bb33cd-ff88-45a3-8a24-9a622f470fb4" />
 </p>
 
 Onde this is done, click on the image inside the OpenPose Studio. This will open a new window, where you can edit the pose. After you finished editing, click to apply and run the workflow again. This will save the image of the edited pose.
 
 <p align="center">
-    <img width="400" src="https://github.com/user-attachments/assets/8bb13d69-79c0-42f6-b960-991cdbb6535a" />
+    <img width="800" src="https://github.com/user-attachments/assets/8bb13d69-79c0-42f6-b960-991cdbb6535a" />
 </p>
 
 ## Practical example
