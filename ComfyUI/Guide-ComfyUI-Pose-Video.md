@@ -13,7 +13,7 @@ flowchart LR
     A[Load Video] --> B[Image Batch to Image List] --> C[DWPose Estimator] --> D[Image List to Image Batch] --> E[Video Combine]
 ```
 
-This workflow converts the source video into an MP4 pose-control video. Each frame contains the detected OpenPose skeleton instead of the original image. The resulting file can then be loaded as the ControlNet input of a vid2vid workflow.
+This workflow converts the source video into an MP4 pose-control video. Each frame contains the detected OpenPose skeleton instead of the original image. The resulting file can then be loaded as the ControlNet input of a **vid2vid** workflow.
 
 ## Parameters
 
