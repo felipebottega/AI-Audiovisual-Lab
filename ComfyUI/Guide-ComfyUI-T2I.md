@@ -9,7 +9,7 @@ flowchart LR
     A[Checkpoint] --> B[CLIP]
     B --> D
     A --> C[LoRAs] --> D[Sampler]
-    D --> F[VAE Decode] --> G[Create Video] --> H[Save Image]
+    D --> F[VAE Decode] --> G[Save Image]
     A --> F
 ```
 

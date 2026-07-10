@@ -1,0 +1,72 @@
+{
+  "18": {
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 576,
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384.onnx",
+      "scale_stick_for_xinsr_cn": "enable",
+      "image": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "DWPreprocessor",
+    "_meta": {
+      "title": "DWPose Estimator"
+    }
+  },
+  "21": {
+    "inputs": {
+      "image": "Linda.jpg"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "22": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "23": {
+    "inputs": {
+      "pose_json": "[{\"people\": [{\"pose_keypoints_2d\": [131.1911513209343, 68.46182024478912, 1.0, 119.23692385852337, 90.45759877562523, 1.0, 86.72142516076565, 95.2392897605896, 1.0, 102.02283631265163, 155.9667652696371, 1.0, 103.93551270663738, 110.06253181397915, 1.0, 151.7524225562811, 85.67590779066086, 1.0, 150.79608435928822, 143.0561996102333, 1.0, 154.6214371472597, 188.96043306589127, 1.0, 99.15382172167301, 169.35550002753735, 1.0, 77.63621228933334, 235.8210047185421, 1.0, 35.079162523150444, 310.4153840839863, 1.0, 135.0165041089058, 171.74634552001953, 1.0, 103.93551270663738, 234.3864974230528, 1.0, 118.75875476002693, 315.19707506895065, 1.0, 122.58410754799843, 56.985761880874634, 1.0, 138.8418568968773, 58.89843827486038, 1.0, 104.89185090363026, 55.55125458538532, 1.0, 146.01439337432384, 61.767452865839005, 1.0], \"face_keypoints_2d\": null, \"hand_left_keypoints_2d\": null, \"hand_right_keypoints_2d\": null}], \"canvas_height\": 320, \"canvas_width\": 240}]",
+      "render_body": true,
+      "render_hand": false,
+      "render_face": false,
+      "pose_keypoint": [
+        "18",
+        1
+      ]
+    },
+    "class_type": "OpenPoseStudio",
+    "_meta": {
+      "title": "OpenPose Studio"
+    }
+  },
+  "24": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}
