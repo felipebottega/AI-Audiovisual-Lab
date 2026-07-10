@@ -24,7 +24,6 @@ This will create the pose, which is just a PNG file. After that you need to inse
 flowchart LR
     A[Checkpoint] --> B[CLIP]
     A --> C[LoRAs] --> D[Sampler]
-    E[Image Settings] --> D
     D --> F[VAE Decode] --> G[Create Video] --> H[Save Image]
     A --> F
     B --> I[Apply ControlNet] --> D
