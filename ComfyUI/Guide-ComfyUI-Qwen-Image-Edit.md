@@ -166,7 +166,9 @@ Operation + Target + Change + Preservation rules + Final result
 For example:
 
 ```text
-Replace the woman's blue jacket with a dark-red leather jacket. Preserve her face, hairstyle, pose, body proportions, background, lighting, and camera angle. The final image must contain only the original woman.
+Replace the woman's blue jacket with a dark-red leather jacket.
+Preserve her face, hairstyle, pose, body proportions, background, lighting, and camera angle.
+The final image must contain only the original woman.
 ```
 
 ### 1. Write Instructions, Not Stable Diffusion Tags
@@ -303,9 +305,7 @@ First explain what the model should create. Then add a small number of restricti
 
 ```text
 Redraw the existing woman sitting cross-legged on top of the table.
-
 Preserve her identity, face, hairstyle, clothing, and the original room.
-
 Do not add another woman. Do not leave the original woman in her previous position.
 ```
 
@@ -446,18 +446,6 @@ Then define the final hierarchy:
 The final composition, room, camera angle, and pose must come from the bedroom image. Only the woman's facial identity comes from the portrait. Only the jacket design comes from the clothing reference.
 ```
 
-#### Prevent reference takeover
-
-```text
-Do not reproduce the portrait image as the final composition. Do not copy its background, crop, lighting, or camera angle.
-```
-
-#### Prevent subject duplication
-
-```text
-Replace the existing woman in the base scene with the referenced identity. Do not add a second woman.
-```
-
 ### 13. Text Editing
 
 Place the exact text inside quotation marks.
@@ -567,42 +555,7 @@ Also distinguish valid assets from scene regions:
 The complete paddocks and enclosed map areas are not assets. Do not preserve them as large shapes.
 ```
 
-### 18. Using the Official Prompt Enhancer
-
-The official enhancer is an image-aware prompt rewriting tool powered by Qwen-VL-Max and is recommended by Qwen for improved stability. ([GitHub][2])
-
-#### It is useful when
-
-* the original request is vague
-* the target is not clearly identified
-* location or quantity is missing
-* the instruction contains contradictions
-* the user describes an intention rather than a visual operation
-
-#### It is less useful when
-
-* the prompt is already precise
-* every visual constraint is intentional
-* the task uses unusual game-development terminology
-* the enhancer introduces invented details
-* exact wording matters
-
-#### Recommended workflow
-
-```text
-1. Write the edit prompt manually.
-2. Run it through the enhancer.
-3. Compare the rewritten prompt with the original.
-4. Remove invented or unnecessary details.
-5. Keep only changes that improve clarity.
-6. Test both versions with the same seed.
-```
-
-Do not treat the enhanced prompt as automatically superior.
-
-### 19. Turbo Mode and Prompt Evaluation
-
-In the official ComfyUI wrapper shown in this guide, turbo mode changes a complete group of inference settings.
+### 18. Turbo Mode and Prompt Evaluation
 
 #### Standard mode
 
@@ -623,115 +576,6 @@ CFG: 1.0
 The Lightning LoRA is designed to reduce the process to four steps. ([ComfyUI][1])
 
 Turbo mode is useful for fast experimentation, but difficult edits should be validated in standard mode. Do not conclude that a prompt is ineffective based only on a four-step result.
-
-### 20. Common Failure Modes
-
-| Problem                                      | Likely cause                                         | Prompt correction                                                                                  |
-| -------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Almost nothing changes                       | The preservation instructions dominate the edit      | Use stronger transformation language such as `replace`, `redraw`, or `discard the original layout` |
-| Too much changes                             | The preservation rules are missing                   | List the important identity, background, style, or composition properties to preserve              |
-| A second person appears                      | The prompt uses `add` instead of `replace` or `move` | State the final number of people and explicitly forbid duplication                                 |
-| A reference image becomes the final image    | The role of the reference is ambiguous               | State exactly which property comes from each image                                                 |
-| The visual guide remains visible             | The guide was treated as scene content               | Call it a temporary guide and explicitly request its removal                                       |
-| The model preserves a complete fenced region | The source grouping is interpreted as one object     | State that the region is not an asset and request modular fence parts                              |
-| Small assets have poor detail                | Too many objects compete for limited resolution      | Generate assets in separate category sheets                                                        |
-| The edit works only for some seeds           | The instruction is underspecified                    | Identify target, position, final state, and preservation rules more precisely                      |
-
-### 21. Do and Do Not
-
-#### Do
-
-* use clear action verbs
-* identify the target precisely
-* describe the final visual state
-* state the important preservation rules
-* define the role of every reference image
-* explain visual guides
-* use exact spatial relationships
-* divide complex transformations into stages
-* test difficult prompts without the Lightning LoRA
-* describe modular output pieces explicitly
-
-#### Do not
-
-* write only keyword lists
-* repeat the same restriction many times
-* ask for several unrelated transformations at once
-* use `add` when replacing an existing subject
-* assume that `Image 1` and `Image 2` fully explain their roles
-* ask the model to preserve everything during a global transformation
-* use ambiguous terms such as `elements` without defining what counts as an element
-* assume that “tileset” always means isolated game assets
-* expect the prompt enhancer to fix structural model limitations
-
-### 22. General Prompt Template
-
-```text
-[Direct edit operation].
-
-Use the input image as the source of truth for [properties to preserve].
-
-Modify [precise target] by [specific visual transformation].
-
-The final result must show [desired final state].
-
-Preserve [important unchanged properties].
-
-Do not [small number of likely failure modes].
-```
-
-### 23. Complex Global-Edit Template
-
-```text
-Replace the entire original composition with [new output type].
-
-Use the input image only as the visual source for [objects, identity, style, colors, materials, or perspective].
-
-Discard the original [layout, positions, grouping, background, or spatial relationships].
-
-Redraw [targets] as [new independent form], reconstructing any hidden parts.
-
-Arrange the final result as [specific composition and background].
-
-Preserve [visual characteristics].
-
-Do not [specific unwanted interpretation].
-```
-
-### 24. Example: Farm Scene to Game Asset Sheet
-
-```text
-Replace the entire input image with a newly composed farm-game environment asset sheet on a solid pure white background.
-
-Use the input image only as the visual source for the farm object designs, hand-painted cartoon style, colors, outlines, shading, materials, and elevated top-down perspective. Discard the original map layout, object positions, roads, fenced regions, and spatial relationships.
-
-Redraw each unique reusable object as a complete independent game asset. Separate objects that currently appear together and reconstruct any hidden parts. Include the barn, farmhouse, tractor, wheelbarrow, hay bales, woodpile, well, water trough, pond, crop plots, trees, bushes, stump, and rocks.
-
-Convert the continuous wooden fences into reusable modular pieces, including straight sections, short sections, corners, end posts, curves, and an open gate section. Convert the connected dirt-road network into separate straight paths, curves, intersections, and end pieces.
-
-Arrange the assets in organized rows with generous white space. Every asset must be fully visible, isolated, uncropped, non-overlapping, and rendered at a coherent game-world scale.
-
-The complete paddocks, fenced map regions, forest border, grass field, and connected road network are not individual assets. Do not preserve them as large scene fragments. Omit all animals and people.
-
-The final result must look like a polished commercial environment asset atlas, not like the original scene with its background removed.
-```
-
-### 25. Final Checklist
-
-Before running a prompt, verify:
-
-* Is the main operation clear in the first sentence?
-* Is the exact target identifiable?
-* Is the desired final state described?
-* Are the necessary preservation rules present?
-* Are there contradictory instructions?
-* Is the task local or global?
-* Does the prompt release the original layout when necessary?
-* Are reference-image roles explicit?
-* Are guide marks described as temporary?
-* Are continuous structures decomposed into modular parts?
-* Could the task be divided into smaller generations?
-* Will the final result be tested without turbo mode?
 
 [1]: https://docs.comfy.org/tutorials/image/qwen/qwen-image-edit "Qwen-Image-Edit ComfyUI Native Workflow Example - ComfyUI"
 [2]: https://github.com/QwenLM/Qwen-Image "GitHub - QwenLM/Qwen-Image: Qwen-Image is a powerful image generation foundation model capable of complex text rendering and precise image editing. · GitHub"
