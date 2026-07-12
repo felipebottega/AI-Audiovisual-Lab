@@ -1,11 +1,11 @@
 {
   "3": {
     "inputs": {
-      "seed": 123456798,
-      "steps": 25,
+      "seed": 987654387,
+      "steps": 30,
       "cfg": 4,
-      "sampler_name": "euler",
-      "scheduler": "normal",
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
       "denoise": 1,
       "model": [
         "22",
@@ -20,7 +20,7 @@
         0
       ],
       "latent_image": [
-        "5",
+        "27",
         0
       ]
     },
@@ -38,20 +38,9 @@
       "title": "Load Checkpoint"
     }
   },
-  "5": {
-    "inputs": {
-      "width": 1024,
-      "height": 1024,
-      "batch_size": 1
-    },
-    "class_type": "EmptyLatentImage",
-    "_meta": {
-      "title": "Empty Latent Image"
-    }
-  },
   "6": {
     "inputs": {
-      "text": "a brunette woman in a blue kimono kimono robe reading a book in a library, glasses, long and loose hair, wooden furniture, wooden table, high quality, photo realistic\n",
+      "text": "A RAW photograph of a cyberpunk warrior standing on a neon city overlooking a cyberpunk building far away, holding a futuristic shotgun, authentic cyberpunk warrior clothing made of lether, neon and metal, cyberpunk  watchtower, pvimented street, mountains in the distance, wind blowing through his hair and clothes, realistic facial features, natural skin texture, face clearly visible, documentary photography, 85mm lens, realistic lighting, photorealistic",
       "clip": [
         "4",
         1
@@ -64,7 +53,7 @@
   },
   "7": {
     "inputs": {
-      "text": "noisy, blurry, random print, different logo, text, deformed, ugly, low detailed, bad quality, watermark, long neck, tall, long torso, multiple legs, multiple fingers, missing limbs, deformed hands, deformed feet, mutations ugly hands, multiple navels",
+      "text": "anime, cartoon, illustration, painting, 3d render, doll, plastic skin, airbrushed skin, fake skin, deformed, bad hands, extra fingers, blurry, low quality, noisy, blurry, random print, different logo, text, deformed, ugly, low detailed, bad quality, watermark, long neck, tall, long torso, multiple legs, multiple fingers, missing limbs, deformed hands, deformed feet, mutations ugly hands, multiple navels",
       "clip": [
         "4",
         1
@@ -91,20 +80,6 @@
       "title": "VAE Decode"
     }
   },
-  "10": {
-    "inputs": {
-      "lora_name": "zy_Realism_Enhancer_v2.safetensors",
-      "strength_model": 1.0000000000000002,
-      "model": [
-        "4",
-        0
-      ]
-    },
-    "class_type": "LoraLoaderModelOnly",
-    "_meta": {
-      "title": "Load LoRA"
-    }
-  },
   "13": {
     "inputs": {
       "filename_prefix": "ComfyUI",
@@ -120,17 +95,17 @@
   },
   "22": {
     "inputs": {
-      "preset": "STANDARD (medium strength)",
+      "preset": "FACEID",
       "lora_strength": 0.6,
       "provider": "CUDA",
-      "weight": 0.1,
+      "weight": 1,
       "weight_faceidv2": 1,
-      "start_at": 0.0,
-      "end_at": 0.9,
+      "start_at": 0,
+      "end_at": 0.95,
       "cache_mode": "all",
       "use_tiled": false,
       "model": [
-        "10",
+        "4",
         0
       ],
       "image": [
@@ -145,11 +120,22 @@
   },
   "23": {
     "inputs": {
-      "image": "024.jpg"
+      "image": "Screenshot 2026-07-08 083140.png"
     },
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
+    }
+  },
+  "27": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
     }
   }
 }
