@@ -141,3 +141,11 @@ Now we will see in practice how to execute an inpainting workflow in ComfyUI. We
 This JSON provides the workflow to be used in the ComfyUI interface. It's possible to automate the workflow's execution and change its parameters programmatically; to do this, you must use the API-specific JSON from [this link](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/workflows-api/IPAdapter.json). 
 
 You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Audiovisual-Lab/blob/main/ComfyUI/scripts/run_workflow.py) for this example. If you want to change any parameter, edit the JSON above and then run the scriptwith the command `python run_workflow.py "{path_to_workflow_json}"`.
+
+## T2I or I2I
+
+As presented, the IPAdapter workflow can be viewed as a T2I process that incorporates a reference image for guidance. It is possible to replace the empty latent image node with an actual image. In this scenario, both the prompt and the IPAdapter image serve as auxiliary inputs that influence the modification of the base image. Consequently, the workflow is effectively transformed into an I2I process.
+
+<p align="center">
+    <img width="700" src="https://github.com/user-attachments/assets/7b818cd7-9084-40d0-9f02-9981a3ee3b47" />
+</p>
