@@ -144,7 +144,7 @@ You can use the script [run_workflow.py](https://github.com/felipebottega/AI-Aud
 
 ## T2I or I2I
 
-As presented, the IPAdapter workflow can be viewed as a T2I process that incorporates a reference image for guidance. It is possible to replace the empty latent image node with an actual image. In this scenario, both the prompt and the IPAdapter image serve as auxiliary inputs that influence the modification of the base image. Consequently, the workflow is effectively transformed into an I2I process.
+As presented, the IP-Adapter workflow can be viewed as a T2I process that incorporates a reference image for guidance. It is possible to replace the empty latent image node with an actual image. In this scenario, both the prompt and the IP-Adapter image serve as auxiliary inputs that influence the modification of the base image. Consequently, the workflow is effectively transformed into an I2I process.
 
 <p align="center">
     <img width="700" src="https://github.com/user-attachments/assets/7b818cd7-9084-40d0-9f02-9981a3ee3b47" />
